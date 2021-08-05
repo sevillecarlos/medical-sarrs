@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import Auth from "../components/Auth";
-import Main from "./Main";
+import DashBoard from "./DashBoard";
 import { authAction } from "../store/slices/Auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 
@@ -15,7 +15,7 @@ const Home = () => {
     };
   }, [dispatch]);
 
-  return <div>{auth.token ? <Main /> : <Auth />}</div>;
+  return <div>{auth.token ? <DashBoard /> : <Auth />}</div>;
 };
 
 Home.propTypes = {};

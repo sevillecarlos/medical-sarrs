@@ -1,11 +1,40 @@
-import React from "react";
-import { Navbar, Container, Image, Nav, NavDropdown } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Navbar, Image, Nav, NavDropdown } from "react-bootstrap";
 import logo from "../assets/img/logo-sarrs.png";
 import { authAction } from "../store/slices/Auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import "./style/NavBar.css";
 
+import { jwtDecoded } from "../helpers/jwtDecoded";
+import { useState } from "react";
+
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootStateOrAny) => state.auth);
+
+  const [userName, setUserName] = useState("");
+  const [firstName, setFirstName] = useState("");
+
+  useEffect(() => {
+    dispatch(authAction.getToken());
+    return () => {
+      // cleanup;
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (auth.token) {
+      const { first_name, username } = jwtDecoded(auth.token);
+      setFirstName(first_name);
+      setUserName(username);
+    }
+    return () => {
+      // cleanup;
+    };
+  }, [auth.token]);
+
+  const signOut = () => dispatch(authAction.clearToken());
+
   return (
     <Navbar className="nav-bar">
       <Navbar.Brand href="/">
@@ -14,21 +43,27 @@ const NavBar = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link className='brand-title' href='/'>SARRS</Nav.Link>
-
-          {/* <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
+          {auth.token ? (
+            <>
+              {" "}
+              <Nav.Link href="/appointment/registration">
+                Appointment Registration
+              </Nav.Link>
+              <Nav.Link href="/inventory/">Inventory</Nav.Link>
+              <NavDropdown
+                title={`Hi ${firstName.split(" ").shift()}`}
+                id="collasible-nav-dropdown"
+              >
+                <NavDropdown.ItemText>{userName}</NavDropdown.ItemText>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={signOut}>Sign Out</NavDropdown.Item>
+              </NavDropdown>{" "}
+            </>
+          ) : (
+            <Nav.Link className="brand-title" href="/">
+              SARRS
+            </Nav.Link>
+          )}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
