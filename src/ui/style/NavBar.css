@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@100&display=swap");
+
+.title-brand {
+  margin-left: 5px;
+  text-align: center;
+  color: cornflowerblue;
+  font-family: "Archivo", sans-serif;
+  font-weight: bold;
+  font-size: 50px;
+}
+.nav-bar {
+  background-color: rgba(245, 245, 245, 0.87) !important;
+  border-radius: 100px;
+  margin-top: 20px;
+  box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+}
+.logo-image {
+  width: 120px;
+  margin-left: 10px;
+}
+
+.brand-title {
+  font-size: 70px;
+  margin-left: 475px;
+}

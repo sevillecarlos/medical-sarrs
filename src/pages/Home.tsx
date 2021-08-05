@@ -1,10 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
-
+import Auth from '../components/Auth'
 const Home = () => {
   return (
     <div>
-      <p>Hola</p>
+     <Auth/>
     </div>
   );
 };
