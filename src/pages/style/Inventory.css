@@ -46,3 +46,11 @@
 .modal-add-supply {
   border-radius: 20px !important;
 }
+.sub-header-inventory-table{
+    background-color: rgba(128, 128, 128, 0.507) !important;
+    font-size: 20px;
+}
+
+.quantity-td{
+    cursor: pointer;
+}

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   categories: null,
-  item: null,
+  items: Array<string[]>(),
   error: null,
   status: "idle",
 };
@@ -11,8 +11,22 @@ const initialState = {
 export const fetchInventory = createAsyncThunk(
   "auth/fetchInventory",
   async (items: any) => {
+      console.log(items)
     try {
       const res = axios.post("http://127.0.0.1:5000/api/v1/items", items);
+      const item = (await res).data;
+      return item;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const fetchInventoryItems = createAsyncThunk(
+  "auth/fetchInventoryItems",
+  async () => {
+    try {
+      const res = axios.get("http://127.0.0.1:5000/api/v1/items");
       const item = (await res).data;
       return item;
     } catch (error) {
@@ -44,13 +58,26 @@ const inventorySlice = createSlice({
       fetchInventory.fulfilled,
       (state, action: { payload: any }) => {
         state.status = "success";
-        state.item = action.payload;
+        state.items.push(action.payload);
       }
     );
     builder.addCase(fetchInventory.pending, (state, action) => {
       state.status = "loading";
     });
     builder.addCase(fetchInventory.rejected, (state) => {
+      state.status = "reject";
+    });
+    builder.addCase(
+      fetchInventoryItems.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.items = action.payload;
+      }
+    );
+    builder.addCase(fetchInventoryItems.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchInventoryItems.rejected, (state) => {
       state.status = "reject";
     });
     builder.addCase(
