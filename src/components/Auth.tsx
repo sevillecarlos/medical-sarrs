@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { Form, Button } from "react-bootstrap";
-import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import logo from "../assets/img/logo-sarrs.png";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import "./style/Auth.css";
 
-import { authAction, fetchSignIn } from "../store/slices/Auth";
+import { fetchSignIn, authAction } from "../store/slices/Auth";
 
 const Auth = () => {
   const dispatch = useDispatch();
-  const authUser = useSelector((state: RootStateOrAny) => state.auth);
+  const auth = useSelector((state: RootStateOrAny) => state.auth);
 
   const [signInForm, setSignInForm] = useState({
-    type: "",
-    user: "",
+    user_type: "",
+    username: "",
     password: "",
   });
 
@@ -27,7 +27,11 @@ const Auth = () => {
     dispatch(fetchSignIn(signInForm));
   };
 
-//   const tokenExist = localStorage.getItem("$@token");
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(authAction.clearError());
+    }, 3000);
+  }, [auth.error, dispatch]);
 
   return (
     <div className="auth">
@@ -45,19 +49,16 @@ const Auth = () => {
             <Form.Select
               className="user-type-select"
               aria-label="Default select example"
-              name="type"
+              name="user_type"
+              onChange={changeSignInForm}
             >
               <option value="staff">Staff</option>
               <option value="admin">Administrator</option>
             </Form.Select>
-            <Form.Group
-              className="mb-3"
-              controlId="formBasicEmailSignIn"
-              onSubmit={signIn}
-            >
+            <Form.Group className="mb-3" controlId="formBasicEmailSignIn">
               <Form.Label>Username</Form.Label>
               <Form.Control
-                name="user"
+                name="username"
                 type="text"
                 className="input-auth"
                 placeholder="Enter username"
@@ -75,7 +76,7 @@ const Auth = () => {
                 placeholder="Enter password"
               />
             </Form.Group>
-
+            {auth.error !== null && <span>{auth.error}</span>}
             <Button className="auth-btn" type="submit">
               Login <MdKeyboardArrowRight size={25} />
             </Button>

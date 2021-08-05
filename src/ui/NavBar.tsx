@@ -1,7 +1,8 @@
 import React from "react";
 import { Navbar, Container, Image, Nav, NavDropdown } from "react-bootstrap";
 import logo from "../assets/img/logo-sarrs.png";
-
+import { authAction } from "../store/slices/Auth";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import "./style/NavBar.css";
 
 const NavBar = () => {
