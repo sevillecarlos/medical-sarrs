@@ -43,13 +43,12 @@ const authSlice = createSlice({
       fetchSignIn.fulfilled,
       (state, action: { payload: any }) => {
         state.status = "success";
-        const { token, reason } = action.payload;
-        if (token) {
-          localStorage.setItem("@$token", token);
-          state.token = token;
+        if (action.payload?.token) {
+          localStorage.setItem("@$token", action.payload.token);
+          state.token = action.payload.token;
         } else {
           state.error = null;
-          state.error = reason;
+          state.error = action.payload?.reason;
         }
       }
     );

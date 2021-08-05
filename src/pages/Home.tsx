@@ -1,7 +1,7 @@
 import React, {  useEffect } from "react";
 import Auth from "../components/Auth";
 import DashBoard from "./DashBoard";
-import { authAction } from "../store/slices/Auth";
+import { authAction } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 
 const Home = () => {

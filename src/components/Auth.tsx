@@ -6,7 +6,7 @@ import logo from "../assets/img/logo-sarrs.png";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import "./style/Auth.css";
 
-import { fetchSignIn, authAction } from "../store/slices/Auth";
+import { fetchSignIn, authAction } from "../store/slices/auth";
 
 const Auth = () => {
   const dispatch = useDispatch();

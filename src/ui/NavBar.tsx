@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Navbar, Image, Nav, NavDropdown } from "react-bootstrap";
 import logo from "../assets/img/logo-sarrs.png";
-import { authAction } from "../store/slices/Auth";
+import { authAction } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import "./style/NavBar.css";
 
@@ -46,9 +46,8 @@ const NavBar = () => {
           {auth.token ? (
             <>
               {" "}
-              <Nav.Link href="/appointment/registration">
-                Appointment Registration
-              </Nav.Link>
+              <Nav.Link href="/records">Medical Records</Nav.Link>
+              <Nav.Link href="/appointment">Appointment Registration</Nav.Link>
               <Nav.Link href="/inventory/">Inventory</Nav.Link>
               <NavDropdown
                 title={`Hi ${firstName.split(" ").shift()}`}
