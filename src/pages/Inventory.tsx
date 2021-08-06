@@ -22,6 +22,8 @@ const Inventory = () => {
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showQuickChange, setShowQuickChange] = useState(true);
   const [showModalModify, setShowModalModify] = useState(false);
+  const [inventoryItems, setInventoryItems] = useState(Array<any>());
+
   const [modifyData, setModifyData] = useState({
     name: "",
     category_id: 0,
@@ -43,6 +45,27 @@ const Inventory = () => {
     setItemForm({ ...itemForm, [e.target.name]: e.target.value });
   };
 
+  const typeFilter = (e: any) => {
+    const filterItemsArr = inventoryItems.filter(
+      (item: { name: string; detail: string }) => {
+        return (
+          item.name.toLowerCase().indexOf(e.target.value) > -1 ||
+          item.detail.toLowerCase().indexOf(e.target.value) > -1
+        );
+      }
+    );
+    setInventoryItems(e.target.value !== "" ? filterItemsArr : inventory.items);
+  };
+
+  const categoryFilter = (e: any) => {
+    const filterItemsArr = inventoryItems.filter(
+      (item: { category_id: number }) => {
+        return item.category_id == e.target.value;
+      }
+    );
+    setInventoryItems(e.target.value !== "" ? filterItemsArr : inventory.items);
+  };
+
   const changeModifyForm = (e: any) => {
     setModifyData({ ...modifyData, [e.target.name]: e.target.value });
   };
@@ -56,6 +79,12 @@ const Inventory = () => {
     dispatch(fetchInventoryCategories());
     dispatch(fetchInventoryItems());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (inventory.items) {
+      setInventoryItems(inventory.items);
+    }
+  }, [inventory.items]);
 
   const getCategoryName = (id: number) => {
     const category: any = inventory.categories?.filter((v: any) => v.id === id);
@@ -78,8 +107,8 @@ const Inventory = () => {
     });
   };
 
-  const submitModify = (e:any) => {
-    e.preventDefault()
+  const submitModify = (e: any) => {
+    e.preventDefault();
     dispatch(updateInventoryItem(modifyData));
     setShowModalModify(false);
   };
@@ -259,10 +288,15 @@ const Inventory = () => {
                 autoFocus
                 className="filter-input"
                 placeholder="Type to filter the supplies..."
+                onChange={typeFilter}
               />
             </th>
             <th>
-              <Form.Select className="categories-filter" placeholder="das">
+              <Form.Select
+                className="categories-filter"
+                onChange={categoryFilter}
+                placeholder="das"
+              >
                 <option>Select category to filter</option>
                 {inventory.categories?.map(
                   (v: { id: number; name: string }) => {
@@ -286,7 +320,7 @@ const Inventory = () => {
             <td>Quantity</td>
             <td>Options</td>
           </tr>
-          {inventory.items?.map((v: any) => {
+          {inventoryItems.map((v: any) => {
             return (
               <tr key={v.name.toLowerCase()}>
                 <td>{nameFormat(v.name)}</td>
