@@ -1,6 +1,8 @@
 .inventory-table {
   background-color: rgba(245, 245, 245, 0.87) !important;
   border-radius: 20px;
+  margin: auto;
+  width: 70% !important;
   margin-top: 20px;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
   -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -8,7 +10,7 @@
 }
 .btn {
   border: none !important;
-  border-radius: 50px !important;
+  border-radius: 15px !important;
   color: rgb(7, 7, 7) !important;
   background-color: rgba(172, 255, 47, 0.521) !important;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -17,7 +19,7 @@
 }
 
 .filter-input {
-  width: 60% !important;
+  width: 100% !important;
   border-radius: 20px !important;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
   -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -53,4 +55,17 @@
 
 .quantity-td{
     cursor: pointer;
+    width: 10%;
+}
+.modify-btn{
+  background-color: rgba(255, 217, 0, 0.459) !important;
+}
+
+.category-td{
+  width: 25%;
+}
+
+.remove-supply-btn{
+  background-color: rgba(255, 0, 0, 0.562) !important;
+  margin-top: 20px;
 }
