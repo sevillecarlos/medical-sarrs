@@ -13,8 +13,9 @@ const DashBoard = () => {
         <Card.Body>
           <Card.Title>Inventory Health Supplies</Card.Title>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            This module is for make an inventory for the medical supplies that
+            the organization have, is divided my categories and filters so you
+            can find information in a easy way.
           </Card.Text>
           <Card.Img
             className="cover-image-inventory"
@@ -31,8 +32,8 @@ const DashBoard = () => {
         <Card.Body>
           <Card.Title>Medical Appointments</Card.Title>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            This module is for register medicals appointments for every patient
+            that want to have a consult with a doctor.
           </Card.Text>
           <Card.Img
             className="cover-image-appointment"
@@ -40,7 +41,7 @@ const DashBoard = () => {
           />
         </Card.Body>
         <Card.Footer>
-          <Card.Link className="card-link" href="/inventory">
+          <Card.Link className="card-link" href="/appointment">
             Go to Appointment
           </Card.Link>
         </Card.Footer>
@@ -54,16 +55,13 @@ const DashBoard = () => {
               <Col sm={8}>
                 {" "}
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  This module is for check the medical records of the patients,
+                  any staff that have authorization can look the records and update the information.
                 </Card.Text>
               </Col>
               <Col sm={4}>
                 {" "}
-                <Card.Img
-                  className="cover-image-record"
-                  src={recordImage}
-                />
+                <Card.Img className="cover-image-record" src={recordImage} />
               </Col>
             </Row>
           </Container>

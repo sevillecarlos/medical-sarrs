@@ -46,7 +46,7 @@ const Inventory = () => {
   };
 
   const typeFilter = (e: any) => {
-    const filterItemsArr = inventoryItems.filter(
+    const filterItemsArr = inventory.items.filter(
       (item: { name: string; detail: string }) => {
         return (
           item.name.toLowerCase().indexOf(e.target.value) > -1 ||
@@ -54,16 +54,20 @@ const Inventory = () => {
         );
       }
     );
-    setInventoryItems(e.target.value !== "" ? filterItemsArr : inventory.items);
+    setInventoryItems(
+      filterItemsArr.length !== 0 ? filterItemsArr : inventory.items
+    );
   };
 
   const categoryFilter = (e: any) => {
-    const filterItemsArr = inventoryItems.filter(
+    const filterItemsArr = inventory.items.filter(
       (item: { category_id: number }) => {
-        return item.category_id == e.target.value;
+        return Number(item.category_id) === Number(e.target.value);
       }
     );
-    setInventoryItems(e.target.value !== "" ? filterItemsArr : inventory.items);
+    setInventoryItems(
+      filterItemsArr.length !== 0 ? filterItemsArr : inventory.items
+    );
   };
 
   const changeModifyForm = (e: any) => {
