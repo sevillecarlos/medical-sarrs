@@ -47,7 +47,6 @@ const NavBar = () => {
 
   useEffect(() => {
     dispatch(authAction.getToken());
-    dispatch(fetchUsers());
     return () => {
       // cleanup;
     };

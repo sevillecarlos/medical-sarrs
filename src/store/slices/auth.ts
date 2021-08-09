@@ -5,6 +5,7 @@ const initialState = {
   error: null,
   msg: "",
   status: "idle",
+  reload: false,
   usernames: Array<any>(),
 };
 
@@ -46,12 +47,51 @@ export const fetchSignUp = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "auth/updateUser",
+  async (userData: any) => {
+    try {
+      const res = axios.put(
+        `http://127.0.0.1:5000/api/v1/users/${userData.id}`,
+        {
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          username: userData.username,
+          password: userData.password,
+        }
+      );
+
+      const user = (await res).data;
+      return user;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+export const deleteUser = createAsyncThunk(
+  "auth/removeUser",
+  async (id: any) => {
+    console.log(id)
+    try {
+      const res = axios.delete(`http://127.0.0.1:5000/api/v1/users/${id}`);
+
+      const user = (await res).data;
+      return user;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     clearError(state) {
       state.error = null;
+    },
+    clearReload(state) {
+      state.reload = false;
     },
     clearToken(state) {
       localStorage.removeItem("@$token");
@@ -109,6 +149,29 @@ const authSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchSignUp.rejected, (state, action: { payload: any }) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(updateUser.fulfilled, (state, action: { payload: any }) => {
+      state.status = "success";
+      console.log(action.payload);
+      state.reload = action.payload;
+    });
+    builder.addCase(updateUser.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateUser.rejected, (state, action: { payload: any }) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(deleteUser.fulfilled, (state, action: { payload: any }) => {
+      state.status = "success";
+      state.reload = action.payload;
+    });
+    builder.addCase(deleteUser.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteUser.rejected, (state, action: { payload: any }) => {
       state.status = "reject";
     });
   },
