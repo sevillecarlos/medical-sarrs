@@ -1,0 +1,29 @@
+.add-patients {
+  background-color: rgba(127, 255, 212, 0.39) !important;
+}
+.date-filter {
+  width: 40% !important;
+  border: none;
+  padding: 5px;
+  text-align: center;
+}
+
+.status-filter {
+  width: 78% !important;
+}
+
+.patient-form {
+  border: none;
+  padding: 5px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.form-input-phone,
+.text-phone-number {
+  border-radius: 20px !important;
+  border: none;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}

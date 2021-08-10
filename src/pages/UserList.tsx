@@ -25,14 +25,18 @@ const UserList = () => {
   const dispatch = useDispatch();
 
   const [ableShowPassword, setAbleShowPassword] = useState(Array<any>());
-  // const [showModalModify, setShowModalModify] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const addAbleShowPassword = (id: any) => {
     setAbleShowPassword((prevState: any) => {
-      if (prevState?.includes(id)) {
-        ableShowPassword.shift();
+      const indexId = prevState.indexOf(id);
+      if (indexId !== -1) {
+        const newArrWithoutId = prevState?.filter((v: any) => v !== id);
+        return newArrWithoutId;
+      } else {
+        return [...prevState, id];
       }
-      return [...prevState, id]; //need to fux here
     });
   };
 
@@ -98,7 +102,7 @@ const UserList = () => {
       id,
     });
     setUserDate({
-      created_at,
+      created_at: new Date(created_at).toLocaleString(),
       updated_at,
     });
   };
@@ -150,13 +154,22 @@ const UserList = () => {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type={showPassword ? "text" : "password"}
                 onChange={changeModifyForm}
                 value={modifyData.password}
                 className="form-input-add-supply"
                 name="username"
               />
+              <Form.Check
+                type="checkbox"
+                onChange={() => setShowPassword(!showPassword)}
+                label="Show Password"
+              ></Form.Check>
             </Form.Group>
+            <div>
+              <span>Created at: {userDate.created_at}</span>
+            </div>
+
             <Button type="submit" className="add-supply-btn">
               Modify User
               <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />

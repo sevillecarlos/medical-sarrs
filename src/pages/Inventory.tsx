@@ -324,7 +324,7 @@ const Inventory = () => {
           </Button>
         </Modal.Body>
       </Modal>
-      <Table striped borderless hover className="inventory-table">
+      <Table  borderless hover className="inventory-table">
         <thead>
           <tr>
             <th>
