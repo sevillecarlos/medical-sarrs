@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   patients: Array<any>(),
+  msg: "",
   reload: false,
   error: null,
   status: "idle",
@@ -41,6 +42,9 @@ const appointmentSlice = createSlice({
     clearReload(state) {
       state.reload = false;
     },
+    clearMsg(state) {
+      state.msg = "";
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -61,7 +65,7 @@ const appointmentSlice = createSlice({
       createPatient.fulfilled,
       (state, action: { payload: any }) => {
         state.status = "success";
-        state.reload = action.payload;
+        state.msg = action.payload.reason;
       }
     );
     builder.addCase(createPatient.pending, (state, action) => {
