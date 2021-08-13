@@ -116,6 +116,13 @@ const NavBar = () => {
     e.preventDefault();
     dispatch(fetchSignUp(userForm));
     setShowModalAddUser(false);
+    setUserForm({
+      first_name: "",
+      last_name: "",
+      password: "",
+      username: "",
+      user_type: "",
+    });
   };
   return (
     <>
@@ -199,8 +206,8 @@ const NavBar = () => {
                 onChange={changeUserForm}
                 name="user_type"
                 required={true}
-                defaultValue="staff"
               >
+                <option value="">Select the user type</option>
                 <option value="staff">staff</option>
                 <option value="admin">admin</option>
               </Form.Select>

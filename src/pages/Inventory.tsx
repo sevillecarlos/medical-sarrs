@@ -67,7 +67,7 @@ const Inventory = () => {
   const changeItemFormName = (e: any) => {
     const { value, name } = e.target;
 
-    const lowCaseValue = value.toLowerCase()
+    const lowCaseValue = value.toLowerCase();
 
     const checkNameExist = inventory.items.filter((v: any) => {
       return v.name.toLowerCase() === lowCaseValue;
@@ -120,6 +120,12 @@ const Inventory = () => {
     dispatch(fetchInventory(itemForm));
     handleCloseAdd();
     setErrorUniqueName(false);
+    setItemForm({
+      name: "",
+      quantity: 0,
+      detail: "",
+      category_id: "",
+    });
   };
 
   useEffect(() => {
