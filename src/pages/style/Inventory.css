@@ -75,3 +75,8 @@
   font-size: 20px;
   font-weight: bold;
 }
+
+.modal-content{
+  border-radius: 20px !important;
+ 
+}

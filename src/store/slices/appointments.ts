@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   patients: Array<any>(),
+  appointments: Array<any>(),
   msg: "",
   reload: false,
   error: null,
@@ -35,6 +36,87 @@ export const createPatient = createAsyncThunk(
   }
 );
 
+export const getAppointments = createAsyncThunk(
+  "auth/getAppointments",
+  async () => {
+    try {
+      const res = axios.get("http://127.0.0.1:5000/api/v1/appointments");
+      const appointments = (await res).data;
+      return appointments;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const createAppointments = createAsyncThunk(
+  "auth/createAppointments",
+  async (appointmentsData: any) => {
+    try {
+      const res = axios.post(
+        "http://127.0.0.1:5000/api/v1/appointments",
+        appointmentsData
+      );
+      const appointments = (await res).data;
+      return appointments;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const updateAppointments = createAsyncThunk(
+  "auth/updateAppointments",
+  async (appointmentsData: any) => {
+    console.log(appointmentsData);
+    try {
+      const res = axios.put(
+        `http://127.0.0.1:5000/api/v1/appointments/${appointmentsData.id}`,
+        {
+          date: appointmentsData.date,
+          time: appointmentsData.time,
+          reason: appointmentsData.reason,
+        }
+      );
+      const appointments = (await res).data;
+      return appointments;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const updateAppointmentStatus = createAsyncThunk(
+  "auth/updateAppointmentStatus",
+  async (appointmentsData: any) => {
+    try {
+      const res = axios.patch(
+        `http://127.0.0.1:5000/api/v1/appointments/${appointmentsData.id}`,
+        {
+          status: appointmentsData.status,
+        }
+      );
+      const appointments = (await res).data;
+      return appointments;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+export const deleteAppointments = createAsyncThunk(
+  "auth/deleteAppointments",
+  async (id: any) => {
+    try {
+      const res = axios.delete(
+        `http://127.0.0.1:5000/api/v1/appointments/${id}`
+      );
+      const appointments = (await res).data;
+      return appointments;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
 const appointmentSlice = createSlice({
   name: "appointment",
   initialState,
@@ -74,6 +156,77 @@ const appointmentSlice = createSlice({
     builder.addCase(createPatient.rejected, (state) => {
       state.status = "reject";
     });
+
+    builder.addCase(
+      getAppointments.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.appointments = action.payload;
+      }
+    );
+    builder.addCase(getAppointments.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(getAppointments.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      createAppointments.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reload = action.payload;
+      }
+    );
+    builder.addCase(createAppointments.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(createAppointments.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      updateAppointments.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reload = action.payload;
+      }
+    );
+    builder.addCase(updateAppointments.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateAppointments.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      updateAppointmentStatus.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reload = action.payload;
+      }
+    );
+    builder.addCase(updateAppointmentStatus.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateAppointmentStatus.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      deleteAppointments.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reload = action.payload;
+      }
+    );
+    builder.addCase(deleteAppointments.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteAppointments.rejected, (state) => {
+      state.status = "reject";
+    });
+
   },
 });
 

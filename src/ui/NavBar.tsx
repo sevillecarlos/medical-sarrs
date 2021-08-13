@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   Image,
@@ -7,20 +7,21 @@ import {
   Button,
   Form,
   Modal,
-  Alert,
 } from "react-bootstrap";
 import logo from "../assets/img/logo-sarrs.png";
-import { authAction, fetchUsers, fetchSignUp } from "../store/slices/auth";
+import { authAction, fetchSignUp } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { GrFormAdd } from "react-icons/gr";
 import { AiOutlineUserAdd } from "react-icons/ai";
-
+import { useHistory } from "react-router";
+import AlertModal from "./AlertModal";
 import "./style/NavBar.css";
 
 import { jwtDecoded } from "../helpers/jwtDecoded";
 import { useState } from "react";
 
 const NavBar = () => {
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const auth = useSelector((state: RootStateOrAny) => state.auth);
 
@@ -72,7 +73,10 @@ const NavBar = () => {
     }
   }, [auth.msg, dispatch]);
 
-  const signOut = () => dispatch(authAction.clearToken());
+  const signOut = () => {
+    dispatch(authAction.clearToken());
+    history.push("/");
+  };
 
   const handleCloseAddUser = () => setShowModalAddUser(false);
 
@@ -115,6 +119,7 @@ const NavBar = () => {
   };
   return (
     <>
+      <AlertModal showCondition={auth.msg !== ""} msg={auth.msg} />
       <Modal
         show={showModalAddUser}
         className="modal-add-supply"
@@ -207,9 +212,7 @@ const NavBar = () => {
           </Form>
         </Modal.Body>
       </Modal>
-      <Alert show={auth.msg !== ""} variant="success">
-        {auth.msg}
-      </Alert>
+
       <Navbar className="nav-bar">
         <Navbar.Brand href="/">
           <Image src={logo} className="logo-image" rounded />

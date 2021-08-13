@@ -7,7 +7,6 @@ import {
 } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
-  Table,
   Button,
   FormControl,
   Form,
@@ -18,6 +17,7 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
+import RemoveConfModal from "../ui/RemoveConfModal";
 import "./style/UserList.css";
 
 const UserList = () => {
@@ -27,6 +27,8 @@ const UserList = () => {
   const [ableShowPassword, setAbleShowPassword] = useState(Array<any>());
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
 
   const addAbleShowPassword = (id: any) => {
     setAbleShowPassword((prevState: any) => {
@@ -44,6 +46,9 @@ const UserList = () => {
     setModifyData({ ...modifyData, [e.target.name]: e.target.value });
   };
 
+  const handleRemoveModalClose = () => {
+    setShowRemoveModal(false);
+  };
   const [modifyData, setModifyData] = useState({
     first_name: "",
     last_name: "",
@@ -77,6 +82,7 @@ const UserList = () => {
   const removeUser = () => {
     dispatch(deleteUser(modifyData.id));
     setShowModalModify(false);
+    setShowRemoveModal(false);
   };
   const [showModalModify, setShowModalModify] = useState(false);
 
@@ -115,6 +121,11 @@ const UserList = () => {
         onHide={handleCloseModify}
         backdrop="static"
       >
+        <RemoveConfModal
+          show={showRemoveModal}
+          handleClose={handleRemoveModalClose}
+          onClickRemove={removeUser}
+        />
         <Modal.Header closeButton>
           <Modal.Title>Modify Staff User</Modal.Title>
         </Modal.Header>
@@ -158,7 +169,7 @@ const UserList = () => {
                 onChange={changeModifyForm}
                 value={modifyData.password}
                 className="form-input-add-supply"
-                name="username"
+                name="password"
               />
               <Form.Check
                 type="checkbox"
@@ -176,7 +187,7 @@ const UserList = () => {
             </Button>
           </Form>
           <Button
-            onClick={removeUser}
+            onClick={()=>setShowRemoveModal(true)}
             type="button"
             className="remove-supply-btn"
           >

@@ -16,6 +16,8 @@ import {
   deleteInventoryItem,
 } from "../store/slices/inventory";
 
+import RemoveConfModal from "../ui/RemoveConfModal";
+
 import { nameFormat } from "../helpers/nameFormt";
 
 const Inventory = () => {
@@ -50,8 +52,20 @@ const Inventory = () => {
 
   const inventory = useSelector((state: RootStateOrAny) => state.inventory);
 
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+
+  const handleRemoveModalClose = () => {
+    setShowRemoveModal(false);
+  };
   const changeItemForm = (e: any) => {
     setItemForm({ ...itemForm, [e.target.name]: e.target.value });
+  };
+
+  const changeItemFormName = (e:any) => {
+    const { value, name } = e.target;
+    setItemForm((prevState) => {
+      return { ...prevState, [name]: value };
+    });
   };
 
   const typeFilter = (e: any) => {
@@ -153,6 +167,7 @@ const Inventory = () => {
   const removeSupply = () => {
     dispatch(deleteInventoryItem(modifyData.id));
     setShowModalModify(false);
+    setShowRemoveModal(false);
   };
 
   const handleCloseAdd = () => setShowModalAdd(false);
@@ -181,12 +196,13 @@ const Inventory = () => {
         className="modal-add-supply"
         onHide={handleCloseAdd}
         backdrop="static"
+        contentClassName="modal-add-supply-content"
       >
         <Modal.Header closeButton>
           <Modal.Title>Add Medical Supply</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={addSupply}>
+          <Form onSubmit={addSupply} autoComplete="off">
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -196,6 +212,10 @@ const Inventory = () => {
                 name="name"
                 placeholder="Enter name of the item"
               />
+              <Form.Text>
+                {"The name need to be unique in the inventory" ??
+                  inventory.errorMsg}{" "}
+              </Form.Text>
             </Form.Group>
             <Form.Select
               className="form-input-add-supply"
@@ -249,6 +269,11 @@ const Inventory = () => {
         onHide={handleCloseModify}
         backdrop="static"
       >
+        <RemoveConfModal
+          show={showRemoveModal}
+          handleClose={handleRemoveModalClose}
+          onClickRemove={removeSupply}
+        />
         <Modal.Header closeButton>
           <Modal.Title>Modify Medical Supply</Modal.Title>
         </Modal.Header>
@@ -315,7 +340,7 @@ const Inventory = () => {
             </Button>
           </Form>
           <Button
-            onClick={removeSupply}
+            onClick={() => setShowRemoveModal(true)}
             type="button"
             className="remove-supply-btn"
           >
@@ -324,7 +349,7 @@ const Inventory = () => {
           </Button>
         </Modal.Body>
       </Modal>
-      <Table  borderless hover className="inventory-table">
+      <Table borderless hover className="inventory-table">
         <thead>
           <tr>
             <th>
@@ -386,7 +411,7 @@ const Inventory = () => {
                   className="quantity-td"
                 >
                   {!ableQuickQuantity.includes(v.name) ? (
-                    <span className='quantity-row'>{v.quantity}</span>
+                    <span className="quantity-row">{v.quantity}</span>
                   ) : (
                     <Form onSubmit={submitQuickQuantity}>
                       <Form.Control

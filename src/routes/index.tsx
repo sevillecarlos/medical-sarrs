@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import ProtectedRoute from "./ProtectedRoute";
 import Home from "../pages/Home";
 import Inventory from "../pages/Inventory";
 import Appointment from "../pages/Appointment";
@@ -14,9 +14,9 @@ const Routes = () => {
       <NavBar />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/inventory" component={Inventory} />
-        <Route path="/appointment" component={Appointment} />
-        <Route path="/userlist" component={UserList} />
+        <ProtectedRoute path="/inventory" component={Inventory} />
+        <ProtectedRoute path="/appointment" component={Appointment} />
+        <ProtectedRoute path="/userlist" component={UserList} />
       </Switch>
     </Router>
   );
