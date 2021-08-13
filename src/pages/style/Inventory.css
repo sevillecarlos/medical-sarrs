@@ -78,5 +78,8 @@
 
 .modal-content{
   border-radius: 20px !important;
- 
+}
+
+.error-name{
+  color: rgba(255, 0, 0, 0.562) !important;
 }

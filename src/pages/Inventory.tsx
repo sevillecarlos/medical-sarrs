@@ -28,6 +28,9 @@ const Inventory = () => {
   const [inventoryItems, setInventoryItems] = useState(Array<any>());
   const [quickQuantityItem, setQuickQuantityItems] = useState(null);
   const [ableQuickQuantity, setAbleQuickQuantity] = useState(Array<any>());
+
+  const [errorUniqueName, setErrorUniqueName] = useState(false);
+
   const [itemsDate, setItemsDate] = useState({
     created_at: "",
     updated_at: "",
@@ -47,7 +50,7 @@ const Inventory = () => {
     name: "",
     quantity: 0,
     detail: "",
-    category: "",
+    category_id: "",
   });
 
   const inventory = useSelector((state: RootStateOrAny) => state.inventory);
@@ -61,12 +64,28 @@ const Inventory = () => {
     setItemForm({ ...itemForm, [e.target.name]: e.target.value });
   };
 
-  const changeItemFormName = (e:any) => {
+  const changeItemFormName = (e: any) => {
     const { value, name } = e.target;
-    setItemForm((prevState) => {
-      return { ...prevState, [name]: value };
+
+    const lowCaseValue = value.toLowerCase()
+
+    const checkNameExist = inventory.items.filter((v: any) => {
+      return v.name.toLowerCase() === lowCaseValue;
     });
+    if (checkNameExist.length !== 0) {
+      setErrorUniqueName(true);
+      setItemForm((prevState) => {
+        return { ...prevState, [name]: "" };
+      });
+    } else {
+      setErrorUniqueName(false);
+      setItemForm((prevState) => {
+        return { ...prevState, [name]: lowCaseValue };
+      });
+    }
   };
+
+  console.log(itemForm);
 
   const typeFilter = (e: any) => {
     const filterItemsArr = inventory.items.filter(
@@ -100,6 +119,7 @@ const Inventory = () => {
     e.preventDefault();
     dispatch(fetchInventory(itemForm));
     handleCloseAdd();
+    setErrorUniqueName(false);
   };
 
   useEffect(() => {
@@ -170,7 +190,10 @@ const Inventory = () => {
     setShowRemoveModal(false);
   };
 
-  const handleCloseAdd = () => setShowModalAdd(false);
+  const handleCloseAdd = () => {
+    setShowModalAdd(false);
+    setErrorUniqueName(false);
+  };
 
   const handleCloseModify = () => setShowModalModify(false);
 
@@ -208,14 +231,19 @@ const Inventory = () => {
               <Form.Control
                 className="form-input-add-supply"
                 type="text"
-                onChange={changeItemForm}
+                onChange={changeItemFormName}
                 name="name"
                 placeholder="Enter name of the item"
               />
-              <Form.Text>
-                {"The name need to be unique in the inventory" ??
-                  inventory.errorMsg}{" "}
-              </Form.Text>
+              {errorUniqueName ? (
+                <Form.Text className="error-name">
+                  Name already exist, try write the name more specific
+                </Form.Text>
+              ) : (
+                <Form.Text>
+                  The name need to be unique in the inventory
+                </Form.Text>
+              )}
             </Form.Group>
             <Form.Select
               className="form-input-add-supply"
@@ -256,7 +284,11 @@ const Inventory = () => {
                 style={{ height: "100px" }}
               />
             </Form.Group>
-            <Button type="submit" className="add-supply-btn">
+            <Button
+              type="submit"
+              className="add-supply-btn"
+              disabled={!Object.values({ ...itemForm }).every((v: any) => v)}
+            >
               Add Supply
               <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
             </Button>
