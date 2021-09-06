@@ -1,0 +1,19 @@
+.medical-record-table {
+  width: 70% !important;
+}
+.patient-photo {
+  width: 100px;
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+.photo-container {
+  margin: auto !important;
+  width: 13%;
+}
+.modify-patient-info-btn {
+  width: 50%;
+}
+.modify-patient-info-btn-container {
+  text-align: center;
+}

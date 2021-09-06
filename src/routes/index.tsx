@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Inventory from "../pages/Inventory";
 import Appointment from "../pages/Appointment";
 import UserList from "../pages/UserList";
+import MedicalRecords from "../pages/MedicalRecords";
 
 import NavBar from "../ui/NavBar";
 
@@ -17,6 +18,7 @@ const Routes = () => {
         <ProtectedRoute path="/inventory" component={Inventory} />
         <ProtectedRoute path="/appointment" component={Appointment} />
         <ProtectedRoute path="/userlist" component={UserList} />
+        <ProtectedRoute path="/medical-records" component={MedicalRecords} />
       </Switch>
     </Router>
   );

@@ -59,7 +59,6 @@ const DropDownFilter = (props) => {
   );
 
   const selectPatient = (e, patientId) => {
-    console.log(patientId);
     appointmentFormPatient((prevState) => {
       return { ...prevState, patient_id: patientId };
     });

@@ -67,7 +67,7 @@ const DashBoard = () => {
           </Container>
         </Card.Body>
         <Card.Footer>
-          <Card.Link className="card-link" href="/inventory">
+          <Card.Link className="card-link" href="/medical-records">
             Go to Records
           </Card.Link>
         </Card.Footer>

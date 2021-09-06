@@ -124,6 +124,13 @@ const NavBar = () => {
       user_type: "",
     });
   };
+  /**
+  *
+  * TODO: Need to make the username unique  
+  * TODO Tabla de vitacora -> mostrar los usuarios
+  * TODO agregar Doctor al momento de agregar la cita
+  * TODO agregar vitcaora a la cita
+  **/
   return (
     <>
       <AlertModal showCondition={auth.msg !== ""} msg={auth.msg} />
@@ -230,7 +237,9 @@ const NavBar = () => {
             {auth.token ? (
               <>
                 {" "}
-                <Nav.Link href="/records">Medical Records</Nav.Link>
+                <Nav.Link href="/medical-records">
+                  Medical Records
+                </Nav.Link>
                 <Nav.Link href="/appointment">
                   Appointment Registration
                 </Nav.Link>
