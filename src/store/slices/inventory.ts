@@ -74,7 +74,6 @@ export const updateInventoryItem = createAsyncThunk(
 export const patchInventoryItem = createAsyncThunk(
   "auth/patchInventoryItem",
   async (items: any) => {
-    console.log(items);
     try {
       const res = axios.patch(
         `http://127.0.0.1:5000/api/v1/items/${items.id}`,
