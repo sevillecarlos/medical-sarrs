@@ -187,7 +187,7 @@ const UserList = () => {
             </Button>
           </Form>
           <Button
-            onClick={()=>setShowRemoveModal(true)}
+            onClick={() => setShowRemoveModal(true)}
             type="button"
             className="remove-supply-btn"
           >
@@ -222,37 +222,39 @@ const UserList = () => {
                   >
                     Edit user <AiOutlineEdit />{" "}
                   </Button>
-                  <InputGroup className="password-user-list">
-                    <FormControl
-                      placeholder="Username"
-                      readOnly
-                      type={
-                        ableShowPassword.includes(v.id) ? "text" : "password"
-                      }
-                      value={v.password}
-                      aria-label="Username"
-                      name={v.username}
-                      className="input-show-user-password"
-                      style={{ borderRadius: "20px" }}
-                      aria-describedby="basic-addon1"
-                    />
-                    <InputGroup.Text className="text-show-password">
-                      <Button
-                        className="show-password-user"
-                        onClick={() => addAbleShowPassword(v.id)}
-                      >
-                        {ableShowPassword.includes(v.id) ? (
-                          <span>
-                            Hide <AiFillEyeInvisible />{" "}
-                          </span>
-                        ) : (
-                          <span>
-                            Show <AiFillEye />
-                          </span>
-                        )}
-                      </Button>
-                    </InputGroup.Text>
-                  </InputGroup>
+                  <span>
+                    <InputGroup className="password-user-list">
+                      <FormControl
+                        placeholder="Username"
+                        readOnly
+                        type={
+                          ableShowPassword.includes(v.id) ? "text" : "password"
+                        }
+                        value={v.password}
+                        aria-label="Username"
+                        name={v.username}
+                        className="input-show-user-password"
+                        style={{ borderRadius: "20px" }}
+                        aria-describedby="basic-addon1"
+                      />
+                      <InputGroup.Text className="text-show-password">
+                        <Button
+                          className="show-password-user"
+                          onClick={() => addAbleShowPassword(v.id)}
+                        >
+                          {ableShowPassword.includes(v.id) ? (
+                            <span>
+                              Hide <AiFillEyeInvisible />{" "}
+                            </span>
+                          ) : (
+                            <span>
+                              Show <AiFillEye />
+                            </span>
+                          )}
+                        </Button>
+                      </InputGroup.Text>
+                    </InputGroup>
+                  </span>
                 </Card.Text>
               </Card.Body>
             </Card>

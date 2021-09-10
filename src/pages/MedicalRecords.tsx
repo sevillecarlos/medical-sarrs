@@ -17,7 +17,6 @@ import {
   medicalRecordsAction,
 } from "../store/slices/medicalRecords";
 
-import axios from "axios";
 import { GrFormAdd } from "react-icons/gr";
 import { AiOutlineEdit } from "react-icons/ai";
 import { GiCancel } from "react-icons/gi";
@@ -63,6 +62,17 @@ const MedicalRecords = () => {
     alergy_detail: "",
   });
 
+
+  const filterPatients = () => {
+    const medicalPatientId = medicalRecord.medicalRecords?.map(
+      (v: any) => v.patient_id
+    );
+
+    return appointment.patients?.filter(
+      (v: any) => !medicalPatientId?.includes(v.id)
+    );
+  };
+
   const [medicalRecordInfoAilment, setMedicalRecordInfoAilment] = useState({
     ailment_type: "",
     ailment_to: "",
@@ -76,7 +86,7 @@ const MedicalRecords = () => {
   });
 
   const [medicalRecordHistoryTest, setMedicalRecordHistoryTest] = useState({
-    // document_photo: "",
+    document_photo: "",
     document_type: "",
     document_name: "",
     document_detail: "",
@@ -128,7 +138,7 @@ const MedicalRecords = () => {
       medicine_detail: "",
     });
     setMedicalRecordHistoryTest({
-      // document_photo: "",
+      document_photo: "",
       document_type: "",
       document_name: "",
       document_detail: "",
@@ -245,7 +255,7 @@ const MedicalRecords = () => {
     });
 
     setMedicalRecordHistoryTest({
-      // document_photo: "",
+      document_photo: "",
       document_type: "",
       document_name: "",
       document_detail: "",
@@ -318,7 +328,7 @@ const MedicalRecords = () => {
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Patient</Form.Label>
                   <DropDownFilter
-                    items={appointment.patients}
+                    items={filterPatients()}
                     appointmentFormPatient={setMedicalRecordsForm}
                   />
                 </Form.Group>
@@ -357,7 +367,7 @@ const MedicalRecords = () => {
                     <h5>{medicalRecord.patient?.birth_date} </h5>
                     <br />
                     <span>Gender</span>
-                    <h5>{medicalRecord.patient?.gender} </h5>
+                    <h5>{medicalRecord.patient?.patient_gender} </h5>
                     <br />
                     <span>Phone Number</span>
                     <h5>{medicalRecord.patient?.phone_number} </h5>
@@ -715,11 +725,11 @@ const MedicalRecords = () => {
                   controlId="formFile"
                   className="tests-photo-container"
                 >
-                  {/* <Image
+                  <Image
                     className="test-photo"
                     src={medicalRecordHistoryTest.document_photo}
                     rounded
-                  />{" "} */}
+                  />{" "}
                   <Form.Control
                     type="file"
                     className="control-tests-photo"
@@ -812,11 +822,11 @@ const MedicalRecords = () => {
                               className="remove-added-item"
                               onClick={() => removeDocument(i)}
                             />
-                            {/* <Image
+                            <Image
                               className="test-photo-added"
                               src={v.document_photo}
                               rounded
-                            />{" "} */}
+                            />{" "}
                           </span>
                         </OverlayTrigger>
                       ))}
