@@ -9,6 +9,7 @@ import {
   Modal,
   Tabs,
   Tab,
+  FormControl,
 } from "react-bootstrap";
 import {
   getPatient,
@@ -16,6 +17,7 @@ import {
   getMedicalRecord,
   medicalRecordsAction,
 } from "../store/slices/medicalRecords";
+import { BiCommentDetail } from "react-icons/bi";
 
 import { GrFormAdd } from "react-icons/gr";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -55,13 +57,13 @@ const MedicalRecords = () => {
     });
 
   const [patientPhotoPrev, setPatientPhotoPrev] = useState<string>("");
+  const [documentPhotoPrev, setDocumentPhotoPrev] = useState<string>("");
 
   const [medicalRecordInfoAlergies, setMedicalRecordInfoAlergies] = useState({
     alergy_type: "",
     alergy_to: "",
     alergy_detail: "",
   });
-
 
   const filterPatients = () => {
     const medicalPatientId = medicalRecord.medicalRecords?.map(
@@ -87,6 +89,7 @@ const MedicalRecords = () => {
 
   const [medicalRecordHistoryTest, setMedicalRecordHistoryTest] = useState({
     document_photo: "",
+    document_prev_photo: "",
     document_type: "",
     document_name: "",
     document_detail: "",
@@ -143,6 +146,7 @@ const MedicalRecords = () => {
       document_name: "",
       document_detail: "",
       document_date: "",
+      document_prev_photo: "",
     });
 
     setAlergies(Array<any>());
@@ -172,11 +176,14 @@ const MedicalRecords = () => {
 
   const uploadHistoryTestsPhotoPrev = (e: any) => {
     const photo = e.target.files[0];
+    setMedicalRecordHistoryTest((prevState: any) => {
+      return { ...prevState, document_photo: photo };
+    });
     const reader = new FileReader();
     reader.readAsDataURL(photo);
     reader.onload = (e: any) => {
       setMedicalRecordHistoryTest((prevState: any) => {
-        return { ...prevState, document_photo: e.target.result };
+        return { ...prevState, document_prev_photo: e.target.result };
       });
     };
   };
@@ -260,6 +267,7 @@ const MedicalRecords = () => {
       document_name: "",
       document_detail: "",
       document_date: "",
+      document_prev_photo: "",
     });
   };
 
@@ -676,7 +684,7 @@ const MedicalRecords = () => {
                 />
               </Form.Group>
               <div>
-                <span className="added-items-title">Ailment Added</span>{" "}
+                <span className="added-items-title">Medicine Added</span>{" "}
                 {medicines.length !== 0 && (
                   <>
                     {medicines.map((v: any, i: number) => (
@@ -727,7 +735,7 @@ const MedicalRecords = () => {
                 >
                   <Image
                     className="test-photo"
-                    src={medicalRecordHistoryTest.document_photo}
+                    src={medicalRecordHistoryTest.document_prev_photo}
                     rounded
                   />{" "}
                   <Form.Control
@@ -824,7 +832,7 @@ const MedicalRecords = () => {
                             />
                             <Image
                               className="test-photo-added"
-                              src={v.document_photo}
+                              src={v.document_prev_photo}
                               rounded
                             />{" "}
                           </span>
@@ -868,6 +876,13 @@ const MedicalRecords = () => {
                 <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
               </Button>
             </th>
+            <th>
+              <FormControl
+                autoFocus
+                className="filter-input"
+                placeholder="Type the name of the patient"
+              />
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -875,15 +890,16 @@ const MedicalRecords = () => {
             <td>Name</td>
             <td>ID Number</td>
             <td>Photo</td>
+            <td>More Info</td>
           </tr>
           {medicalRecord.medicalRecords?.map((v: any) => {
             const patient = findPatient(v.patient_id);
             return (
               <tr>
                 <td>
-                  <strong>{`${patient.first_name} ${patient.last_name}`}</strong>
+                  <strong>{`${patient?.first_name} ${patient?.last_name}`}</strong>
                 </td>
-                <td>{patient.patient_id}</td>
+                <td>{patient?.patient_id}</td>
                 <td>
                   {" "}
                   <Image
@@ -892,6 +908,14 @@ const MedicalRecords = () => {
                     rounded
                   />{" "}
                 </td>
+                <td>
+                  <Button
+                    className="show-detail-btn"
+                    // onClick={() => showDetail(v)}
+                  >
+                    Show Detail <BiCommentDetail />
+                  </Button>
+                </td>
               </tr>
             );
           })}
@@ -899,7 +923,6 @@ const MedicalRecords = () => {
       </Table>
     </div>
   );
-  // medicalRecord.medicalRecords
 };
 
 export default MedicalRecords;
