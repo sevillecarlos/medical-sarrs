@@ -7,7 +7,6 @@ import {
 } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
-  Table,
   Button,
   FormControl,
   Form,
@@ -18,6 +17,7 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
+import RemoveConfModal from "../ui/RemoveConfModal";
 import "./style/UserList.css";
 
 const UserList = () => {
@@ -25,14 +25,20 @@ const UserList = () => {
   const dispatch = useDispatch();
 
   const [ableShowPassword, setAbleShowPassword] = useState(Array<any>());
-  // const [showModalModify, setShowModalModify] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
 
   const addAbleShowPassword = (id: any) => {
     setAbleShowPassword((prevState: any) => {
-      if (prevState?.includes(id)) {
-        ableShowPassword.shift();
+      const indexId = prevState.indexOf(id);
+      if (indexId !== -1) {
+        const newArrWithoutId = prevState?.filter((v: any) => v !== id);
+        return newArrWithoutId;
+      } else {
+        return [...prevState, id];
       }
-      return [...prevState, id]; //need to fux here
     });
   };
 
@@ -40,6 +46,9 @@ const UserList = () => {
     setModifyData({ ...modifyData, [e.target.name]: e.target.value });
   };
 
+  const handleRemoveModalClose = () => {
+    setShowRemoveModal(false);
+  };
   const [modifyData, setModifyData] = useState({
     first_name: "",
     last_name: "",
@@ -73,6 +82,7 @@ const UserList = () => {
   const removeUser = () => {
     dispatch(deleteUser(modifyData.id));
     setShowModalModify(false);
+    setShowRemoveModal(false);
   };
   const [showModalModify, setShowModalModify] = useState(false);
 
@@ -98,7 +108,7 @@ const UserList = () => {
       id,
     });
     setUserDate({
-      created_at,
+      created_at: new Date(created_at).toLocaleString(),
       updated_at,
     });
   };
@@ -111,6 +121,11 @@ const UserList = () => {
         onHide={handleCloseModify}
         backdrop="static"
       >
+        <RemoveConfModal
+          show={showRemoveModal}
+          handleClose={handleRemoveModalClose}
+          onClickRemove={removeUser}
+        />
         <Modal.Header closeButton>
           <Modal.Title>Modify Staff User</Modal.Title>
         </Modal.Header>
@@ -150,20 +165,29 @@ const UserList = () => {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="text"
+                type={showPassword ? "text" : "password"}
                 onChange={changeModifyForm}
                 value={modifyData.password}
                 className="form-input-add-supply"
-                name="username"
+                name="password"
               />
+              <Form.Check
+                type="checkbox"
+                onChange={() => setShowPassword(!showPassword)}
+                label="Show Password"
+              ></Form.Check>
             </Form.Group>
+            <div>
+              <span>Created at: {userDate.created_at}</span>
+            </div>
+
             <Button type="submit" className="add-supply-btn">
               Modify User
               <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />
             </Button>
           </Form>
           <Button
-            onClick={removeUser}
+            onClick={() => setShowRemoveModal(true)}
             type="button"
             className="remove-supply-btn"
           >
@@ -198,37 +222,39 @@ const UserList = () => {
                   >
                     Edit user <AiOutlineEdit />{" "}
                   </Button>
-                  <InputGroup className="password-user-list">
-                    <FormControl
-                      placeholder="Username"
-                      readOnly
-                      type={
-                        ableShowPassword.includes(v.id) ? "text" : "password"
-                      }
-                      value={v.password}
-                      aria-label="Username"
-                      name={v.username}
-                      className="input-show-user-password"
-                      style={{ borderRadius: "20px" }}
-                      aria-describedby="basic-addon1"
-                    />
-                    <InputGroup.Text className="text-show-password">
-                      <Button
-                        className="show-password-user"
-                        onClick={() => addAbleShowPassword(v.id)}
-                      >
-                        {ableShowPassword.includes(v.id) ? (
-                          <span>
-                            Hide <AiFillEyeInvisible />{" "}
-                          </span>
-                        ) : (
-                          <span>
-                            Show <AiFillEye />
-                          </span>
-                        )}
-                      </Button>
-                    </InputGroup.Text>
-                  </InputGroup>
+                  <span>
+                    <InputGroup className="password-user-list">
+                      <FormControl
+                        placeholder="Username"
+                        readOnly
+                        type={
+                          ableShowPassword.includes(v.id) ? "text" : "password"
+                        }
+                        value={v.password}
+                        aria-label="Username"
+                        name={v.username}
+                        className="input-show-user-password"
+                        style={{ borderRadius: "20px" }}
+                        aria-describedby="basic-addon1"
+                      />
+                      <InputGroup.Text className="text-show-password">
+                        <Button
+                          className="show-password-user"
+                          onClick={() => addAbleShowPassword(v.id)}
+                        >
+                          {ableShowPassword.includes(v.id) ? (
+                            <span>
+                              Hide <AiFillEyeInvisible />{" "}
+                            </span>
+                          ) : (
+                            <span>
+                              Show <AiFillEye />
+                            </span>
+                          )}
+                        </Button>
+                      </InputGroup.Text>
+                    </InputGroup>
+                  </span>
                 </Card.Text>
               </Card.Body>
             </Card>

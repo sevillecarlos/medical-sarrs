@@ -71,7 +71,6 @@ export const updateUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   "auth/removeUser",
   async (id: any) => {
-    console.log(id)
     try {
       const res = axios.delete(`http://127.0.0.1:5000/api/v1/users/${id}`);
 
@@ -129,7 +128,6 @@ const authSlice = createSlice({
     builder.addCase(fetchUsers.fulfilled, (state, action: { payload: any }) => {
       state.status = "success";
       state.usernames = action.payload;
-      console.log(action.payload);
     });
     builder.addCase(fetchUsers.pending, (state, action) => {
       state.status = "loading";
@@ -143,6 +141,7 @@ const authSlice = createSlice({
       (state, action: { payload: any }) => {
         state.status = "success";
         state.msg = action.payload.reason;
+        state.reload = true;
       }
     );
     builder.addCase(fetchSignUp.pending, (state, action) => {
@@ -154,7 +153,6 @@ const authSlice = createSlice({
 
     builder.addCase(updateUser.fulfilled, (state, action: { payload: any }) => {
       state.status = "success";
-      console.log(action.payload);
       state.reload = action.payload;
     });
     builder.addCase(updateUser.pending, (state, action) => {

@@ -7,6 +7,7 @@ const initialState = {
   reload: false,
   error: null,
   status: "idle",
+  errorMsg: "",
 };
 
 export const fetchInventory = createAsyncThunk(
@@ -18,6 +19,7 @@ export const fetchInventory = createAsyncThunk(
       const item = (await res).data;
       return item;
     } catch (error) {
+      console.log(error.response.data);
       return error.response.data;
     }
   }
@@ -72,7 +74,6 @@ export const updateInventoryItem = createAsyncThunk(
 export const patchInventoryItem = createAsyncThunk(
   "auth/patchInventoryItem",
   async (items: any) => {
-    console.log(items);
     try {
       const res = axios.patch(
         `http://127.0.0.1:5000/api/v1/items/${items.id}`,
@@ -115,7 +116,11 @@ const inventorySlice = createSlice({
       fetchInventory.fulfilled,
       (state, action: { payload: any }) => {
         state.status = "success";
-        state.items.push(action.payload);
+        if (action.payload.reason) {
+          state.errorMsg = action.payload.reason;
+        } else {
+          state.items.push(action.payload);
+        }
       }
     );
     builder.addCase(fetchInventory.pending, (state, action) => {
@@ -156,7 +161,7 @@ const inventorySlice = createSlice({
     builder.addCase(
       patchInventoryItem.fulfilled,
       (state, action: { payload: any }) => {
-        console.log(action.payload)
+        console.log(action.payload);
         state.status = "success";
         state.reload = action.payload;
       }

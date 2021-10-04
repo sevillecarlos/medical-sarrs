@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   Image,
@@ -7,20 +7,21 @@ import {
   Button,
   Form,
   Modal,
-  Alert,
 } from "react-bootstrap";
 import logo from "../assets/img/logo-sarrs.png";
-import { authAction, fetchUsers, fetchSignUp } from "../store/slices/auth";
+import { authAction, fetchSignUp } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { GrFormAdd } from "react-icons/gr";
 import { AiOutlineUserAdd } from "react-icons/ai";
-
+import { useHistory } from "react-router";
+import AlertModal from "./AlertModal";
 import "./style/NavBar.css";
 
 import { jwtDecoded } from "../helpers/jwtDecoded";
 import { useState } from "react";
 
 const NavBar = () => {
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const auth = useSelector((state: RootStateOrAny) => state.auth);
 
@@ -72,7 +73,10 @@ const NavBar = () => {
     }
   }, [auth.msg, dispatch]);
 
-  const signOut = () => dispatch(authAction.clearToken());
+  const signOut = () => {
+    dispatch(authAction.clearToken());
+    history.push("/");
+  };
 
   const handleCloseAddUser = () => setShowModalAddUser(false);
 
@@ -112,9 +116,24 @@ const NavBar = () => {
     e.preventDefault();
     dispatch(fetchSignUp(userForm));
     setShowModalAddUser(false);
+    setUserForm({
+      first_name: "",
+      last_name: "",
+      password: "",
+      username: "",
+      user_type: "",
+    });
   };
+  /**
+  *
+  * TODO: Need to make the username unique  
+  * TODO Tabla de vitacora -> mostrar los usuarios
+  * TODO agregar Doctor al momento de agregar la cita
+  * TODO agregar vitcaora a la cita
+  **/
   return (
     <>
+      <AlertModal showCondition={auth.msg !== ""} msg={auth.msg} />
       <Modal
         show={showModalAddUser}
         className="modal-add-supply"
@@ -194,8 +213,8 @@ const NavBar = () => {
                 onChange={changeUserForm}
                 name="user_type"
                 required={true}
-                defaultValue="staff"
               >
+                <option value="">Select the user type</option>
                 <option value="staff">staff</option>
                 <option value="admin">admin</option>
               </Form.Select>
@@ -207,9 +226,7 @@ const NavBar = () => {
           </Form>
         </Modal.Body>
       </Modal>
-      <Alert show={auth.msg !== ""} variant="success">
-        {auth.msg}
-      </Alert>
+
       <Navbar className="nav-bar">
         <Navbar.Brand href="/">
           <Image src={logo} className="logo-image" rounded />
@@ -220,7 +237,9 @@ const NavBar = () => {
             {auth.token ? (
               <>
                 {" "}
-                <Nav.Link href="/records">Medical Records</Nav.Link>
+                <Nav.Link href="/medical-records">
+                  Medical Records
+                </Nav.Link>
                 <Nav.Link href="/appointment">
                   Appointment Registration
                 </Nav.Link>

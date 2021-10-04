@@ -1,0 +1,69 @@
+.add-patients {
+  background-color: rgba(127, 255, 212, 0.39) !important;
+}
+.date-filter {
+  width: 60% !important;
+  border: none;
+  padding: 5px;
+  text-align: center;
+}
+
+.status-filter {
+  width: 100% !important;
+}
+
+.patient-form {
+  border: none;
+  padding: 5px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.form-input-phone,
+.text-phone-number {
+  border-radius: 20px !important;
+  border: none;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}
+
+.show-detail-btn {
+  background-color: rgba(137, 43, 226, 0.493) !important;
+}
+
+.edit-btn {
+  background-color: rgba(255, 255, 0, 0.473) !important;
+  width: 100% !important;
+}
+.remove-btn {
+  margin-top: 5px;
+  width: 45% !important;
+  background-color: rgba(255, 0, 0, 0.459) !important;
+}
+
+.question {
+  width: 40% !important;
+}
+
+.close-btn {
+  background-color: rgba(0, 0, 0, 0.486) !important;
+}
+
+.open-btn {
+  background-color: rgba(0, 128, 0, 0.438) !important;
+}
+.status-appointment{
+  border-radius: 50px;
+  padding: 15px ;
+  width: 20%;
+  text-align: center;
+  color: aliceblue;
+}
+.open-status{
+  background-color: rgba(0, 128, 0, 0.774);
+}
+
+.close-status{
+  background-color: rgba(7, 14, 7, 0.774);
+}

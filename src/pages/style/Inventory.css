@@ -2,6 +2,7 @@
   background-color: rgba(245, 245, 245, 0.87) !important;
   border-radius: 20px;
   margin: auto;
+  text-align: center;
   width: 90% !important;
   margin-top: 20px;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -10,7 +11,7 @@
 }
 .btn {
   border: none !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
   color: rgb(7, 7, 7) !important;
   background-color: rgba(172, 255, 47, 0.521) !important;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -73,4 +74,12 @@
 .quantity-row{
   font-size: 20px;
   font-weight: bold;
+}
+
+.modal-content{
+  border-radius: 20px !important;
+}
+
+.error-name{
+  color: rgba(255, 0, 0, 0.562) !important;
 }

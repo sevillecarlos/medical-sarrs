@@ -1,0 +1,110 @@
+.medical-record-table {
+  width: 70% !important;
+}
+.patient-photo {
+  width: 100px;
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+.photo-container {
+  margin: auto !important;
+  width: 13%;
+}
+.modify-patient-info-btn {
+  width: 50%;
+}
+.modify-patient-info-btn-container {
+  text-align: center;
+}
+
+.added-items-title {
+  color: grey;
+  font-size: 15px;
+}
+.added-items {
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px;
+  margin-left: 5px;
+  font-size: 15px;
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+.tooltip-medical-record {
+  font-size: 15px !important;
+}
+.popover-tool {
+  padding: 15px;
+  background-color: rgba(245, 245, 245, 0.87) !important;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  text-align: center;
+}
+
+.popover-tool h5 {
+  font-size: 16px;
+  border-bottom: 1px solid rgb(207, 207, 207);
+  text-align: center;
+}
+.popover {
+  background-color: transparent;
+  border: none !important;
+}
+.tests-photo-container {
+  margin: auto;
+  text-align: center;
+}
+.test-photo {
+  width: 200px;
+}
+.control-tests-photo {
+  width: 14% !important;
+  margin: auto;
+}
+.add-medical-container {
+  text-align: center;
+  padding: 15px;
+}
+.add-medical {
+  width: 50% !important;
+}
+.test-photo-added {
+  width: 70px;
+  height: 70px;
+
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+
+.remove-added-item {
+  position: absolute;
+  right: 3px;
+  top: -22px;
+  color: rgb(105, 109, 109);
+}
+.remove-added-item:hover{
+  color: rgb(62, 63, 63);
+}
+
+.add-container {
+  position: relative;
+}
+.confirm-btn-container{
+  text-align: center;
+  padding: 90px;
+}
+.confirm-btn{
+  width: 50% !important;
+  font-size: 20px !important;
+  padding: 5px !important;
+}
+.patient-photo-medical-record{
+  width: 100px;
+  height: 100px;
+}
