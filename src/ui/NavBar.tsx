@@ -50,6 +50,7 @@ const NavBar = () => {
               <Nav.Link href="/appointment">Appointment Registration</Nav.Link>
               <Nav.Link href="/inventory/">Inventory</Nav.Link>
               <NavDropdown
+                className="user-dropdown"
                 title={`Hi ${firstName.split(" ").shift()}`}
                 id="collasible-nav-dropdown"
               >

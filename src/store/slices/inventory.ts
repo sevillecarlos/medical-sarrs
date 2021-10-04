@@ -11,7 +11,7 @@ const initialState = {
 export const fetchInventory = createAsyncThunk(
   "auth/fetchInventory",
   async (items: any) => {
-      console.log(items)
+    console.log(items);
     try {
       const res = axios.post("http://127.0.0.1:5000/api/v1/items", items);
       const item = (await res).data;
@@ -49,6 +49,38 @@ export const fetchInventoryCategories = createAsyncThunk(
   }
 );
 
+export const updateInventoryItem = createAsyncThunk(
+  "auth/updateInventoryItem",
+  async (items: any) => {
+    try {
+      const res = axios.put(`http://127.0.0.1:5000/api/v1/items/${items.id}`, {
+        name: items.name,
+        quantity: items.quantity,
+        category_id: items.category_id,
+        detail: items.detail,
+      });
+
+      const item = (await res).data;
+      return item;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const deleteInventoryItem = createAsyncThunk(
+  "auth/deleteInventoryItem",
+  async (id: any) => {
+    try {
+      const res = axios.delete(`http://127.0.0.1:5000/api/v1/items/${id}`);
+      const item = (await res).data;
+      return item;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
 const inventorySlice = createSlice({
   name: "inventory",
   initialState,
@@ -74,10 +106,26 @@ const inventorySlice = createSlice({
         state.items = action.payload;
       }
     );
+
     builder.addCase(fetchInventoryItems.pending, (state, action) => {
       state.status = "loading";
     });
     builder.addCase(fetchInventoryItems.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      updateInventoryItem.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.items = action.payload;
+      }
+    );
+
+    builder.addCase(updateInventoryItem.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateInventoryItem.rejected, (state) => {
       state.status = "reject";
     });
     builder.addCase(
@@ -91,6 +139,20 @@ const inventorySlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchInventoryCategories.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      deleteInventoryItem.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.items = action.payload;
+      }
+    );
+    builder.addCase(deleteInventoryItem.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteInventoryItem.rejected, (state) => {
       state.status = "reject";
     });
   },
