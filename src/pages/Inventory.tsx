@@ -7,10 +7,12 @@ import { MdDelete } from "react-icons/md";
 
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
+  inventoryAction,
   fetchInventoryCategories,
   fetchInventory,
   fetchInventoryItems,
   updateInventoryItem,
+  patchInventoryItem,
   deleteInventoryItem,
 } from "../store/slices/inventory";
 
@@ -20,9 +22,16 @@ const Inventory = () => {
   const dispatch = useDispatch();
 
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const [showQuickChange, setShowQuickChange] = useState(true);
   const [showModalModify, setShowModalModify] = useState(false);
   const [inventoryItems, setInventoryItems] = useState(Array<any>());
+  const [quickQuantityItem, setQuickQuantityItems] = useState(null);
+  const [ableQuickQuantity, setAbleQuickQuantity] = useState(Array<any>());
+  const [itemsDate, setItemsDate] = useState({
+    created_at: "",
+    updated_at: "",
+  });
+
+  const [quickQuantityItemId, setQuickQuantityItemId] = useState(null);
 
   const [modifyData, setModifyData] = useState({
     name: "",
@@ -90,6 +99,13 @@ const Inventory = () => {
     }
   }, [inventory.items]);
 
+  useEffect(() => {
+    if (inventory.reload) {
+      dispatch(fetchInventoryItems());
+      dispatch(inventoryAction.clearReload());
+    }
+  }, [inventory.reload, dispatch]);
+
   const getCategoryName = (id: number) => {
     const category: any = inventory.categories?.filter((v: any) => v.id === id);
     if (category) {
@@ -100,7 +116,8 @@ const Inventory = () => {
 
   const modifySupply = (supplyData: any) => {
     setShowModalModify(!showModalModify);
-    const { name, quantity, category_id, detail, id } = supplyData;
+    const { name, quantity, category_id, detail, id, created_at, updated_at } =
+      supplyData;
 
     setModifyData({
       name,
@@ -109,6 +126,22 @@ const Inventory = () => {
       detail,
       id,
     });
+    setItemsDate({
+      created_at: new Date(created_at).toLocaleString(),
+      updated_at: new Date(updated_at).toLocaleString(),
+    });
+  };
+
+  const submitQuickQuantity = (e: any) => {
+    e.preventDefault();
+    const quickQuantityChangeParams = {
+      id: quickQuantityItemId,
+      quantity: quickQuantityItem,
+    };
+
+    dispatch(patchInventoryItem(quickQuantityChangeParams));
+    setQuickQuantityItems(null);
+    setAbleQuickQuantity(Array<any>());
   };
 
   const submitModify = (e: any) => {
@@ -125,6 +158,21 @@ const Inventory = () => {
   const handleCloseAdd = () => setShowModalAdd(false);
 
   const handleCloseModify = () => setShowModalModify(false);
+
+  const changeQuickChangeQuantity = (e: any) => {
+    const { value } = e.target;
+    setQuickQuantityItems(value); //Me quede aqui
+  };
+
+  const addAbleQuickQuantity = (itemName: any, id: any) => {
+    setAbleQuickQuantity((prevState: any) => {
+      if (prevState !== itemName) {
+        return itemName;
+      }
+      return [];
+    });
+    setQuickQuantityItemId(id);
+  };
 
   return (
     <div>
@@ -169,7 +217,7 @@ const Inventory = () => {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Quantity</Form.Label>
               <Form.Control
-                min={1}
+                min={0}
                 onChange={changeItemForm}
                 name="quantity"
                 type="number"
@@ -259,6 +307,8 @@ const Inventory = () => {
                 style={{ height: "100px" }}
               />
             </Form.Group>
+            <p>Created at: {itemsDate.created_at}</p>
+            <p>Last update: {itemsDate.updated_at}</p>
             <Button type="submit" className="add-supply-btn">
               Modify Supply
               <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />
@@ -320,11 +370,10 @@ const Inventory = () => {
             <td>Supply Name</td>
             <td>Category</td>
             <td>Detail</td>
-
             <td>Quantity</td>
-            <td>Options</td>
+            <td></td>
           </tr>
-          {inventoryItems.map((v: any) => {
+          {inventoryItems?.map((v: any) => {
             return (
               <tr key={v.name.toLowerCase()}>
                 <td>{nameFormat(v.name)}</td>
@@ -333,21 +382,24 @@ const Inventory = () => {
                 </td>
                 <td>{v.detail}</td>
                 <td
-                  onDoubleClick={() => setShowQuickChange(!showQuickChange)}
+                  onDoubleClick={() => addAbleQuickQuantity(v.name, v.id)}
                   className="quantity-td"
                 >
-                  {showQuickChange ? (
-                    <span>{v.quantity}</span>
+                  {!ableQuickQuantity.includes(v.name) ? (
+                    <span className='quantity-row'>{v.quantity}</span>
                   ) : (
-                    <Form.Control
-                      min={1}
-                      //   onChange={quickChangeQuantity}
-                      name={v.name}
-                      type="number"
-                      value={v.quantity}
-                      className="form-input-add-supply"
-                      placeholder="Enter quantity of the item"
-                    />
+                    <Form onSubmit={submitQuickQuantity}>
+                      <Form.Control
+                        min={1}
+                        onChange={changeQuickChangeQuantity}
+                        name={v.name}
+                        type="number"
+                        value={
+                          quickQuantityItem ? quickQuantityItem : v.quantity
+                        }
+                        className="form-input-add-supply"
+                      />
+                    </Form>
                   )}
                 </td>
 
