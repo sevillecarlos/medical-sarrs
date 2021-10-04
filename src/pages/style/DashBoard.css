@@ -1,0 +1,53 @@
+.main {
+  padding: 10px;
+}
+.modules {
+  text-align: center;
+  margin-top: 10px;
+  width: 49%;
+  border-radius: 20px !important;
+  padding: 1px;
+  background-color: rgba(245, 245, 245, 0.87) !important;
+  box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+}
+
+.inventory {
+  float: left;
+  overflow: hidden;
+}
+.appointment {
+  float: right;
+}
+.records {
+  margin-top: 400px !important;
+  width: 100%;
+}
+.card-link {
+  text-decoration: none;
+  color: #000;
+}
+.cover-image-inventory {
+  width: 330px !important;
+  border-radius: 15px !important;
+  box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+}
+
+.cover-image-appointment {
+  width: 330px !important;
+  border-radius: 15px !important;
+  box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+}
+
+.cover-image-record {
+  width: 300px !important;
+  border-radius: 15px !important;
+  box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 3px 23px 0px rgba(0, 0, 0, 0.75);
+}

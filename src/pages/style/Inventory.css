@@ -1,0 +1,56 @@
+.inventory-table {
+  background-color: rgba(245, 245, 245, 0.87) !important;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}
+.btn {
+  border: none !important;
+  border-radius: 50px !important;
+  color: rgb(7, 7, 7) !important;
+  background-color: rgba(172, 255, 47, 0.521) !important;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}
+
+.filter-input {
+  width: 60% !important;
+  border-radius: 20px !important;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}
+
+.categories-filter {
+  width: 80% !important;
+  border-radius: 20px !important;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}
+
+.form-input-add-supply {
+  width: 100% !important;
+  border-radius: 10px !important;
+  box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+  -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
+}
+
+.add-supply-btn {
+  width: 100% !important;
+}
+.modal-add-supply {
+  border-radius: 20px !important;
+}
+.sub-header-inventory-table{
+    background-color: rgba(128, 128, 128, 0.507) !important;
+    font-size: 20px;
+}
+
+.quantity-td{
+    cursor: pointer;
+}
