@@ -4,7 +4,9 @@ import axios from "axios";
 const initialState = {
   patient: null,
   medicalRecords: null,
+  medicalRecord: null,
   reload: false,
+  reloadMedicalRecord: false,
   error: null,
   status: "idle",
 };
@@ -53,6 +55,53 @@ export const createMedicalRecord = createAsyncThunk(
   }
 );
 
+export const showMedicalRecord = createAsyncThunk(
+  "medical-records/showMedicalRecord",
+  async (patientId: any) => {
+    try {
+      const res = axios.get(
+        `http://127.0.0.1:5000/api/v1/medical_records/${patientId}`
+      );
+      const medicalRecord = (await res).data;
+      return medicalRecord;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const removeInfoMedicalRecord = createAsyncThunk(
+  "medical-records/removeInformationMedicalRecord",
+  async (medicalRecordInfo: any) => {
+    try {
+      const res = axios.delete(
+        `http://127.0.0.1:5000/api/v1/medical_records_${medicalRecordInfo.info}/${medicalRecordInfo.id}`
+      );
+      const medicalRecord = (await res).data;
+      return medicalRecord;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const addMedicalRecords = createAsyncThunk(
+  "medical-records/addMedicalRecordsAlergy",
+  async (medicalRecordInfo: any) => {
+    console.log(medicalRecordInfo.medicalRecordInfo);
+    try {
+      const res = axios.post(
+        `http://127.0.0.1:5000/api/v1/medical_records_${medicalRecordInfo.info}`,
+        medicalRecordInfo.medicalRecordInfo
+      );
+      const medicalRecord = (await res).data;
+      return medicalRecord;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
 const medicalRecordsSlice = createSlice({
   name: "medical-record",
   initialState,
@@ -60,10 +109,14 @@ const medicalRecordsSlice = createSlice({
     clearReload(state) {
       state.reload = false;
     },
+    clearReloadMedicalRecord(state) {
+      state.reloadMedicalRecord = false;
+    },
     clearPatient(state) {
       state.patient = null;
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(getPatient.fulfilled, (state, action: { payload: any }) => {
       state.status = "success";
@@ -101,6 +154,50 @@ const medicalRecordsSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(getMedicalRecord.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      showMedicalRecord.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.medicalRecord = action.payload;
+      }
+    );
+    builder.addCase(showMedicalRecord.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(showMedicalRecord.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      removeInfoMedicalRecord.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reloadMedicalRecord = action.payload;
+      }
+    );
+
+    builder.addCase(removeInfoMedicalRecord.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(removeInfoMedicalRecord.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      addMedicalRecords.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reloadMedicalRecord = action.payload;
+      }
+    );
+
+    builder.addCase(addMedicalRecords.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(addMedicalRecords.rejected, (state) => {
       state.status = "reject";
     });
   },

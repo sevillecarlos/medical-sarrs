@@ -17,7 +17,7 @@
 .modify-patient-info-btn-container {
   text-align: center;
 }
-
+.add-medical-record{background-color: rgba(255, 255, 0, 0.404) !important;}
 .added-items-title {
   color: grey;
   font-size: 15px;
@@ -54,6 +54,9 @@
 .popover {
   background-color: transparent;
   border: none !important;
+}
+.patient-photo-medi{
+  width: 10vw !important;
 }
 .tests-photo-container {
   margin: auto;

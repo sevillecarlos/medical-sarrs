@@ -117,6 +117,7 @@ export const deleteAppointments = createAsyncThunk(
     }
   }
 );
+
 const appointmentSlice = createSlice({
   name: "appointment",
   initialState,
