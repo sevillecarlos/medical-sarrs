@@ -13,13 +13,11 @@ const initialState = {
 export const fetchInventory = createAsyncThunk(
   "auth/fetchInventory",
   async (items: any) => {
-    console.log(items);
     try {
       const res = axios.post("http://127.0.0.1:5000/api/v1/items", items);
       const item = (await res).data;
       return item;
     } catch (error) {
-      console.log(error.response.data);
       return error.response.data;
     }
   }
@@ -161,7 +159,6 @@ const inventorySlice = createSlice({
     builder.addCase(
       patchInventoryItem.fulfilled,
       (state, action: { payload: any }) => {
-        console.log(action.payload);
         state.status = "success";
         state.reload = action.payload;
       }

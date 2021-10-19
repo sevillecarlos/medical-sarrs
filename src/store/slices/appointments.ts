@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
   patients: Array<any>(),
   appointments: Array<any>(),
+  patientAppointments: Array<any>(),
   msg: "",
   reload: false,
   error: null,
@@ -49,6 +50,21 @@ export const getAppointments = createAsyncThunk(
   }
 );
 
+export const getPatientAppointments = createAsyncThunk(
+  "auth/getPatientAppointments",
+  async (patientId: any) => {
+    try {
+      const res = axios.get(
+        `http://127.0.0.1:5000/api/v1/appointments/${patientId}`
+      );
+      const appointments = (await res).data;
+      return appointments;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
 export const createAppointments = createAsyncThunk(
   "auth/createAppointments",
   async (appointmentsData: any) => {
@@ -68,7 +84,6 @@ export const createAppointments = createAsyncThunk(
 export const updateAppointments = createAsyncThunk(
   "auth/updateAppointments",
   async (appointmentsData: any) => {
-    console.log(appointmentsData);
     try {
       const res = axios.put(
         `http://127.0.0.1:5000/api/v1/appointments/${appointmentsData.id}`,
@@ -228,6 +243,19 @@ const appointmentSlice = createSlice({
       state.status = "reject";
     });
 
+    builder.addCase(
+      getPatientAppointments.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.patientAppointments = action.payload;
+      }
+    );
+    builder.addCase(getPatientAppointments.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(getPatientAppointments.rejected, (state) => {
+      state.status = "reject";
+    });
   },
 });
 

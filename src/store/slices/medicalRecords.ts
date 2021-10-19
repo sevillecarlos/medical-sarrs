@@ -88,7 +88,6 @@ export const removeInfoMedicalRecord = createAsyncThunk(
 export const addMedicalRecords = createAsyncThunk(
   "medical-records/addMedicalRecordsAlergy",
   async (medicalRecordInfo: any) => {
-    console.log(medicalRecordInfo.medicalRecordInfo);
     try {
       const res = axios.post(
         `http://127.0.0.1:5000/api/v1/medical_records_${medicalRecordInfo.info}`,

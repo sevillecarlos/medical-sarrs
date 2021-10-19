@@ -85,7 +85,6 @@ const Inventory = () => {
     }
   };
 
-  console.log(itemForm);
 
   const typeFilter = (e: any) => {
     const filterItemsArr = inventory.items.filter(

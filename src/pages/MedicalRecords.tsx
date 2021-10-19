@@ -25,10 +25,16 @@ import { BiCommentDetail } from "react-icons/bi";
 import { GrFormAdd } from "react-icons/gr";
 import { AiOutlineEdit } from "react-icons/ai";
 import { GiCancel } from "react-icons/gi";
-
+import samplePhoto from "../assets/img/radiografia-abdomen-def.jpg";
 import DatePicker from "react-datepicker";
 
-import { getPatients } from "../store/slices/appointments";
+import {
+  getPatients,
+  appointmentAction,
+  getAppointments,
+  getPatientAppointments,
+  deleteAppointments,
+} from "../store/slices/appointments";
 
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 
@@ -73,14 +79,15 @@ const MedicalRecords = () => {
     });
 
   const [patientPhotoPrev, setPatientPhotoPrev] = useState<string>("");
-  const [documentPhotoPrev, setDocumentPhotoPrev] = useState<string>("");
-
   const [medicalRecordInfoAlergies, setMedicalRecordInfoAlergies] = useState({
     alergy_type: "",
     alergy_to: "",
     alergy_detail: "",
   });
 
+  const removeAppointment = (appointmentId: any) => {
+    dispatch(deleteAppointments(appointmentId));
+  };
   const [medicalRecordDetail, setMedicalRecordDetail] = useState<any>({});
 
   const filterPatients = () => {
@@ -123,9 +130,16 @@ const MedicalRecords = () => {
 
   const handleCloseAdd = () => setShowModalAdd(false);
 
+  const [showRemoveAppointment, setShowRemoveAppointment] = useState(false);
+
   const removeInfoMedicalRecords = (id: any, info: any) => {
     dispatch(removeInfoMedicalRecord({ id, info }));
   };
+
+  useEffect(() => {
+    dispatch(getAppointments());
+    dispatch(appointmentAction.clearReload());
+  }, [appointment.reload, dispatch]);
 
   const addMedicalRecord = () => {
     const { patient_id, blood_type, patient_photo } = medicalRecordsForm;
@@ -198,8 +212,12 @@ const MedicalRecords = () => {
 
   const uploadHistoryTestsPhotoPrev = (e: any) => {
     const photo = e.target.files[0];
+    const formImageData = new FormData();
+
+    formImageData.append("document_photo", photo);
+
     setMedicalRecordHistoryTest((prevState: any) => {
-      return { ...prevState, document_photo: photo };
+      return { ...prevState, document_photo: formImageData };
     });
     const reader = new FileReader();
     reader.readAsDataURL(photo);
@@ -319,6 +337,7 @@ const MedicalRecords = () => {
     setMedicalRecordDetail({ ...medicalRecord });
     setMedicalRecordID(medicalRecord.id);
     dispatch(showMedicalRecord(medicalRecord.id));
+    dispatch(getPatientAppointments(medicalRecord.patient_id));
   };
 
   const addInfoMedicalRecord = (medicalFormInfo: any, info: any) => {
@@ -356,6 +375,7 @@ const MedicalRecords = () => {
   }, [medicalRecordsForm, dispatch]);
 
   useEffect(() => {
+    dispatch(getAppointments());
     dispatch(getPatients());
     dispatch(getMedicalRecord());
   }, [dispatch]);
@@ -363,14 +383,14 @@ const MedicalRecords = () => {
   useEffect(() => {
     if (medicalRecord.reload) {
       dispatch(getMedicalRecord());
-      dispatch(medicalRecordsAction.clearReloadMedicalRecord());
+      dispatch(medicalRecordsAction.clearReload());
     }
   }, [medicalRecord.reload, dispatch]);
 
   useEffect(() => {
     if (medicalRecord.reloadMedicalRecord) {
       dispatch(showMedicalRecord(medicalRecordDetail.id));
-      dispatch(medicalRecordsAction.clearReload());
+      dispatch(medicalRecordsAction.clearReloadMedicalRecord());
     }
   }, [medicalRecord.reloadMedicalRecord, medicalRecordDetail.id, dispatch]);
 
@@ -991,12 +1011,6 @@ const MedicalRecords = () => {
                     {findPatient(medicalRecordDetail?.patient_id)?.address}{" "}
                   </h5>
                 </div>
-                <div className="modify-patient-info-btn-container">
-                  <Button className="modify-patient-info-btn">
-                    Modify Patient Information{" "}
-                    <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />
-                  </Button>
-                </div>
               </div>
             </Tab>
             <Tab eventKey="medical-info" title="Medical Information">
@@ -1183,74 +1197,71 @@ const MedicalRecords = () => {
                   controlId="formFile"
                   className="tests-photo-container"
                 >
-                  <Image
-                    className="test-photo"
-                    src={medicalRecordHistoryTest.document_prev_photo}
-                    rounded
-                  />{" "}
-                  <Form.Control
-                    type="file"
-                    className="control-tests-photo"
-                    onChange={uploadHistoryTestsPhotoPrev}
-                  />
+                  <Image className="test-photo" src={samplePhoto} rounded />{" "}
+                  <br />
+                  <Button className="control-tests-photo">
+                    Download Image
+                  </Button>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Type of Document</Form.Label>
-                  <Form.Select
-                    className="filter-input"
-                    name="document_type"
-                    onChange={onChangeMedRecordFormHistroyTest}
-                    value={medicalRecordHistoryTest.document_type}
-                    aria-label="Floating label select example"
-                  >
-                    <option>Select type of document</option>
-                    <option value="history">MEDICAL HISTORY</option>
-                    <option value="test">MEDICAL TESTS</option>
-                  </Form.Select>
+                  <p>
+                    {" "}
+                    <strong>MEDICAL HISTORY</strong>{" "}
+                  </p>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>
-                    Name of the MEDICAL{" "}
-                    {medicalRecordHistoryTest.document_type.toUpperCase()}
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    className="form-input-add-supply"
-                    onChange={onChangeMedRecordFormHistroyTest}
-                    value={medicalRecordHistoryTest.document_name}
-                    name="document_name"
-                    placeholder={`Enter medical ${medicalRecordHistoryTest.document_type} name`}
-                  />
+                  <Form.Label>Name of the Document</Form.Label>
+                  <p>
+                    {" "}
+                    <strong>Radriography</strong>{" "}
+                  </p>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>
-                    Detail of the{" "}
-                    {medicalRecordHistoryTest.document_type?.toUpperCase()}
-                  </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    onChange={onChangeMedRecordFormHistroyTest}
-                    className="form-input-add-supply"
-                    placeholder={`Enter a detail of the ${medicalRecordHistoryTest.document_type}`}
-                    name="document_detail"
-                    value={medicalRecordHistoryTest.document_detail}
-                    style={{ height: "90px" }}
-                  />
+                  <Form.Label>Detail of the Document</Form.Label>
+                  <p>
+                    {" "}
+                    <strong>Radriography of the torax</strong>{" "}
+                  </p>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Date</Form.Label>
-                  <DatePicker
-                    onChange={onChangeMedRecordFormHistroyTestDate}
-                    value={medicalRecordHistoryTest.document_date}
-                    className="filter-input patient-form"
-                    placeholderText={`Enter ${medicalRecordHistoryTest.document_type} date`}
-                  />
+                  <p>
+                    {" "}
+                    <strong>5/09/2021</strong>{" "}
+                  </p>
                 </Form.Group>
                 <div>
                   <span className="added-items-title">Document Added</span>{" "}
-                  {document.length !== 0 && (
-                    <>
-                      {document.map((v: any, i: number) => (
+                  <span className="add-container">
+                    <GiCancel className="remove-added-item" />
+                    <Image
+                      className="test-photo-added"
+                      src={samplePhoto}
+                      rounded
+                    />{" "}
+                  </span>
+                </div>
+                <div className="add-medical-container">
+                  <Button
+                    className="add-medical-record btn add-medical"
+                    type="submit"
+                  >
+                    Add Document
+                    <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
+                  </Button>
+                </div>
+              </Form>
+            </Tab>
+            <Tab eventKey="confirmation" title="Medicals Appointments">
+              <div>
+                <h3>Register Appointment</h3>
+                <br />
+                <span className="added-items-title"></span>{" "}
+                {appointment.patientAppointments.length !== 0 && (
+                  <>
+                    {appointment.patientAppointments.map(
+                      (v: any, i: number) => (
                         <OverlayTrigger
                           placement="right"
                           delay={{ show: 250, hide: 400 }}
@@ -1260,49 +1271,54 @@ const MedicalRecords = () => {
                               id="button-tooltip-medical-record"
                             >
                               <div className="popover-tool">
-                                <h5>Document Type</h5>
-                                <span>{v.document_type.toUpperCase()} </span>
+                                <h5>Date</h5>
+                                <span>{v.date} </span>
                                 <br />
-                                <h5>Document Name</h5>
-                                <span>{v.document_name} </span>
+                                <h5>Reason</h5>
+                                <span>{v.reason} </span>
                                 <br />
-                                <h5>Document Detail</h5>
-                                <span>{v.document_detail} </span>
+                                <h5>Time</h5>
+                                <span>{v.time} </span>
                                 <br />
-                                <h5>Document Date</h5>
-                                <span>{v.document_date} </span>
+                                <h5>Created</h5>
+                                <span>
+                                  {new Date(v.created_at).toLocaleDateString()}{" "}
+                                </span>
                               </div>
                             </Popover>
                           }
                         >
-                          <span className="add-container">
-                            <GiCancel
-                              className="remove-added-item"
-                              onClick={() => removeDocument(i)}
-                            />
-                            <Image
-                              className="test-photo-added"
-                              src={v.document_prev_photo}
-                              rounded
-                            />{" "}
+                          <span className="added-items">
+                            {v.date} {v.reason}
+                            {showRemoveAppointment && (
+                              <GiCancel
+                                onClick={() => removeAppointment(v.id)}
+                              />
+                            )}
                           </span>
                         </OverlayTrigger>
-                      ))}
-                    </>
-                  )}
-                </div>
-                <div className="add-medical-container">
-                  <Button
-                    className="add-medical-record btn add-medical"
-                    type="submit"
-                  >
-                    Add {medicalRecordHistoryTest.document_type.toUpperCase()}
-                    <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
-                  </Button>
-                </div>
-              </Form>
+                      )
+                    )}
+                    <br />
+                    <br />
+
+                    <br />
+
+                    <div>
+                      <Button
+                        className="add-medical-record btn"
+                        onClick={() =>
+                          setShowRemoveAppointment(!showRemoveAppointment)
+                        }
+                      >
+                        Edit Appointment
+                        <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
             </Tab>
-            <Tab eventKey="confirmation" title="Medicals Appointments"></Tab>
           </Tabs>
         </Modal.Body>
       </Modal>

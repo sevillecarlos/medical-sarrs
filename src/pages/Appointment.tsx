@@ -6,7 +6,6 @@ import {
   Form,
   Modal,
   InputGroup,
-  Alert,
 } from "react-bootstrap";
 import "./style/Inventory.css";
 import { GrFormAdd } from "react-icons/gr";
@@ -123,7 +122,6 @@ const Appointment = () => {
     });
 
   const statusFilter = (e: any) => {
-    console.log(e.target.value);
     const filterAppoinmentArr = appointment.appointments.filter(
       (appointment: { status: boolean }) => {
         return appointment.status == e.target.value;
