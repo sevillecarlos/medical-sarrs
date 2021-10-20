@@ -69,7 +69,9 @@ const MedicalRecords = () => {
 
   const [showModalAdd, setShowModalAdd] = useState(false);
 
-  const [medicalRecordID, setMedicalRecordID] = useState(-1);
+  const [medicalRecordID, setMedicalRecordID] = useState<any>(-1);
+
+  const [showAddDocument, setShowAddDocument] = useState(false);
 
   const [medicalRecordsForm, setMedicalRecordsForm] =
     useState<MedicalRecordsForm>({
@@ -113,13 +115,14 @@ const MedicalRecords = () => {
   });
 
   const [medicalRecordHistoryTest, setMedicalRecordHistoryTest] = useState({
-    document_photo: "",
     document_prev_photo: "",
+    document_photo: "",
     document_type: "",
     document_name: "",
     document_detail: "",
     document_date: "",
   });
+
   const [alergies, setAlergies] = useState(Array<any>());
 
   const [ailments, setAilments] = useState(Array<any>());
@@ -127,6 +130,8 @@ const MedicalRecords = () => {
   const [medicines, setMedicines] = useState(Array<any>());
 
   const [document, setDocument] = useState(Array<any>());
+
+  const [documentPrev, setDocumentPrev] = useState(Array<any>());
 
   const handleCloseAdd = () => setShowModalAdd(false);
 
@@ -140,6 +145,35 @@ const MedicalRecords = () => {
     dispatch(getAppointments());
     dispatch(appointmentAction.clearReload());
   }, [appointment.reload, dispatch]);
+
+  const addDocumentMedicalRecord = () => {
+    const {
+      document_photo,
+      document_type,
+      document_name,
+      document_detail,
+      document_date,
+    } = medicalRecordHistoryTest;
+
+    const documentFormData = new FormData();
+    documentFormData.append("document_photo", document_photo);
+    documentFormData.append("document_type", document_type);
+    documentFormData.append("document_name", document_name);
+    documentFormData.append("document_detail", document_detail);
+    documentFormData.append("document_date", document_date);
+    documentFormData.append("medical_record_id", medicalRecordID);
+
+    dispatch(addMedicalRecords(documentFormData));
+    setMedicalRecordHistoryTest({
+      document_photo: "",
+      document_type: "",
+      document_name: "",
+      document_detail: "",
+      document_date: "",
+      document_prev_photo: "",
+    });
+    setShowAddDocument(false);
+  };
 
   const addMedicalRecord = () => {
     const { patient_id, blood_type, patient_photo } = medicalRecordsForm;
@@ -212,12 +246,8 @@ const MedicalRecords = () => {
 
   const uploadHistoryTestsPhotoPrev = (e: any) => {
     const photo = e.target.files[0];
-    const formImageData = new FormData();
-
-    formImageData.append("document_photo", photo);
-
     setMedicalRecordHistoryTest((prevState: any) => {
-      return { ...prevState, document_photo: formImageData };
+      return { ...prevState, document_photo: photo };
     });
     const reader = new FileReader();
     reader.readAsDataURL(photo);
@@ -295,7 +325,27 @@ const MedicalRecords = () => {
   };
   const addDocument = (e: any) => {
     e.preventDefault();
+
+    const {
+      document_photo,
+      document_type,
+      document_name,
+      document_detail,
+      document_date,
+    } = medicalRecordHistoryTest;
+
+    const documentFormData = new FormData();
+    documentFormData.append("document_photo", document_photo);
+    documentFormData.append("document_type", document_type);
+    documentFormData.append("document_name", document_name);
+    documentFormData.append("document_detail", document_detail);
+    documentFormData.append("document_date", document_date);
+
     setDocument((prevState) => {
+      return [...prevState, documentFormData];
+    });
+
+    setDocumentPrev((prevState) => {
       return [...prevState, medicalRecordHistoryTest];
     });
 
@@ -377,6 +427,7 @@ const MedicalRecords = () => {
   useEffect(() => {
     dispatch(getAppointments());
     dispatch(getPatients());
+
     dispatch(getMedicalRecord());
   }, [dispatch]);
 
@@ -393,6 +444,8 @@ const MedicalRecords = () => {
       dispatch(medicalRecordsAction.clearReloadMedicalRecord());
     }
   }, [medicalRecord.reloadMedicalRecord, medicalRecordDetail.id, dispatch]);
+
+  console.log(medicalRecord.documents)
 
   return (
     <div>
@@ -880,9 +933,9 @@ const MedicalRecords = () => {
                 </Form.Group>
                 <div>
                   <span className="added-items-title">Document Added</span>{" "}
-                  {document.length !== 0 && (
+                  {documentPrev.length !== 0 && (
                     <>
-                      {document.map((v: any, i: number) => (
+                      {documentPrev.map((v: any, i: number) => (
                         <OverlayTrigger
                           placement="right"
                           delay={{ show: 250, hide: 400 }}
@@ -943,6 +996,88 @@ const MedicalRecords = () => {
               </div>
             </Tab>
           </Tabs>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showAddDocument}
+        className="modal-add-supply"
+        onHide={() => setShowAddDocument(false)}
+        size="lg"
+        backdrop="static"
+        contentClassName="modal-add-supply-content"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Medical Record Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={addDocumentMedicalRecord}>
+            <Form.Group controlId="formFile" className="tests-photo-container">
+              <Image
+                className="test-photo"
+                src={medicalRecordHistoryTest.document_prev_photo}
+                rounded
+              />{" "}
+              <Form.Control
+                type="file"
+                className="control-tests-photo"
+                onChange={uploadHistoryTestsPhotoPrev}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Type of Document</Form.Label>
+              <Form.Select
+                className="filter-input"
+                name="document_type"
+                onChange={onChangeMedRecordFormHistroyTest}
+                value={medicalRecordHistoryTest.document_type}
+                aria-label="Floating label select example"
+              >
+                <option>Select type of document</option>
+                <option value="history">MEDICAL HISTORY</option>
+                <option value="test">MEDICAL TESTS</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>
+                Name of the MEDICAL{" "}
+                {medicalRecordHistoryTest.document_type.toUpperCase()}
+              </Form.Label>
+              <Form.Control
+                type="text"
+                className="form-input-add-supply"
+                onChange={onChangeMedRecordFormHistroyTest}
+                value={medicalRecordHistoryTest.document_name}
+                name="document_name"
+                placeholder={`Enter medical ${medicalRecordHistoryTest.document_type} name`}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>
+                Detail of the{" "}
+                {medicalRecordHistoryTest.document_type?.toUpperCase()}
+              </Form.Label>
+              <Form.Control
+                as="textarea"
+                onChange={onChangeMedRecordFormHistroyTest}
+                className="form-input-add-supply"
+                placeholder={`Enter a detail of the ${medicalRecordHistoryTest.document_type}`}
+                name="document_detail"
+                value={medicalRecordHistoryTest.document_detail}
+                style={{ height: "90px" }}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Date</Form.Label>
+              <DatePicker
+                onChange={onChangeMedRecordFormHistroyTestDate}
+                value={medicalRecordHistoryTest.document_date}
+                className="filter-input patient-form"
+                placeholderText={`Enter ${medicalRecordHistoryTest.document_type} date`}
+              />
+            </Form.Group>
+            <Button type="submit">Add Document</Button>
+          </Form>
         </Modal.Body>
       </Modal>
 
@@ -1192,7 +1327,7 @@ const MedicalRecords = () => {
               eventKey="medical-background-tests"
               title="Medical History & Tests"
             >
-              <Form onSubmit={addDocument}>
+              <Form>
                 <Form.Group
                   controlId="formFile"
                   className="tests-photo-container"
@@ -1245,7 +1380,7 @@ const MedicalRecords = () => {
                 <div className="add-medical-container">
                   <Button
                     className="add-medical-record btn add-medical"
-                    type="submit"
+                    onClick={() => setShowAddDocument(true)}
                   >
                     Add Document
                     <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
