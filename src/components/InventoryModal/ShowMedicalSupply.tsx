@@ -10,13 +10,13 @@ import { AiOutlineEdit } from "react-icons/ai";
 
 import { useAppDispatch } from "../../store/hook";
 
-interface ShowMedicalSupplyI{
-    itemsDate:any,
-    inventory:any,
-    changeModifyForm:any,
-    modifyData:any,
-    showModalModify:boolean,
-    setShowModalModify:any
+interface ShowMedicalSupplyI {
+  itemsDate: any;
+  inventory: any;
+  changeModifyForm: any;
+  modifyData: any;
+  showModalModify: boolean;
+  setShowModalModify: any;
 }
 
 const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
@@ -73,6 +73,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
               className="form-input-add-supply"
               type="text"
               value={modifyData.name}
+              required
               onChange={changeModifyForm}
               name="name"
               placeholder="Enter name of the item"
@@ -81,9 +82,9 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
           <Form.Select
             className="form-input-add-supply"
             onChange={changeModifyForm}
+            required
             value={modifyData.category_id}
             name="category_id"
-            required={true}
           >
             <option>Select Category</option>
 
@@ -103,6 +104,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
               onChange={changeModifyForm}
               name="quantity"
               type="number"
+              required
               value={modifyData.quantity}
               className="form-input-add-supply"
               placeholder="Enter quantity of the item"
@@ -112,6 +114,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
             <Form.Label>Details</Form.Label>
             <Form.Control
               as="textarea"
+              required
               onChange={changeModifyForm}
               value={modifyData.detail}
               className="form-input-add-supply"

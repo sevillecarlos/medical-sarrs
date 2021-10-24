@@ -77,6 +77,7 @@ const AddMedicalSupply = (props: any) => {
             <Form.Label>Name</Form.Label>
             <Form.Control
               className="form-input-add-supply"
+              required
               type="text"
               onChange={changeItemFormName}
               name="name"
@@ -94,7 +95,7 @@ const AddMedicalSupply = (props: any) => {
             className="form-input-add-supply"
             onChange={changeItemForm}
             name="category_id"
-            required={true}
+            required
           >
             <option>Select Category</option>
 
@@ -114,6 +115,7 @@ const AddMedicalSupply = (props: any) => {
               onChange={changeItemForm}
               name="quantity"
               type="number"
+              required
               className="form-input-add-supply"
               placeholder="Enter quantity of the item"
             />
@@ -123,17 +125,14 @@ const AddMedicalSupply = (props: any) => {
             <Form.Control
               as="textarea"
               onChange={changeItemForm}
+              required
               className="form-input-add-supply"
               placeholder="Enter a detail of the item"
               name="detail"
               style={{ height: "100px" }}
             />
           </Form.Group>
-          <Button
-            type="submit"
-            className="add-supply-btn"
-            disabled={!Object.values({ ...itemForm }).every((v: any) => v)}
-          >
+          <Button type="submit" className="add-supply-btn">
             Add Supply
             <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
           </Button>
