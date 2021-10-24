@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { GrFormAdd } from "react-icons/gr";
 
-import { useAppDispatch } from "../../store/hook";
-
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { RootStateOrAny } from "react-redux";
 import { fetchInventory } from "../../store/slices/inventory";
+import { useEffect } from "react";
 const AddMedicalSupply = (props: any) => {
   const dispatch = useAppDispatch();
+  const auth = useAppSelector((state: RootStateOrAny) => state.auth);
+
   const [itemForm, setItemForm] = useState({
     name: "",
     quantity: 0,
     detail: "",
     category_id: "",
+    user_log_create: "",
+    user_log_update: "",
   });
   const [errorUniqueName, setErrorUniqueName] = useState(false);
 
@@ -52,8 +57,22 @@ const AddMedicalSupply = (props: any) => {
       quantity: 0,
       detail: "",
       category_id: "",
+      user_log_create: "",
+      user_log_update: "",
     });
   };
+
+  useEffect(() => {
+    if (showModalAdd) {
+      setItemForm((prevState: any) => {
+        return {
+          ...prevState,
+          user_log_create: auth.activeUser,
+          user_log_update: auth.activeUser,
+        };
+      });
+    }
+  }, [showModalAdd, auth.activeUser]);
 
   const handleCloseAdd = () => {
     setShowModalAdd(false);
@@ -132,7 +151,11 @@ const AddMedicalSupply = (props: any) => {
               style={{ height: "100px" }}
             />
           </Form.Group>
-          <Button type="submit" className="add-supply-btn">
+          <Button
+            disabled={errorUniqueName}
+            type="submit"
+            className="add-supply-btn"
+          >
             Add Supply
             <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
           </Button>

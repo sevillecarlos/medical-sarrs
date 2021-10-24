@@ -12,6 +12,7 @@
 .btn {
   border: none !important;
   border-radius: 20px !important;
+  font-size:1vw !important;
   color: rgb(7, 7, 7) !important;
   background-color: rgba(172, 255, 47, 0.521) !important;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);

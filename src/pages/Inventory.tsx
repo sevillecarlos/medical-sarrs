@@ -6,7 +6,6 @@ import { AiOutlineEdit } from "react-icons/ai";
 
 import AddMedicalSupplyModal from "../components/InventoryModal/AddMedicalSupply";
 import ShowMedicalSupply from "../components/InventoryModal/ShowMedicalSupply";
-
 import { RootStateOrAny } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../store/hook";
 
@@ -41,6 +40,8 @@ const Inventory = () => {
     quantity: 0,
     detail: "",
     id: 0,
+    user_log_create: "",
+    user_log_update: "",
   });
 
   const inventory = useAppSelector((state: RootStateOrAny) => state.inventory);
@@ -79,6 +80,7 @@ const Inventory = () => {
     dispatch(fetchInventoryItems());
   }, [dispatch]);
 
+
   useEffect(() => {
     if (inventory.items) {
       setInventoryItems(inventory.items);
@@ -102,8 +104,17 @@ const Inventory = () => {
 
   const modifySupply = (supplyData: any) => {
     setShowModalModify(!showModalModify);
-    const { name, quantity, category_id, detail, id, created_at, updated_at } =
-      supplyData;
+    const {
+      name,
+      quantity,
+      category_id,
+      detail,
+      id,
+      user_log_create,
+      user_log_update,
+      created_at,
+      updated_at,
+    } = supplyData;
 
     setModifyData({
       name,
@@ -111,6 +122,8 @@ const Inventory = () => {
       category_id,
       detail,
       id,
+      user_log_create,
+      user_log_update,
     });
     setItemsDate({
       created_at: new Date(created_at).toLocaleString(),
@@ -157,6 +170,7 @@ const Inventory = () => {
         itemsDate={itemsDate}
         inventory={inventory}
         changeModifyForm={changeModifyForm}
+        setModifyData={setModifyData}
         modifyData={modifyData}
         setShowModalModify={setShowModalModify}
         showModalModify={showModalModify}

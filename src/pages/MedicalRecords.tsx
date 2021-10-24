@@ -445,7 +445,6 @@ const MedicalRecords = () => {
     }
   }, [medicalRecord.reloadMedicalRecord, medicalRecordDetail.id, dispatch]);
 
-  console.log(medicalRecord.documents)
 
   return (
     <div>

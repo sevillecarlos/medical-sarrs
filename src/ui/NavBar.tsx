@@ -51,8 +51,7 @@ const NavBar = () => {
         setUserNameError(true);
       } else {
         setUserNameError(false);
-      setUserForm({ ...userForm, [e.target.name]: e.target.value });
-
+        setUserForm({ ...userForm, [e.target.name]: e.target.value });
       }
     } else {
       setUserForm({ ...userForm, [e.target.name]: e.target.value });
@@ -67,10 +66,11 @@ const NavBar = () => {
     if (auth.token) {
       const { first_name, username, user_type } = jwtDecoded(auth.token);
       setFirstName(first_name);
+      dispatch(authAction.setActiveUser(username));
       setUserName(username);
       setUserType(user_type);
     }
-  }, [auth.token]);
+  }, [auth.token, dispatch]);
 
   useEffect(() => {
     if (auth.msg) {

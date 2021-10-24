@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import { Button, Modal, Form } from "react-bootstrap";
 import RemoveConfModal from "../../ui/RemoveConfModal";
@@ -6,9 +6,10 @@ import {
   updateInventoryItem,
   deleteInventoryItem,
 } from "../../store/slices/inventory";
+import { RootStateOrAny } from "react-redux";
 import { AiOutlineEdit } from "react-icons/ai";
 
-import { useAppDispatch } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 
 interface ShowMedicalSupplyI {
   itemsDate: any;
@@ -16,13 +17,15 @@ interface ShowMedicalSupplyI {
   changeModifyForm: any;
   modifyData: any;
   showModalModify: boolean;
+  setModifyData: any;
   setShowModalModify: any;
 }
 
 const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
   const dispatch = useAppDispatch();
   const [showRemoveModal, setShowRemoveModal] = useState(false);
-
+  const auth = useAppSelector((state: RootStateOrAny) => state.auth);
+  const [dispatchModify, setDispatchModify] = useState(false);
   const {
     itemsDate,
     inventory,
@@ -30,13 +33,23 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
     modifyData,
     showModalModify,
     setShowModalModify,
+    setModifyData,
   } = props;
 
   const submitModify = (e: any) => {
     e.preventDefault();
-    dispatch(updateInventoryItem(modifyData));
+    setModifyData((prevState: any) => {
+      return { ...prevState, user_log_update: auth.activeUser };
+    });
+    setDispatchModify(true);
     setShowModalModify(false);
   };
+  useEffect(() => {
+    if (dispatchModify) {
+      dispatch(updateInventoryItem(modifyData));
+      setDispatchModify(false);
+    }
+  }, [dispatchModify, dispatch, modifyData]);
 
   const removeSupply = () => {
     dispatch(deleteInventoryItem(modifyData.id));
@@ -123,8 +136,12 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
               style={{ height: "100px" }}
             />
           </Form.Group>
-          <p>Created at: {itemsDate.created_at}</p>
-          <p>Last update: {itemsDate.updated_at}</p>
+          <p>
+            Created at: {itemsDate.created_at} by {modifyData.user_log_create}
+          </p>
+          <p>
+            Last update: {itemsDate.updated_at} by {modifyData.user_log_update}
+          </p>
           <Button type="submit" className="add-supply-btn">
             Modify Supply
             <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />

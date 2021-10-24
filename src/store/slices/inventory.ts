@@ -59,6 +59,7 @@ export const updateInventoryItem = createAsyncThunk(
         quantity: items.quantity,
         category_id: items.category_id,
         detail: items.detail,
+        user_log_update: items.user_log_update
       });
 
       const item = (await res).data;

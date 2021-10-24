@@ -7,6 +7,7 @@ const initialState = {
   status: "idle",
   reload: false,
   usernames: Array<any>(),
+  activeUser: "",
 };
 
 export const fetchSignIn = createAsyncThunk(
@@ -88,6 +89,9 @@ const authSlice = createSlice({
   reducers: {
     clearError(state) {
       state.error = null;
+    },
+    setActiveUser(state,action){
+      state.activeUser = action.payload
     },
     clearReload(state) {
       state.reload = false;
