@@ -13,7 +13,6 @@ import { useAppDispatch, useAppSelector } from "../store/hook";
 import {
   inventoryAction,
   fetchInventoryCategories,
-  fetchInventory,
   fetchInventoryItems,
   patchInventoryItem,
 } from "../store/slices/inventory";
@@ -28,7 +27,6 @@ const Inventory = () => {
   const [inventoryItems, setInventoryItems] = useState(Array<any>());
   const [quickQuantityItem, setQuickQuantityItems] = useState(null);
   const [ableQuickQuantity, setAbleQuickQuantity] = useState(Array<any>());
-
 
   const [itemsDate, setItemsDate] = useState({
     created_at: "",
@@ -203,6 +201,7 @@ const Inventory = () => {
                 )}
               </Form.Select>
             </th>
+            <th>Total Items: {inventoryItems?.length}</th>
           </tr>
         </thead>
         <tbody>
