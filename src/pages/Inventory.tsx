@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, FormControl, Form, Modal } from "react-bootstrap";
+import { Table, Button, FormControl, Form } from "react-bootstrap";
 import "./style/Inventory.css";
 import { GrFormAdd } from "react-icons/gr";
 import { AiOutlineEdit } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import AddMedicalSupplyModal from "../components/InventoryModal/AddMedicalSupply";
+import ShowMedicalSupply from "../components/InventoryModal/ShowMedicalSupply";
+
+import { RootStateOrAny } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+
 import {
   inventoryAction,
   fetchInventoryCategories,
   fetchInventory,
   fetchInventoryItems,
-  updateInventoryItem,
   patchInventoryItem,
-  deleteInventoryItem,
 } from "../store/slices/inventory";
-
-import RemoveConfModal from "../ui/RemoveConfModal";
 
 import { nameFormat } from "../helpers/nameFormt";
 
 const Inventory = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalModify, setShowModalModify] = useState(false);
@@ -29,7 +29,6 @@ const Inventory = () => {
   const [quickQuantityItem, setQuickQuantityItems] = useState(null);
   const [ableQuickQuantity, setAbleQuickQuantity] = useState(Array<any>());
 
-  const [errorUniqueName, setErrorUniqueName] = useState(false);
 
   const [itemsDate, setItemsDate] = useState({
     created_at: "",
@@ -46,45 +45,7 @@ const Inventory = () => {
     id: 0,
   });
 
-  const [itemForm, setItemForm] = useState({
-    name: "",
-    quantity: 0,
-    detail: "",
-    category_id: "",
-  });
-
-  const inventory = useSelector((state: RootStateOrAny) => state.inventory);
-
-  const [showRemoveModal, setShowRemoveModal] = useState(false);
-
-  const handleRemoveModalClose = () => {
-    setShowRemoveModal(false);
-  };
-  const changeItemForm = (e: any) => {
-    setItemForm({ ...itemForm, [e.target.name]: e.target.value });
-  };
-
-  const changeItemFormName = (e: any) => {
-    const { value, name } = e.target;
-
-    const lowCaseValue = value.toLowerCase();
-
-    const checkNameExist = inventory.items.filter((v: any) => {
-      return v.name.toLowerCase() === lowCaseValue;
-    });
-    if (checkNameExist.length !== 0) {
-      setErrorUniqueName(true);
-      setItemForm((prevState) => {
-        return { ...prevState, [name]: "" };
-      });
-    } else {
-      setErrorUniqueName(false);
-      setItemForm((prevState) => {
-        return { ...prevState, [name]: lowCaseValue };
-      });
-    }
-  };
-
+  const inventory = useAppSelector((state: RootStateOrAny) => state.inventory);
 
   const typeFilter = (e: any) => {
     const filterItemsArr = inventory.items.filter(
@@ -113,18 +74,6 @@ const Inventory = () => {
 
   const changeModifyForm = (e: any) => {
     setModifyData({ ...modifyData, [e.target.name]: e.target.value });
-  };
-  const addSupply = (e: any) => {
-    e.preventDefault();
-    dispatch(fetchInventory(itemForm));
-    handleCloseAdd();
-    setErrorUniqueName(false);
-    setItemForm({
-      name: "",
-      quantity: 0,
-      detail: "",
-      category_id: "",
-    });
   };
 
   useEffect(() => {
@@ -183,25 +132,6 @@ const Inventory = () => {
     setAbleQuickQuantity(Array<any>());
   };
 
-  const submitModify = (e: any) => {
-    e.preventDefault();
-    dispatch(updateInventoryItem(modifyData));
-    setShowModalModify(false);
-  };
-
-  const removeSupply = () => {
-    dispatch(deleteInventoryItem(modifyData.id));
-    setShowModalModify(false);
-    setShowRemoveModal(false);
-  };
-
-  const handleCloseAdd = () => {
-    setShowModalAdd(false);
-    setErrorUniqueName(false);
-  };
-
-  const handleCloseModify = () => setShowModalModify(false);
-
   const changeQuickChangeQuantity = (e: any) => {
     const { value } = e.target;
     setQuickQuantityItems(value); //Me quede aqui
@@ -219,173 +149,21 @@ const Inventory = () => {
 
   return (
     <div>
-      <Modal
-        show={showModalAdd}
-        className="modal-add-supply"
-        onHide={handleCloseAdd}
-        backdrop="static"
-        contentClassName="modal-add-supply-content"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Add Medical Supply</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={addSupply} autoComplete="off">
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                className="form-input-add-supply"
-                type="text"
-                onChange={changeItemFormName}
-                name="name"
-                placeholder="Enter name of the item"
-              />
-              {errorUniqueName ? (
-                <Form.Text className="error-name">
-                  Name already exist, try write the name more specific
-                </Form.Text>
-              ) : (
-                <Form.Text>
-                  The name need to be unique in the inventory
-                </Form.Text>
-              )}
-            </Form.Group>
-            <Form.Select
-              className="form-input-add-supply"
-              onChange={changeItemForm}
-              name="category_id"
-              required={true}
-            >
-              <option>Select Category</option>
+      <AddMedicalSupplyModal
+        inventory={inventory}
+        showModalAdd={showModalAdd}
+        setShowModalAdd={setShowModalAdd}
+      />
 
-              {inventory.categories?.map((v: { id: number; name: string }) => {
-                return (
-                  <option key={v.id} value={v.id}>
-                    {v.name.toUpperCase()}
-                  </option>
-                );
-              })}
-            </Form.Select>
-            <br />
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                min={0}
-                onChange={changeItemForm}
-                name="quantity"
-                type="number"
-                className="form-input-add-supply"
-                placeholder="Enter quantity of the item"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Details</Form.Label>
-              <Form.Control
-                as="textarea"
-                onChange={changeItemForm}
-                className="form-input-add-supply"
-                placeholder="Enter a detail of the item"
-                name="detail"
-                style={{ height: "100px" }}
-              />
-            </Form.Group>
-            <Button
-              type="submit"
-              className="add-supply-btn"
-              disabled={!Object.values({ ...itemForm }).every((v: any) => v)}
-            >
-              Add Supply
-              <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-      <Modal
-        show={showModalModify}
-        className="modal-modify-supply"
-        onHide={handleCloseModify}
-        backdrop="static"
-      >
-        <RemoveConfModal
-          show={showRemoveModal}
-          handleClose={handleRemoveModalClose}
-          onClickRemove={removeSupply}
-        />
-        <Modal.Header closeButton>
-          <Modal.Title>Modify Medical Supply</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={submitModify}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                className="form-input-add-supply"
-                type="text"
-                value={modifyData.name}
-                onChange={changeModifyForm}
-                name="name"
-                placeholder="Enter name of the item"
-              />
-            </Form.Group>
-            <Form.Select
-              className="form-input-add-supply"
-              onChange={changeModifyForm}
-              value={modifyData.category_id}
-              name="category_id"
-              required={true}
-            >
-              <option>Select Category</option>
+      <ShowMedicalSupply
+        itemsDate={itemsDate}
+        inventory={inventory}
+        changeModifyForm={changeModifyForm}
+        modifyData={modifyData}
+        setShowModalModify={setShowModalModify}
+        showModalModify={showModalModify}
+      />
 
-              {inventory.categories?.map((v: { id: number; name: string }) => {
-                return (
-                  <option key={v.id} value={v.id}>
-                    {v.name.toUpperCase()}
-                  </option>
-                );
-              })}
-            </Form.Select>
-            <br />
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                min={1}
-                onChange={changeModifyForm}
-                name="quantity"
-                type="number"
-                value={modifyData.quantity}
-                className="form-input-add-supply"
-                placeholder="Enter quantity of the item"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Details</Form.Label>
-              <Form.Control
-                as="textarea"
-                onChange={changeModifyForm}
-                value={modifyData.detail}
-                className="form-input-add-supply"
-                placeholder="Enter a detail of the item"
-                name="detail"
-                style={{ height: "100px" }}
-              />
-            </Form.Group>
-            <p>Created at: {itemsDate.created_at}</p>
-            <p>Last update: {itemsDate.updated_at}</p>
-            <Button type="submit" className="add-supply-btn">
-              Modify Supply
-              <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />
-            </Button>
-          </Form>
-          <Button
-            onClick={() => setShowRemoveModal(true)}
-            type="button"
-            className="remove-supply-btn"
-          >
-            Remove Supply
-            <MdDelete style={{ marginLeft: "5px" }} size={20} />
-          </Button>
-        </Modal.Body>
-      </Modal>
       <Table borderless hover className="inventory-table">
         <thead>
           <tr>
