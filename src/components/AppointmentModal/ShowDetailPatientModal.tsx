@@ -154,9 +154,11 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label className="modal-label">Created at:</Form.Label>
                 <h5>
-                  {new Date(dateAppointmentForm.created_at).toLocaleString()}
+                  {new Date(dateAppointmentForm.created_at).toLocaleString()} by{" "}
+                  {appointmentFormDetail.user_log_create}
                 </h5>
               </Form.Group>
+              
             </>
           ) : (
             <>

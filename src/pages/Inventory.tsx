@@ -20,6 +20,8 @@ import { nameFormat } from "../helpers/nameFormt";
 
 const Inventory = () => {
   const dispatch = useAppDispatch();
+  const auth = useAppSelector((state: RootStateOrAny) => state.auth);
+
 
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalModify, setShowModalModify] = useState(false);
@@ -80,7 +82,6 @@ const Inventory = () => {
     dispatch(fetchInventoryItems());
   }, [dispatch]);
 
-
   useEffect(() => {
     if (inventory.items) {
       setInventoryItems(inventory.items);
@@ -136,6 +137,7 @@ const Inventory = () => {
     const quickQuantityChangeParams = {
       id: quickQuantityItemId,
       quantity: quickQuantityItem,
+      user_log_update: auth.activeUser,
     };
 
     dispatch(patchInventoryItem(quickQuantityChangeParams));

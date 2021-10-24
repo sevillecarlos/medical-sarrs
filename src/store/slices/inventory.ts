@@ -59,7 +59,7 @@ export const updateInventoryItem = createAsyncThunk(
         quantity: items.quantity,
         category_id: items.category_id,
         detail: items.detail,
-        user_log_update: items.user_log_update
+        user_log_update: items.user_log_update,
       });
 
       const item = (await res).data;
@@ -78,6 +78,7 @@ export const patchInventoryItem = createAsyncThunk(
         `http://127.0.0.1:5000/api/v1/items/${items.id}`,
         {
           quantity: items.quantity,
+          user_log_update: items.user_log_update,
         }
       );
 

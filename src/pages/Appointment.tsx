@@ -47,6 +47,7 @@ const Appointment = () => {
     time: "",
     reason: "",
     status: true,
+    user_log_create: "",
   });
 
   /**************************FUNCTIONS******************/
@@ -105,8 +106,18 @@ const Appointment = () => {
 
   const showDetail = (appointmentData: any) => {
     setShowDetailAppointment(true);
-    const { patient_id, reason, date, time, created_at, id, status } =
-      appointmentData;
+    const {
+      patient_id,
+      reason,
+      date,
+      time,
+      created_at,
+      id,
+      status,
+      user_log_create,
+    } = appointmentData;
+
+
     setAppointmentId(id);
     const patientInfo = getPatient(patient_id);
     setDateAppointmentForm({
@@ -120,6 +131,7 @@ const Appointment = () => {
       date,
       time,
       status: true,
+      user_log_create,
     });
   };
 
