@@ -8,8 +8,9 @@ import {
   Form,
   Modal,
 } from "react-bootstrap";
+
 import logo from "../assets/img/logo-sarrs.png";
-import { authAction, fetchSignUp } from "../store/slices/auth";
+import { authAction, fetchSignUp, fetchUsers } from "../store/slices/auth";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { useHistory } from "react-router";
@@ -37,20 +38,29 @@ const NavBar = () => {
     user_type: "",
   });
 
-  const [onFocusUsername, setOnFocusUsername] = useState(false);
   const [showModalAddUser, setShowModalAddUser] = useState(false);
 
-  const [usernameSuggestion, setUserSuggestion] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  const changeUserForm = (e: any) =>
-    setUserForm({ ...userForm, [e.target.name]: e.target.value });
+  const [userNameError, setUserNameError] = useState(false);
+
+  const changeUserForm = (e: any) => {
+    if (e.target.name === "username") {
+      const checkUserExist = auth.usernames.map((user: any) => user.username);
+      if (checkUserExist.includes(e.target.value)) {
+        setUserNameError(true);
+      } else {
+        setUserNameError(false);
+      setUserForm({ ...userForm, [e.target.name]: e.target.value });
+
+      }
+    } else {
+      setUserForm({ ...userForm, [e.target.name]: e.target.value });
+    }
+  };
 
   useEffect(() => {
     dispatch(authAction.getToken());
-    return () => {
-      // cleanup;
-    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -60,9 +70,6 @@ const NavBar = () => {
       setUserName(username);
       setUserType(user_type);
     }
-    return () => {
-      // cleanup;
-    };
   }, [auth.token]);
 
   useEffect(() => {
@@ -80,38 +87,6 @@ const NavBar = () => {
 
   const handleCloseAddUser = () => setShowModalAddUser(false);
 
-  const usernameSuggestions = () => {
-    const checkUsernameExist = auth.usernames?.filter(
-      (v: any) => v.username === userForm.username
-    );
-    if (checkUsernameExist.length !== 0) {
-    } else {
-      const fullName = `${userForm.first_name} ${userForm.last_name}`;
-
-      const usernameSuggestion: any = fullName
-        .split(" ")
-        .map((v: any, i: number) => (i !== 0 ? v[0] : `${v[0]}${v[1]}`))
-        .join("")
-        .toLowerCase();
-      setUserSuggestion(usernameSuggestion);
-    }
-  };
-
-  const setSuggestUsername = () => {
-    setUserForm((prevState: any) => {
-      return { ...prevState, username: usernameSuggestion };
-    });
-    setOnFocusUsername(false);
-  };
-
-  const generateUsername = () => {
-    usernameSuggestions();
-    setOnFocusUsername(true);
-  };
-
-  const showSuggestionUsername = () =>
-    onFocusUsername && userForm.username === "";
-
   const submitAddUser = (e: any) => {
     e.preventDefault();
     dispatch(fetchSignUp(userForm));
@@ -124,13 +99,11 @@ const NavBar = () => {
       user_type: "",
     });
   };
-  /**
-  *
-  * TODO: Need to make the username unique  
-  * TODO Tabla de vitacora -> mostrar los usuarios
-  * TODO agregar Doctor al momento de agregar la cita
-  * TODO agregar vitcaora a la cita
-  **/
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
   return (
     <>
       <AlertModal showCondition={auth.msg !== ""} msg={auth.msg} />
@@ -149,6 +122,7 @@ const NavBar = () => {
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 className="form-input-add-user"
+                required
                 type="text"
                 onChange={changeUserForm}
                 name="first_name"
@@ -163,6 +137,7 @@ const NavBar = () => {
                 onChange={changeUserForm}
                 name="last_name"
                 placeholder="Enter full name"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -171,26 +146,17 @@ const NavBar = () => {
                 className="form-input-add-user"
                 type="text"
                 onChange={changeUserForm}
-                onFocus={generateUsername}
+                required
                 name="username"
                 value={userForm.username}
                 placeholder="Enter username"
               />
             </Form.Group>
-            <Form.Text>
-              {showSuggestionUsername() && (
-                <div>
-                  <span>Suggestion:</span>
-                  <Button
-                    onClick={setSuggestUsername}
-                    className="suggestion-username-btn"
-                  >
-                    {" "}
-                    {usernameSuggestion}
-                  </Button>
-                </div>
-              )}
-            </Form.Text>
+            {userNameError && (
+              <span style={{ color: "red" }}>
+                This Username is already in used, choose another one
+              </span>
+            )}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -199,6 +165,7 @@ const NavBar = () => {
                 onChange={changeUserForm}
                 name="password"
                 placeholder="Enter password"
+                required
               />
               <Form.Check
                 type="checkbox"
@@ -212,7 +179,7 @@ const NavBar = () => {
                 className="form-input-add-user"
                 onChange={changeUserForm}
                 name="user_type"
-                required={true}
+                required
               >
                 <option value="">Select the user type</option>
                 <option value="staff">staff</option>
@@ -237,9 +204,7 @@ const NavBar = () => {
             {auth.token ? (
               <>
                 {" "}
-                <Nav.Link href="/medical-records">
-                  Medical Records
-                </Nav.Link>
+                <Nav.Link href="/medical-records">Medical Records</Nav.Link>
                 <Nav.Link href="/appointment">
                   Appointment Registration
                 </Nav.Link>
