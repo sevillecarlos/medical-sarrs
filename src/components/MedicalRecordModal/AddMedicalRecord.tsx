@@ -4,8 +4,6 @@ import {
   medicalRecordsAction,
 } from "../../store/slices/medicalRecords";
 
-
-
 import {
   Button,
   Form,
@@ -22,7 +20,7 @@ import { GrFormAdd } from "react-icons/gr";
 
 import DatePicker from "react-datepicker";
 
-import {useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import DropDownFilter from "../../ui/DropDownFilter";
 
@@ -59,7 +57,6 @@ const AddMedicalRecord = (props: any) => {
   const [document, setDocument] = useState(Array<any>());
   const [documentPrev, setDocumentPrev] = useState(Array<any>());
   const [patientPhotoPrev, setPatientPhotoPrev] = useState<string>("");
-
 
   const removeMedicine = (medicineIndex: number) => {
     setMedicines(medicines.filter((_, i: number) => i !== medicineIndex));
@@ -115,23 +112,23 @@ const AddMedicalRecord = (props: any) => {
   const addDocument = (e: any) => {
     e.preventDefault();
 
-    const {
-      document_photo,
-      document_type,
-      document_name,
-      document_detail,
-      document_date,
-    } = medicalRecordHistoryTest;
+    // const {
+    //   document_photo,
+    //   document_type,
+    //   document_name,
+    //   document_detail,
+    //   document_date,
+    // } = medicalRecordHistoryTest;
 
-    const documentFormData = new FormData();
-    documentFormData.append("document_photo", document_photo);
-    documentFormData.append("document_type", document_type);
-    documentFormData.append("document_name", document_name);
-    documentFormData.append("document_detail", document_detail);
-    documentFormData.append("document_date", document_date);
+    // // const documentFormData = new FormData();
+    // // documentFormData.append("document_photo", document_photo);
+    // // documentFormData.append("document_type", document_type);
+    // // documentFormData.append("document_name", document_name);
+    // // documentFormData.append("document_detail", document_detail);
+    // // documentFormData.append("document_date", document_date);
 
     setDocument((prevState) => {
-      return [...prevState, documentFormData];
+      return [...prevState, medicalRecordHistoryTest];
     });
 
     setDocumentPrev((prevState) => {
@@ -217,9 +214,6 @@ const AddMedicalRecord = (props: any) => {
     };
   };
 
-
-
-
   return (
     <Modal
       show={showModalAdd}
@@ -266,7 +260,7 @@ const AddMedicalRecord = (props: any) => {
                 <div>
                   <span>Patient Name</span>
                   <h5>
-                    {`${medicalRecord.patient?.first_name} 
+                    {`${medicalRecord.patient?.first_name}
       ${medicalRecord.patient?.last_name}`}
                   </h5>
                   <br />
@@ -295,7 +289,7 @@ const AddMedicalRecord = (props: any) => {
               </div>
             )}
           </Tab>
-          <Tab eventKey="medical-info" title="Medical Information">
+          <Tab eventKey="medical-info" className='medical-record-tab' title="Medical Information">
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label style={{ fontWeight: "bold" }}>Blood Type</Form.Label>
               <Form.Select

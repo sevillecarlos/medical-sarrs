@@ -50,8 +50,10 @@ const Auth = () => {
               className="user-type-select"
               aria-label="Default select example"
               name="user_type"
+              required
               onChange={changeSignInForm}
             >
+              <option value="">Seleccione el tipo de usuario</option>
               <option value="staff">Staff</option>
               <option value="admin">Administrator</option>
             </Form.Select>
@@ -61,6 +63,7 @@ const Auth = () => {
                 name="username"
                 type="text"
                 className="input-auth"
+                required
                 placeholder="Enter username"
                 onChange={changeSignInForm}
               />
@@ -72,6 +75,7 @@ const Auth = () => {
                 name="password"
                 className="input-auth"
                 onChange={changeSignInForm}
+                required
                 type="password"
                 placeholder="Enter password"
               />

@@ -11,6 +11,7 @@
   background-color: rgba(245, 245, 245, 0.87) !important;
   border-radius: 100px;
   margin-top: 5px;
+  font-size: 1.2vw;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
   -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
   -moz-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);

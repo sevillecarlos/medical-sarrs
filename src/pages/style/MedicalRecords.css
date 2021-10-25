@@ -6,12 +6,16 @@
 }
 
 .patient-photo {
-  width: 150px;
+  width: 200px;
   background-color: wheat !important;
 }
 .photo-container {
-  margin: auto !important;
-  width: 14%;
+  margin: auto;
+  text-align: center;
+}
+.control-patient-photo{
+  width: 14% !important;
+  margin: auto;
 }
 .modify-patient-info-btn {
   margin-left: 25% !important;
@@ -35,7 +39,7 @@
   cursor: pointer;
   padding: 10px;
   margin-left: 5px;
-  font-size: 15px;
+  font-size: 19px;
   box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);

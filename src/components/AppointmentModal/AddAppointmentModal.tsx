@@ -142,8 +142,7 @@ const AddAppointmentModal = (props: AddAppointmentModalI) => {
             />
             {timeError && (
               <span style={{ color: "red" }}>
-                El tiempo de esta cita intercede con otra,{" "}
-                <strong>Recuerda cada cita dura minimo 30 minutos</strong>
+                El tiempo de esta cita intercede con otra
               </span>
             )}
           </Form.Group>
