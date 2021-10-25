@@ -115,7 +115,7 @@ const RegisterPatientModal = (props: RegisterPatient) => {
           <Form.Group className="mb-3">
             <Form.Label>Phone Number</Form.Label>
             <InputGroup className="mb-3 phone-number-input">
-              <InputGroup.Text className="text-phone-number">+504</InputGroup.Text>
+              
               <FormControl
                 placeholder="Enter your phone number"
                 className="form-input-add-supply "

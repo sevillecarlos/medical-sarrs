@@ -1,15 +1,17 @@
 .medical-record-table {
   width: 70% !important;
+  height: 100px !important;       /* Just for the demo          */
+  overflow-y: auto !important;    /* Trigger vertical scroll    */
+  overflow-x: hidden !important;  /* Hide the horizontal scroll */
 }
+
 .patient-photo {
-  width: 100px;
-  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  width: 150px;
+  background-color: wheat !important;
 }
 .photo-container {
   margin: auto !important;
-  width: 13%;
+  width: 14%;
 }
 .modify-patient-info-btn {
   width: 50%;
@@ -78,6 +80,10 @@
 .add-medical {
   width: 50% !important;
 }
+.update-patient-form{
+  width: 80%;
+  margin: auto;
+}
 .test-photo-added {
   width: 70px;
   height: 70px;
@@ -86,7 +92,15 @@
   -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
 }
+.return-btn{
+  float: left;
+  font-size: 0.8vw !important;
 
+}
+.update-data-btn{
+  background-color: teal !important;
+  font-size: 1vw !important;
+}
 .remove-added-item {
   position: absolute;
   right: 3px;

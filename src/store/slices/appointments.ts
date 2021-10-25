@@ -37,6 +37,30 @@ export const createPatient = createAsyncThunk(
   }
 );
 
+export const updatePatient = createAsyncThunk(
+  "auth/updatePatient",
+  async (patientsData: any) => {
+    try {
+      const res = axios.put(
+        `http://127.0.0.1:5000/api/v1/patients/${patientsData.id}`,
+        {
+          patient_id: patientsData.patient_id,
+          first_name: patientsData.first_name,
+          last_name: patientsData.last_name,
+          birth_date: patientsData.birth_date,
+          patient_gender: patientsData.patient_gender,
+          phone_number: patientsData.phone_number,
+          address: patientsData.address,
+        }
+      );
+      const patients = (await res).data;
+      return patients;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
 export const getAppointments = createAsyncThunk(
   "auth/getAppointments",
   async () => {
@@ -226,6 +250,21 @@ const appointmentSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(updateAppointmentStatus.rejected, (state) => {
+      state.status = "reject";
+    });
+
+
+    builder.addCase(
+      updatePatient.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reload = action.payload;
+      }
+    );
+    builder.addCase(updatePatient.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(updatePatient.rejected, (state) => {
       state.status = "reject";
     });
 
