@@ -64,8 +64,8 @@ const AddDocument = (props: AddDocumentInterface) => {
           </Form.Group>
           <Form.Group>
             <Form.Label>
-              Name of the MEDICAL{" "}
-              {medicalRecordHistoryTest.document_type.toUpperCase()}
+              Name of the Document
+              
             </Form.Label>
             <Form.Control
               type="text"
@@ -78,8 +78,8 @@ const AddDocument = (props: AddDocumentInterface) => {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>
-              Detail of the{" "}
-              {medicalRecordHistoryTest.document_type?.toUpperCase()}
+              Detail of the Document
+             
             </Form.Label>
             <Form.Control
               as="textarea"

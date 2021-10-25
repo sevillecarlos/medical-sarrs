@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   createMedicalRecord,
   medicalRecordsAction,
-  getPatient,
 } from "../../store/slices/medicalRecords";
 
-import { updatePatient } from "../../store/slices/appointments";
 
-import { BiArrowBack } from "react-icons/bi";
 
 import {
   Button,
@@ -16,26 +13,21 @@ import {
   Tabs,
   Image,
   Tab,
-  InputGroup,
   OverlayTrigger,
-  FormControl,
   Popover,
 } from "react-bootstrap";
 import { GiCancel } from "react-icons/gi";
-import { AiOutlineUserAdd } from "react-icons/ai";
 
 import { GrFormAdd } from "react-icons/gr";
-import { AiOutlineEdit } from "react-icons/ai";
 
 import DatePicker from "react-datepicker";
 
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import {useDispatch } from "react-redux";
 
 import DropDownFilter from "../../ui/DropDownFilter";
 
 const AddMedicalRecord = (props: any) => {
   const dispatch = useDispatch();
-  const appointment = useSelector((state: RootStateOrAny) => state.appointment);
 
   const {
     showModalAdd,
@@ -68,7 +60,6 @@ const AddMedicalRecord = (props: any) => {
   const [documentPrev, setDocumentPrev] = useState(Array<any>());
   const [patientPhotoPrev, setPatientPhotoPrev] = useState<string>("");
 
-  const [modifyPatient, setModifyPatient] = useState(false);
 
   const removeMedicine = (medicineIndex: number) => {
     setMedicines(medicines.filter((_, i: number) => i !== medicineIndex));
@@ -109,6 +100,7 @@ const AddMedicalRecord = (props: any) => {
       ailment_detail: "",
     });
   };
+
   const addMedicines = (e: any) => {
     setMedicines((prevState) => {
       return [...prevState, medicalRecordInfoMedicine];
@@ -213,21 +205,6 @@ const AddMedicalRecord = (props: any) => {
     dispatch(medicalRecordsAction.clearPatient());
   };
 
-  const [patientForm, setPatientForm] = useState({
-    patient_id: "",
-    first_name: "",
-    last_name: "",
-    birth_date: "",
-    patient_gender: "",
-    phone_number: "",
-    address: "",
-  });
-
-  const changePatientForm = (e: any) =>
-    setPatientForm((prevState: any) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
-
   const uploadPhotoUser = (e: any) => {
     const photo = e.target.files[0];
     setMedicalRecordsForm((prevState: any) => {
@@ -240,50 +217,8 @@ const AddMedicalRecord = (props: any) => {
     };
   };
 
-  const handleChangePatientDate = (date: any) =>
-    setPatientForm((prevState: any) => {
-      const formatDate = new Date(date).toDateString();
-      return { ...prevState, birth_date: formatDate };
-    });
 
-  const submitUpdatePatient = (e: any) => {
-    e.preventDefault();
 
-    const patientData = { id: medicalRecord.patient.id, ...patientForm };
-
-    dispatch(updatePatient(patientData));
-
-    setPatientForm({
-      patient_id: "",
-      first_name: "",
-      last_name: "",
-      birth_date: "",
-      patient_gender: "",
-      phone_number: "",
-      address: "",
-    });
-
-    setModifyPatient(false);
-  };
-
-  useEffect(() => {
-    setPatientForm({
-      patient_id: medicalRecord.patient?.patient_id,
-      first_name: medicalRecord.patient?.first_name,
-      last_name: medicalRecord.patient?.last_name,
-      birth_date: medicalRecord.patient?.birth_date,
-      patient_gender: medicalRecord.patient?.patient_gender,
-      phone_number: medicalRecord.patient?.phone_number,
-      address: medicalRecord.patient?.address,
-    });
-  }, [medicalRecord.patient]);
-
-  useEffect(() => {
-    if (appointment.reload) {
-      dispatch(getPatient(medicalRecord.patient?.id));
-      medicalRecordsAction.clearReload();
-    }
-  }, [appointment.reload, dispatch, medicalRecord.patient?.id]);
 
   return (
     <Modal
@@ -327,155 +262,36 @@ const AddMedicalRecord = (props: any) => {
                     onChange={uploadPhotoUser}
                   />
                 </Form.Group>
-                {modifyPatient ? (
-                  <Form
-                    onSubmit={submitUpdatePatient}
-                    className="update-patient-form"
-                    autoComplete="off"
-                  >
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>ID Number</Form.Label>
-                      <Form.Control
-                        className="form-input-add-supply"
-                        value={patientForm.patient_id}
-                        type="text"
-                        required
-                        onChange={changePatientForm}
-                        name="patient_id"
-                        placeholder="Enter patient ID"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>First Name</Form.Label>
-                      <Form.Control
-                        className="form-input-add-supply"
-                        type="text"
-                        value={patientForm.first_name}
-                        onChange={changePatientForm}
-                        required
-                        name="first_name"
-                        placeholder="Enter first name"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>Last Name</Form.Label>
-                      <Form.Control
-                        className="form-input-add-supply"
-                        type="text"
-                        value={patientForm.last_name}
-                        onChange={changePatientForm}
-                        name="last_name"
-                        required
-                        placeholder="Enter last name"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>Birth Date</Form.Label>
-                      <DatePicker
-                        onChange={handleChangePatientDate}
-                        value={patientForm.birth_date}
-                        className="date-input patient-form"
-                        required
-                        placeholderText="Enter your birth day"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>Select Gender</Form.Label>
-                      <Form.Select
-                        className="form-input-add-supply"
-                        onChange={changePatientForm}
-                        name="patient_gender"
-                        value={patientForm.patient_gender}
-                        required
-                      >
-                        <option value="">Select your gender</option>
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                      </Form.Select>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Phone Number</Form.Label>
-                      <InputGroup className="mb-3 phone-number-input">
-                        <FormControl
-                          placeholder="Enter your phone number"
-                          className="form-input-add-supply "
-                          name="phone_number"
-                          onChange={changePatientForm}
-                          value={patientForm.phone_number}
-                          required
-                        />
-                      </InputGroup>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label>Address</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        onChange={changePatientForm}
-                        className="form-input-add-supply"
-                        required
-                        value={patientForm.address}
-                        placeholder="Enter a detail of the item"
-                        name="address"
-                        style={{ height: "90px" }}
-                      />
-                    </Form.Group>
-                    <div className="modal-btn-container">
-                      <Button type="submit" className="update-data-btn">
-                        Actualizar informacion
-                        <AiOutlineUserAdd />
-                      </Button>
-                      <br />
-                      <Button
-                        onClick={() => setModifyPatient(false)}
-                        className="return-btn"
-                      >
-                        <BiArrowBack />
-                        Volver a datos iniciales
-                      </Button>
-                    </div>
-                  </Form>
-                ) : (
-                  <div>
-                    <span>Patient Name</span>
-                    <h5>
-                      {`${medicalRecord.patient?.first_name} 
+
+                <div>
+                  <span>Patient Name</span>
+                  <h5>
+                    {`${medicalRecord.patient?.first_name} 
       ${medicalRecord.patient?.last_name}`}
-                    </h5>
-                    <br />
-                    <span>Patient Id</span>
-                    <h5>
-                      {medicalRecord.patient?.patient_id?.slice(0, 4) +
-                        "-" +
-                        medicalRecord.patient?.patient_id?.slice(4, 8) +
-                        "-" +
-                        medicalRecord.patient?.patient_id?.slice(8, 15)}
-                    </h5>
-                    <br />
-                    <span>Birth Date</span>
-                    <h5>{medicalRecord.patient?.birth_date} </h5>
-                    <br />
-                    <span>Gender</span>
-                    <h5>{medicalRecord.patient?.patient_gender} </h5>
-                    <br />
-                    <span>Phone Number</span>
-                    <h5>{medicalRecord.patient?.phone_number} </h5>
-                    <br />
-                    <span>Address</span>
-                    <h5>{medicalRecord.patient?.address} </h5>
-                    <div className="modify-patient-info-btn-container">
-                      <Button
-                        className="modify-patient-info-btn"
-                        onClick={() => setModifyPatient(true)}
-                      >
-                        Modify Patient Information{" "}
-                        <AiOutlineEdit
-                          style={{ marginLeft: "5px" }}
-                          size={20}
-                        />
-                      </Button>
-                    </div>
-                  </div>
-                )}
+                  </h5>
+                  <br />
+                  <span>Patient Id</span>
+                  <h5>
+                    {medicalRecord.patient?.patient_id?.slice(0, 4) +
+                      "-" +
+                      medicalRecord.patient?.patient_id?.slice(4, 8) +
+                      "-" +
+                      medicalRecord.patient?.patient_id?.slice(8, 15)}
+                  </h5>
+                  <br />
+                  <span>Birth Date</span>
+                  <h5>{medicalRecord.patient?.birth_date} </h5>
+                  <br />
+                  <span>Gender</span>
+                  <h5>{medicalRecord.patient?.patient_gender} </h5>
+                  <br />
+                  <span>Phone Number</span>
+                  <h5>{medicalRecord.patient?.phone_number} </h5>
+                  <br />
+                  <span>Address</span>
+                  <h5>{medicalRecord.patient?.address} </h5>
+                  <div className="modify-patient-info-btn-container"></div>
+                </div>
               </div>
             )}
           </Tab>
@@ -840,29 +656,23 @@ const AddMedicalRecord = (props: any) => {
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>
-                  Name of the MEDICAL{" "}
-                  {medicalRecordHistoryTest.document_type.toUpperCase()}
-                </Form.Label>
+                <Form.Label>Name of the Document</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-input-add-supply"
                   onChange={onChangeMedRecordFormHistroyTest}
                   value={medicalRecordHistoryTest.document_name}
                   name="document_name"
-                  placeholder={`Enter medical ${medicalRecordHistoryTest.document_type} name`}
+                  placeholder={`Enter the name of the document`}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>
-                  Detail of the{" "}
-                  {medicalRecordHistoryTest.document_type?.toUpperCase()}
-                </Form.Label>
+                <Form.Label>Detail of the Document</Form.Label>
                 <Form.Control
                   as="textarea"
                   onChange={onChangeMedRecordFormHistroyTest}
                   className="form-input-add-supply"
-                  placeholder={`Enter a detail of the ${medicalRecordHistoryTest.document_type}`}
+                  placeholder={`Enter a detail of the document`}
                   name="document_detail"
                   value={medicalRecordHistoryTest.document_detail}
                   style={{ height: "90px" }}
@@ -874,7 +684,7 @@ const AddMedicalRecord = (props: any) => {
                   onChange={onChangeMedRecordFormHistroyTestDate}
                   value={medicalRecordHistoryTest.document_date}
                   className="filter-input patient-form"
-                  placeholderText={`Enter ${medicalRecordHistoryTest.document_type} date`}
+                  placeholderText={`Enter document date`}
                 />
               </Form.Group>
               <div>
@@ -924,7 +734,7 @@ const AddMedicalRecord = (props: any) => {
               </div>
               <div className="add-medical-container">
                 <Button className="add-suply btn add-medical" type="submit">
-                  Add {medicalRecordHistoryTest.document_type.toUpperCase()}
+                  Add Document
                   <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
                 </Button>
               </div>

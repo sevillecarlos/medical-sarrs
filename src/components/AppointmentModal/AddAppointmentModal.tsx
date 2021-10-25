@@ -59,7 +59,6 @@ const AddAppointmentModal = (props: AddAppointmentModalI) => {
     return checkTimeExist.length !== 0 ? true : false;
   };
 
-  console.log(timeError);
   const submitAddAppointment = (e: any) => {
     e.preventDefault();
     const checkTime = checkAppointmentTime();
