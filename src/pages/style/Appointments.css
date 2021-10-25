@@ -101,6 +101,7 @@
   border: none !important;
   border-radius: 20px !important;
   color: rgb(34, 32, 32) !important;
+  font-size: 1vw !important;
   background-color: rgba(172, 255, 47, 0.521);
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
   -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);

@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  Button,
-  Image,
-  FormControl,
-} from "react-bootstrap";
+import { Table, Button, Image, FormControl } from "react-bootstrap";
 import {
   getPatient,
   getMedicalRecord,
@@ -83,6 +78,12 @@ const MedicalRecords = () => {
     dispatch(deleteAppointments(appointmentId));
   };
   const [medicalRecordDetail, setMedicalRecordDetail] = useState<any>({});
+
+  const [medicalRecords, setMedicalRecords] = useState([]);
+
+  useEffect(() => {
+    setMedicalRecords(medicalRecord.medicalRecords);
+  }, [medicalRecord.medicalRecords]);
 
   const filterPatients = () => {
     const medicalPatientId = medicalRecord.medicalRecords?.map(
@@ -272,6 +273,31 @@ const MedicalRecords = () => {
     }
   }, [medicalRecord.reloadMedicalRecord, medicalRecordDetail.id, dispatch]);
 
+  const filterMedicalRecord = (e: any) => {
+    const query = e.target.value;
+    if (query === "") {
+      setMedicalRecords(medicalRecord.medicalRecords);
+    } else {
+      const d = medicalRecord.medicalRecords
+        .map((v: any) => findPatient(v.patient_id))
+        .filter(
+          (v: any) =>
+            v.first_name
+              .replace(/\s/g, "")
+              .toLowerCase()
+              .indexOf(query.toLowerCase()) !== -1
+        ).map((c:any)=>c.id)
+
+
+      const filterArray = medicalRecord.medicalRecords.filter(
+        (v: any) => d.includes(v.patient_id)
+      );
+
+
+      setMedicalRecords(filterArray);
+    }
+  };
+
   return (
     <div>
       <AddMedicalRecord
@@ -358,7 +384,7 @@ const MedicalRecords = () => {
           <tr>
             <th>
               <Button
-                className="add-suply btn"
+                className="add-suply btn btn-table"
                 onClick={() => setShowModalAdd(true)}
               >
                 Add Medical Record
@@ -368,6 +394,7 @@ const MedicalRecords = () => {
             <th>
               <FormControl
                 autoFocus
+                onChange={filterMedicalRecord}
                 className="filter-input"
                 placeholder="Type the name of the patient"
               />
@@ -381,7 +408,7 @@ const MedicalRecords = () => {
             <td>Photo</td>
             <td>More Info</td>
           </tr>
-          {medicalRecord.medicalRecords?.map((v: any) => {
+          {medicalRecords?.map((v: any) => {
             const patient = findPatient(v.patient_id);
             return (
               <tr>

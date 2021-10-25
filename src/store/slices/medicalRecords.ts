@@ -108,7 +108,7 @@ export const addMedicalRecords = createAsyncThunk(
   async (medicalRecordInfo: any) => {
     try {
       const res = axios.post(
-        `http://127.0.0.1:5000/api/v1/medical_records_documents`,
+        `http://127.0.0.1:5000/api/v1/medical_records_${medicalRecordInfo.info}`,
         medicalRecordInfo.medicalRecordInfo
       );
       const medicalRecord = (await res).data;

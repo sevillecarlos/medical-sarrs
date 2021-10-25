@@ -184,7 +184,7 @@ const Inventory = () => {
             <th>
               {" "}
               <Button
-                className="add-suply btn"
+                className="add-suply btn-table"
                 onClick={() => setShowModalAdd(true)}
               >
                 Add Supply
