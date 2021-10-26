@@ -21,7 +21,7 @@ const AddMedicines = (props: AddMedicinesInterface) => {
   return (
     <Modal
       show={showAddMedicalRecordMedicine}
-      className="modal-modify-supply"
+      className="modal-modify-medical"
       onHide={() => setShowAddMedicalRecordMedicine(false)}
       backdrop="static"
     >
@@ -39,10 +39,10 @@ const AddMedicines = (props: AddMedicinesInterface) => {
               value={medicalRecordInfoMedicine.medicine_type}
               aria-label="Floating label select example"
             >
-              <option>Select type of Medicines</option>
+              <option>Seleccione el tipo de medicamentos</option>
               <option value="analgesics">Analgesics</option>
               <option value="antacids-and-antiulcers">
-                Antacids and antiulcers
+                Antiácidos y antiulcerosos
               </option>
               <option value="anti-allergy">Anti-allergy</option>
               <option value="antidiarrheals-and-laxatives">
@@ -57,19 +57,19 @@ const AddMedicines = (props: AddMedicinesInterface) => {
             </Form.Select>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Medicine Name</Form.Label>
+            <Form.Label>Nombre de la medicina</Form.Label>
             <Form.Control
               type="text"
               className="form-input-add-supply"
               onChange={onChangeMedRecordFormMedicines}
               value={medicalRecordInfoMedicine.medicine_to}
               name="medicine_to"
-              placeholder="Enter medicine name"
+              placeholder="Enter Nombre de la medicina"
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Medicine Detail</Form.Label>
+            <Form.Label>Detalle de la medicina</Form.Label>
             <Form.Control
               as="textarea"
               onChange={onChangeMedRecordFormMedicines}

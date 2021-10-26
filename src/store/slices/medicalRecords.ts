@@ -104,12 +104,27 @@ export const deleteMedicalRecord = createAsyncThunk(
 );
 
 export const addMedicalRecords = createAsyncThunk(
-  "medical-records/addMedicalRecordsAlergy",
+  "medical-records/addMedicalRecords",
   async (medicalRecordInfo: any) => {
     try {
       const res = axios.post(
         `http://127.0.0.1:5000/api/v1/medical_records_${medicalRecordInfo.info}`,
         medicalRecordInfo.medicalRecordInfo
+      );
+      const medicalRecord = (await res).data;
+      return medicalRecord;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+);
+
+export const deleteDocumentMedicalRecords = createAsyncThunk(
+  "medical-records/deleteDocumentMedicalRecords",
+  async (id: any) => {
+    try {
+      const res = axios.delete(
+        `http://127.0.0.1:5000/api/v1/medical_records_documents/${id}`,
       );
       const medicalRecord = (await res).data;
       return medicalRecord;
@@ -230,6 +245,21 @@ const medicalRecordsSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(addMedicalRecords.rejected, (state) => {
+      state.status = "reject";
+    });
+
+    builder.addCase(
+      deleteDocumentMedicalRecords.fulfilled,
+      (state, action: { payload: any }) => {
+        state.status = "success";
+        state.reloadMedicalRecord = action.payload;
+      }
+    );
+
+    builder.addCase(deleteDocumentMedicalRecords.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteDocumentMedicalRecords.rejected, (state) => {
       state.status = "reject";
     });
 

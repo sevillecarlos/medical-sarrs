@@ -10,23 +10,23 @@ const AddAilment = (props: any) => {
     onChangeMedRecordFormAilment,
     medicalRecordInfoAilment,
   } = props;
-  
+
   return (
     <Modal
       show={showAddMedicalRecordAilment}
-      className="modal-modify-supply"
+      className="modal-modify-medical"
       onHide={() => setShowAddMedicalRecordAilment(false)}
       backdrop="static"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Add Ailment</Modal.Title>
+        <Modal.Title>Agregar Padecimiento</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label style={{ fontWeight: "bold" }}>Ailment</Form.Label>
+            <Form.Label style={{ fontWeight: "bold" }}>Padecimientos</Form.Label>
             <Form.Group>
-              <Form.Label>Type of Ailment</Form.Label>
+              <Form.Label>Tipo de Padecimiento</Form.Label>
               <Form.Select
                 className="filter-input"
                 name="ailment_type"
@@ -34,45 +34,45 @@ const AddAilment = (props: any) => {
                 value={medicalRecordInfoAilment.ailment_type}
                 aria-label="Floating label select example"
               >
-                <option>Select type of Ailment</option>
-                <option value="oncological-diseases">
-                  Oncological diseases
-                </option>
+                <option>Seleccione Tipo de Padecimiento</option>
+
                 <option value="infectious-and-parasitic diseases">
-                  Infectious and parasitic diseases
+                  Enfermedades Infecciosas
                 </option>
                 <option value="oncological-diseases">
-                  Oncological diseases
+                  Enfermedades Oncologicas
                 </option>
                 <option value="immune-system-diseases">
-                  Immune system diseases
+                  Enfermedades del sistema inmunológico
                 </option>
                 <option value="endocrine-diseases">Endocrine diseases</option>
                 <option value="mental-behavioral-and-developmental-disorders">
-                  Mental, behavioral and developmental disorders
+                  Trastornos mentales, del comportamiento y del desarrollo.
                 </option>
                 <option value="nervous-system-diseases">
-                  Nervous system diseases
+                  Enfermedades del sistema nervioso{" "}
                 </option>
                 <option value="ophthalmological-and-vision-diseases">
-                  Ophthalmological and vision diseases
+                  Enfermedades oftalmológicas y de la vista{" "}
                 </option>
-                <option value="auditory-diseases">Auditory diseases</option>
+                <option value="auditory-diseases">
+                  Enfermedades auditivas
+                </option>
                 <option value="cardiovascular-diseases">
-                  Cardiovascular diseases
+                  Enfermedades cardiovasculares
                 </option>
                 <option value="respiratory-diseases">
-                  Respiratory diseases
+                  Enfermedades respiratorias{" "}
                 </option>
                 <option value="digestive-system-diseases">
-                  Digestive system diseases
+                  Enfermedades del sistema digestivo{" "}
                 </option>
                 <option value="skin-diseases">Skin diseases</option>
                 <option value="diseases-of-the-genitourinary-system">
-                  Diseases of the genitourinary system
+                  Enfermedades del sistema genitourinario.{" "}
                 </option>
                 <option value="congenital-diseases-and-chromosomal-abnormalities">
-                  Congenital diseases and chromosomal abnormalities
+                  Enfermedades congénitas y anomalías cromosómicas.{" "}
                 </option>
               </Form.Select>
             </Form.Group>
@@ -90,7 +90,7 @@ const AddAilment = (props: any) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Ailment Detail</Form.Label>
+            <Form.Label>Detalle del Padecimiento</Form.Label>
             <Form.Control
               as="textarea"
               onChange={onChangeMedRecordFormAilment}
@@ -107,7 +107,7 @@ const AddAilment = (props: any) => {
               addInfoMedicalRecord(medicalRecordInfoAilment, "ailments")
             }
           >
-            Add Ailment
+            Agregar Padecimiento
             <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
           </Button>
         </Form>

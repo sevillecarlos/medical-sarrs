@@ -127,12 +127,12 @@ const UserList = () => {
           onClickRemove={removeUser}
         />
         <Modal.Header closeButton>
-          <Modal.Title>Modify Staff User</Modal.Title>
+          <Modal.Title>Modificar Usario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={submitModify}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 className="form-input-add-supply"
                 type="text"
@@ -142,7 +142,7 @@ const UserList = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>Apellido</Form.Label>
               <Form.Control
                 min={1}
                 onChange={changeModifyForm}
@@ -153,7 +153,7 @@ const UserList = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Usuario</Form.Label>
               <Form.Control
                 type="text"
                 onChange={changeModifyForm}
@@ -163,7 +163,7 @@ const UserList = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 type={showPassword ? "text" : "password"}
                 onChange={changeModifyForm}
@@ -174,15 +174,15 @@ const UserList = () => {
               <Form.Check
                 type="checkbox"
                 onChange={() => setShowPassword(!showPassword)}
-                label="Show Password"
+                label="Mostrar Contraseña"
               ></Form.Check>
             </Form.Group>
             <div>
-              <span>Created at: {userDate.created_at}</span>
+              <span>Creado el: {userDate.created_at}</span>
             </div>
 
             <Button type="submit" className="add-supply-btn">
-              Modify User
+              Modificar Usuario
               <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />
             </Button>
           </Form>
@@ -191,7 +191,7 @@ const UserList = () => {
             type="button"
             className="remove-supply-btn"
           >
-            Remove User
+            Remover Usuario
             <MdDelete style={{ marginLeft: "5px" }} size={20} />
           </Button>
         </Modal.Body>
@@ -206,21 +206,21 @@ const UserList = () => {
                   {" "}
                   <span className="user-info-label">
                     {" "}
-                    First Name:{" "}
+                    Nombre:{" "}
                     <span className="user-info">{v.first_name}</span>{" "}
                   </span>
                   {"        "}
                   <span className="user-info-label">
-                    Last Name: <span className="user-info">{v.last_name}</span>{" "}
+                    Apellido: <span className="user-info">{v.last_name}</span>{" "}
                   </span>
                   <span className="user-info-label">
-                    Username: <span className="user-info">{v.username} </span>{" "}
+                    Usuario: <span className="user-info">{v.username} </span>{" "}
                   </span>
                   <Button
                     className="edit-user-list"
                     onClick={() => modifyUser(v)}
                   >
-                    Edit user <AiOutlineEdit />{" "}
+                    Modificar Usuario <AiOutlineEdit />{" "}
                   </Button>
                   <span>
                     <InputGroup className="password-user-list">
@@ -244,11 +244,11 @@ const UserList = () => {
                         >
                           {ableShowPassword.includes(v.id) ? (
                             <span>
-                              Hide <AiFillEyeInvisible />{" "}
+                              Ocultar <AiFillEyeInvisible />{" "}
                             </span>
                           ) : (
                             <span>
-                              Show <AiFillEye />
+                              Mostrar <AiFillEye />
                             </span>
                           )}
                         </Button>

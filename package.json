@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cloudinary/react": "^1.0.0-beta.11",
+    "@cloudinary/url-gen": "^1.1.0",
     "@reduxjs/toolkit": "^1.6.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -11,7 +13,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "bootstrap": "^5.0.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.4",
@@ -24,6 +26,7 @@
     "react-scripts": "4.0.3",
     "react-time-picker": "^4.3.0",
     "redux": "^4.1.1",
+    "request": "^2.88.2",
     "thunk": "^0.0.1",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
@@ -55,6 +58,7 @@
   "devDependencies": {
     "@types/react-datepicker": "^4.1.4",
     "@types/react-router-dom": "^5.1.8",
-    "@types/react-time-picker": "^4.0.2"
+    "@types/react-time-picker": "^4.0.2",
+    "@types/request": "^2.48.7"
   }
 }

@@ -52,72 +52,72 @@ const RegisterPatientModal = (props: RegisterPatient) => {
       backdrop="static"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Register Patient</Modal.Title>
+        <Modal.Title>Registrar Paciente</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={submitAddPatient} autoComplete="off">
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>ID Number</Form.Label>
+            <Form.Label>Numero de Identidad</Form.Label>
             <Form.Control
               className="form-input-add-supply"
               type="text"
               required
               onChange={changePatientForm}
               name="patient_id"
-              placeholder="Enter patient ID"
+              placeholder="Ingrese numero de ID"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>First Name</Form.Label>
+            <Form.Label>Nombre</Form.Label>
             <Form.Control
               className="form-input-add-supply"
               type="text"
               onChange={changePatientForm}
               required
               name="first_name"
-              placeholder="Enter first name"
+              placeholder="Ingrese nombre"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label>Apellido</Form.Label>
             <Form.Control
               className="form-input-add-supply"
               type="text"
               onChange={changePatientForm}
               name="last_name"
               required
-              placeholder="Enter last name"
+              placeholder="Ingrese apellido"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Birth Date</Form.Label>
+            <Form.Label>Fecha de Nacimiento</Form.Label>
             <DatePicker
               onChange={handleChangePatientDate}
               value={patientForm.birth_date}
               className="date-input patient-form"
               required
-              placeholderText="Enter your birth day"
+              placeholderText="Ingrese fecha de nacimiento"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Select Gender</Form.Label>
+            <Form.Label>Seleccione Genero</Form.Label>
             <Form.Select
               className="form-input-add-supply"
               onChange={changePatientForm}
               name="patient_gender"
               required
             >
-              <option value="">Select your gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
+              <option value="">Seleccion genero</option>
+              <option value="female">Mujer</option>
+              <option value="male">Hombre</option>
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Phone Number</Form.Label>
+            <Form.Label>Numero de telefono</Form.Label>
             <InputGroup className="mb-3 phone-number-input">
               
               <FormControl
-                placeholder="Enter your phone number"
+                placeholder="Ingrese numero de telefono"
                 className="form-input-add-supply "
                 name="phone_number"
                 onChange={changePatientForm}
@@ -126,20 +126,20 @@ const RegisterPatientModal = (props: RegisterPatient) => {
             </InputGroup>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Address</Form.Label>
+            <Form.Label>Dirrecion</Form.Label>
             <Form.Control
               as="textarea"
               onChange={changePatientForm}
               className="form-input-add-supply"
               required
-              placeholder="Enter a detail of the item"
+              placeholder="Ingrese dirrecion"
               name="address"
               style={{ height: "90px" }}
             />
           </Form.Group>
           <div className="modal-btn-container">
             <Button type="submit" className="add-patient-btn modal-btn">
-              Add Patient
+             Agregar Paciente
               <AiOutlineUserAdd />
             </Button>
           </div>

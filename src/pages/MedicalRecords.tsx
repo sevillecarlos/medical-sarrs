@@ -109,7 +109,7 @@ const MedicalRecords = () => {
 
   const [medicalRecordHistoryTest, setMedicalRecordHistoryTest] = useState({
     document_prev_photo: "",
-    document_photo: "",
+    document_photo: null,
     document_type: "",
     document_name: "",
     document_detail: "",
@@ -129,34 +129,7 @@ const MedicalRecords = () => {
     dispatch(appointmentAction.clearReload());
   }, [appointment.reload, dispatch]);
 
-  const addDocumentMedicalRecord = () => {
-    const {
-      document_photo,
-      document_type,
-      document_name,
-      document_detail,
-      document_date,
-    } = medicalRecordHistoryTest;
 
-    const documentFormData = new FormData();
-    documentFormData.append("document_photo", document_photo);
-    documentFormData.append("document_type", document_type);
-    documentFormData.append("document_name", document_name);
-    documentFormData.append("document_detail", document_detail);
-    documentFormData.append("document_date", document_date);
-    documentFormData.append("medical_record_id", medicalRecordID);
-
-    dispatch(addMedicalRecords(documentFormData));
-    setMedicalRecordHistoryTest({
-      document_photo: "",
-      document_type: "",
-      document_name: "",
-      document_detail: "",
-      document_date: "",
-      document_prev_photo: "",
-    });
-    setShowAddDocument(false);
-  };
 
   const uploadHistoryTestsPhotoPrev = (e: any) => {
     const photo = e.target.files[0];
@@ -286,13 +259,12 @@ const MedicalRecords = () => {
               .replace(/\s/g, "")
               .toLowerCase()
               .indexOf(query.toLowerCase()) !== -1
-        ).map((c:any)=>c.id)
+        )
+        .map((c: any) => c.id);
 
-
-      const filterArray = medicalRecord.medicalRecords.filter(
-        (v: any) => d.includes(v.patient_id)
+      const filterArray = medicalRecord.medicalRecords.filter((v: any) =>
+        d.includes(v.patient_id)
       );
-
 
       setMedicalRecords(filterArray);
     }
@@ -371,11 +343,12 @@ const MedicalRecords = () => {
         onChangeMedRecordFormHistroyTestDate={
           onChangeMedRecordFormHistroyTestDate
         }
+        medicalRecordID={medicalRecordID}
+        setMedicalRecordHistoryTest={setMedicalRecordHistoryTest}
         onChangeMedRecordFormHistroyTest={onChangeMedRecordFormHistroyTest}
         uploadHistoryTestsPhotoPrev={uploadHistoryTestsPhotoPrev}
         showAddDocument={showAddDocument}
         setShowAddDocument={setShowAddDocument}
-        addDocumentMedicalRecord={addDocumentMedicalRecord}
         medicalRecordHistoryTest={medicalRecordHistoryTest}
       />
 

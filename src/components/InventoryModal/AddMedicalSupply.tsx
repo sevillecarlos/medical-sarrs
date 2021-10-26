@@ -88,26 +88,24 @@ const AddMedicalSupply = (props: any) => {
       contentClassName="modal-add-supply-content"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Add Medical Supply</Modal.Title>
+        <Modal.Title>Agregar Insumo Medico</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={addSupply} autoComplete="off">
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Nombre</Form.Label>
             <Form.Control
               className="form-input-add-supply"
               required
               type="text"
               onChange={changeItemFormName}
               name="name"
-              placeholder="Enter name of the item"
+              placeholder="Ingrese nombre del insumo"
             />
             {errorUniqueName ? (
-              <Form.Text className="error-name">
-                Name already exist, try write the name more specific
-              </Form.Text>
+              <Form.Text className="error-name">Ese nombre ya existe </Form.Text>
             ) : (
-              <Form.Text>The name need to be unique in the inventory</Form.Text>
+              <Form.Text>Tiene que ser unico</Form.Text>
             )}
           </Form.Group>
           <Form.Select
@@ -116,7 +114,7 @@ const AddMedicalSupply = (props: any) => {
             name="category_id"
             required
           >
-            <option>Select Category</option>
+            <option>Seleccione Categoria</option>
 
             {inventory.categories?.map((v: { id: number; name: string }) => {
               return (
@@ -128,7 +126,7 @@ const AddMedicalSupply = (props: any) => {
           </Form.Select>
           <br />
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label>Cantidad</Form.Label>
             <Form.Control
               min={0}
               onChange={changeItemForm}
@@ -136,17 +134,17 @@ const AddMedicalSupply = (props: any) => {
               type="number"
               required
               className="form-input-add-supply"
-              placeholder="Enter quantity of the item"
+              placeholder="Ingrese cantidad de insumos"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Details</Form.Label>
+            <Form.Label>Detalle</Form.Label>
             <Form.Control
               as="textarea"
               onChange={changeItemForm}
               required
               className="form-input-add-supply"
-              placeholder="Enter a detail of the item"
+              placeholder="Ingrese detalle del insumo"
               name="detail"
               style={{ height: "100px" }}
             />
@@ -156,7 +154,7 @@ const AddMedicalSupply = (props: any) => {
             type="submit"
             className="add-supply-btn"
           >
-            Add Supply
+            Agegar Insumo
             <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
           </Button>
         </Form>

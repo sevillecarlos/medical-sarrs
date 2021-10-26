@@ -114,34 +114,34 @@ const NavBar = () => {
         backdrop="static"
       >
         <Modal.Header closeButton>
-          <Modal.Title>User Register</Modal.Title>
+          <Modal.Title>Registrar Usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form autoComplete="off" onSubmit={submitAddUser}>
             <Form.Group className="mb-3">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 className="form-input-add-user"
                 required
                 type="text"
                 onChange={changeUserForm}
                 name="first_name"
-                placeholder="Enter full name"
+                placeholder="Ingrese nombre"
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>Apellido</Form.Label>
               <Form.Control
                 className="form-input-add-user"
                 type="text"
                 onChange={changeUserForm}
                 name="last_name"
-                placeholder="Enter full name"
+                placeholder="Ingrese apellido"
                 required
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Usuario</Form.Label>
               <Form.Control
                 className="form-input-add-user"
                 type="text"
@@ -149,28 +149,28 @@ const NavBar = () => {
                 required
                 name="username"
                 value={userForm.username}
-                placeholder="Enter username"
+                placeholder="Ingrese usuario"
               />
             </Form.Group>
             {userNameError && (
               <span style={{ color: "red" }}>
-                This Username is already in used, choose another one
+                Este usuario esta ocupado.
               </span>
             )}
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 className="form-input-add-user"
                 type={showPassword ? "text" : "password"}
                 onChange={changeUserForm}
                 name="password"
-                placeholder="Enter password"
+                placeholder="Ingrese contraseña"
                 required
               />
               <Form.Check
                 type="checkbox"
                 onChange={() => setShowPassword(!showPassword)}
-                label="Show Password"
+                label="Mostrar contraseña"
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -181,13 +181,13 @@ const NavBar = () => {
                 name="user_type"
                 required
               >
-                <option value="">Select the user type</option>
+                <option value="">Seleccione el tipo de usuario</option>
                 <option value="staff">staff</option>
                 <option value="admin">admin</option>
               </Form.Select>
             </Form.Group>
             <Button type="submit" className="add-user-btn">
-              Add User
+              Agregar Usuario
               <AiOutlineUserAdd style={{ marginLeft: "5px" }} size={20} />
             </Button>
           </Form>
@@ -204,18 +204,18 @@ const NavBar = () => {
             {auth.token ? (
               <>
                 {" "}
-                <Nav.Link href="/medical-records">Medical Records</Nav.Link>
+                <Nav.Link href="/medical-records">Historiales Medicos</Nav.Link>
                 <Nav.Link href="/appointment">
-                  Appointment Registration
+                  Citas Medicas
                 </Nav.Link>
-                <Nav.Link href="/inventory">Inventory</Nav.Link>
+                <Nav.Link href="/inventory">Inventario</Nav.Link>
                 <NavDropdown
                   className="user-dropdown"
                   title={`Hi ${firstName.split(" ").shift()}`}
                   id="collasible-nav-dropdown"
                 >
                   <NavDropdown.ItemText>
-                    Login as
+                    Ingreso como 
                     <span className="badge-user"> {userName}</span>
                   </NavDropdown.ItemText>
                   {userType === "admin" && (
@@ -223,16 +223,16 @@ const NavBar = () => {
                       <NavDropdown.Item
                         onClick={() => setShowModalAddUser(true)}
                       >
-                        Add Users
+                        Agregar Usuario
                       </NavDropdown.Item>
                       <NavDropdown.Item href="userlist">
-                        User list
+                        Lista de Usuario
                       </NavDropdown.Item>
                     </>
                   )}
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={signOut}>
-                    Sign Out
+                    Salir
                   </NavDropdown.Item>
                 </NavDropdown>{" "}
               </>

@@ -67,19 +67,19 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
     <Popover id="popover-patient-info">
       <Popover.Body>
         <Form.Group className="mb-3">
-          <Form.Label>Phone Number</Form.Label>
+          <Form.Label>Numero de telefono</Form.Label>
           <h5> {dateAppointmentForm.phone_number} </h5>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Gender</Form.Label>
+          <Form.Label>Genero</Form.Label>
           <h5> {dateAppointmentForm.patient_gender} </h5>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>Dirrecion</Form.Label>
           <h5> {dateAppointmentForm.address} </h5>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>BirthDay</Form.Label>
+          <Form.Label>Fecha de Nacimiento</Form.Label>
           <h5> {dateAppointmentForm.birth_date} </h5>
         </Form.Group>
       </Popover.Body>
@@ -98,22 +98,22 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
         onClickRemove={removeAppointment}
       />
       <Modal.Header closeButton>
-        <Modal.Title className="modal-title">Appointment Detail</Modal.Title>
+        <Modal.Title className="modal-title">Detalle de la Cita</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form className="show-detail-appointment" onSubmit={modifyAppointment}>
           <Form.Group className="mb-3">
-            <Form.Label>Apppointment Status</Form.Label>
+            <Form.Label>Estado de la Cita</Form.Label>
             <div
               className={`status-appointment ${
                 dateAppointmentForm.status ? "open" : "close"
               }-status`}
             >
-              {dateAppointmentForm.status ? "Open" : "Close"}
+              {dateAppointmentForm.status ? "Abierto" : "Cerrado"}
             </div>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label className="modal-label">Patient</Form.Label>
+            <Form.Label className="modal-label">Paciente</Form.Label>
             <h5>
               {dateAppointmentForm.first_name} {dateAppointmentForm.last_name}
             </h5>
@@ -123,7 +123,7 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
               {" "}
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label className="modal-label">
-                  Patient Id Number
+                  ID del Paciente
                 </Form.Label>
                 <h5>{dateAppointmentForm.patient_id}</h5>
               </Form.Group>
@@ -135,26 +135,26 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
                 >
                   <Button className="show-patient-info">
                     {" "}
-                    Show patient information <BiMessageRoundedDetail />
+                    Mostrar mas informacion del paciente <BiMessageRoundedDetail />
                   </Button>
                 </OverlayTrigger>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label className="modal-label">Date</Form.Label>
+                <Form.Label className="modal-label">Fecha</Form.Label>
                 <h5>{appointmentFormDetail.date}</h5>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label className="modal-label">Time</Form.Label>
+                <Form.Label className="modal-label">Tiempo</Form.Label>
                 <h5>{appointmentFormDetail.time}</h5>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label className="modal-label">Reason</Form.Label>
+                <Form.Label className="modal-label">Razon</Form.Label>
                 <h5>{appointmentFormDetail.reason}</h5>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label className="modal-label">Created at:</Form.Label>
+                <Form.Label className="modal-label">Creado el :</Form.Label>
                 <h5>
-                  {new Date(dateAppointmentForm.created_at).toLocaleString()} by{" "}
+                  {new Date(dateAppointmentForm.created_at).toLocaleString()} por{" "}
                   {appointmentFormDetail.user_log_create}
                 </h5>
               </Form.Group>
@@ -163,16 +163,16 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
           ) : (
             <>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Date</Form.Label>
+                <Form.Label>Fecha</Form.Label>
                 <DatePicker
                   onChange={handleUpdateAppointmentDate}
                   value={appointmentFormDetail.date}
                   className="date-input patient-form"
-                  placeholderText="Enter your appointment date"
+                  placeholderText="Ingrese fecha de la cita"
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Time</Form.Label>
+                <Form.Label>Tiempo</Form.Label>
                 <TimePicker
                   disableClock
                   className="appointment-time"
@@ -189,13 +189,13 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
                 onClick={() => setShowModifyAppointment(true)}
                 className="edit-btn ask-modify-btn"
               >
-                Want to modify?
+               Modificar Cita
                 <AiOutlineEdit />
               </Button>
             ) : (
               <>
                 <Button type="submit" className="edit-btn">
-                  Modify appointment
+                  Modificar Cita
                   <AiOutlineEdit />
                 </Button>
                 <br />
@@ -204,7 +204,7 @@ const ShowDetailPatientModal = (props: ShowDetailPatient) => {
                   onClick={() => setShowRemoveModal(true)}
                   className="remove-btn"
                 >
-                  Remove appointment
+                  Remover Cita
                   <MdDelete />
                 </Button>
               </>

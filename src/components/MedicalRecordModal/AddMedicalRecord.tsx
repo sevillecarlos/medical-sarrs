@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createMedicalRecord,
   medicalRecordsAction,
 } from "../../store/slices/medicalRecords";
+
+import Axios from "axios";
 
 import {
   Button,
@@ -55,7 +57,6 @@ const AddMedicalRecord = (props: any) => {
   const [ailments, setAilments] = useState(Array<any>());
   const [medicines, setMedicines] = useState(Array<any>());
   const [document, setDocument] = useState(Array<any>());
-  const [documentPrev, setDocumentPrev] = useState(Array<any>());
   const [patientPhotoPrev, setPatientPhotoPrev] = useState<string>("");
 
   const removeMedicine = (medicineIndex: number) => {
@@ -109,41 +110,40 @@ const AddMedicalRecord = (props: any) => {
       medicine_detail: "",
     });
   };
+
   const addDocument = (e: any) => {
     e.preventDefault();
+    const { document_photo } = medicalRecordHistoryTest;
 
-    // const {
-    //   document_photo,
-    //   document_type,
-    //   document_name,
-    //   document_detail,
-    //   document_date,
-    // } = medicalRecordHistoryTest;
+    const formData = new FormData();
+    formData.append("file", document_photo);
+    formData.append("upload_preset", "zrucsish");
 
-    // // const documentFormData = new FormData();
-    // // documentFormData.append("document_photo", document_photo);
-    // // documentFormData.append("document_type", document_type);
-    // // documentFormData.append("document_name", document_name);
-    // // documentFormData.append("document_detail", document_detail);
-    // // documentFormData.append("document_date", document_date);
+    Axios.post("https://api.cloudinary.com/v1_1/goumi/image/upload", formData)
+      .then((res: any) => res)
+      .then((data: any) => {
+        setMedicalRecordHistoryTest((prevState: any) => {
+          return { ...prevState, document_photo: data.data.url };
+        });
 
-    setDocument((prevState) => {
-      return [...prevState, medicalRecordHistoryTest];
-    });
-
-    setDocumentPrev((prevState) => {
-      return [...prevState, medicalRecordHistoryTest];
-    });
-
-    setMedicalRecordHistoryTest({
-      document_photo: "",
-      document_type: "",
-      document_name: "",
-      document_detail: "",
-      document_date: "",
-      document_prev_photo: "",
-    });
+        setMedicalRecordHistoryTest({
+          document_photo: undefined,
+          document_type: "",
+          document_name: "",
+          document_detail: "",
+          document_date: "",
+          document_prev_photo: "",
+        });
+      });
   };
+
+  useEffect(() => {
+    if (typeof medicalRecordHistoryTest.document_photo === "string") {
+      setDocument((prevState: any) => {
+        return [...prevState, medicalRecordHistoryTest];
+      });
+    }
+  }, [medicalRecordHistoryTest.document_photo, medicalRecordHistoryTest]);
 
   const addMedicalRecord = () => {
     const { patient_id, blood_type, patient_photo } = medicalRecordsForm;
@@ -155,7 +155,8 @@ const AddMedicalRecord = (props: any) => {
     formData.append("alergies", JSON.stringify(alergies));
     formData.append("ailments", JSON.stringify(ailments));
     formData.append("medicines", JSON.stringify(medicines));
-    formData.append("document", JSON.stringify(document));
+    formData.append("documents", JSON.stringify(document));
+    console.log(document);
 
     dispatch(createMedicalRecord(formData));
 
@@ -181,7 +182,7 @@ const AddMedicalRecord = (props: any) => {
       medicine_detail: "",
     });
     setMedicalRecordHistoryTest({
-      document_photo: "",
+      document_photo: undefined,
       document_type: "",
       document_name: "",
       document_detail: "",
@@ -190,11 +191,8 @@ const AddMedicalRecord = (props: any) => {
     });
 
     setAlergies(Array<any>());
-
     setAilments(Array<any>());
-
     setMedicines(Array<any>());
-
     setDocument(Array<any>());
 
     setShowModalAdd(false);
@@ -224,7 +222,7 @@ const AddMedicalRecord = (props: any) => {
       contentClassName="modal-add-supply-content"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Initial Information of New Record</Modal.Title>
+        <Modal.Title>Informacion Inical Historial Medico</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Tabs
@@ -232,10 +230,10 @@ const AddMedicalRecord = (props: any) => {
           id="uncontrolled-tab-example"
           className="mb-3"
         >
-          <Tab eventKey="basic-info" title="Basic Information">
+          <Tab eventKey="basic-info" title="Informacion Basica">
             {medicalRecord.patient === null && (
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Patient</Form.Label>
+                <Form.Label>Paciente</Form.Label>
                 <DropDownFilter
                   items={filterPatients()}
                   appointmentFormPatient={setMedicalRecordsForm}
@@ -258,13 +256,13 @@ const AddMedicalRecord = (props: any) => {
                 </Form.Group>
 
                 <div>
-                  <span>Patient Name</span>
+                  <span>Nombre del paciente</span>
                   <h5>
                     {`${medicalRecord.patient?.first_name}
       ${medicalRecord.patient?.last_name}`}
                   </h5>
                   <br />
-                  <span>Patient Id</span>
+                  <span>Paciente Id</span>
                   <h5>
                     {medicalRecord.patient?.patient_id?.slice(0, 4) +
                       "-" +
@@ -273,27 +271,31 @@ const AddMedicalRecord = (props: any) => {
                       medicalRecord.patient?.patient_id?.slice(8, 15)}
                   </h5>
                   <br />
-                  <span>Birth Date</span>
+                  <span>Fecha de Nacimiento</span>
                   <h5>{medicalRecord.patient?.birth_date} </h5>
                   <br />
-                  <span>Gender</span>
+                  <span>Genero</span>
                   <h5>{medicalRecord.patient?.patient_gender} </h5>
                   <br />
-                  <span>Phone Number</span>
+                  <span>Numero de telefono</span>
                   <h5>{medicalRecord.patient?.phone_number} </h5>
                   <br />
-                  <span>Address</span>
+                  <span>Dirrecion</span>
                   <h5>{medicalRecord.patient?.address} </h5>
                   <div className="modify-patient-info-btn-container"></div>
                 </div>
               </div>
             )}
           </Tab>
-          <Tab eventKey="medical-info" className='medical-record-tab' title="Medical Information">
+          <Tab
+            eventKey="medical-info"
+            className="medical-record-tab"
+            title="Informacion Medica"
+          >
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label style={{ fontWeight: "bold" }}>Blood Type</Form.Label>
+              <Form.Label style={{ fontWeight: "bold" }}>Tipo de sangre</Form.Label>
               <Form.Select
-                className="filter-input"
+                className="filter-input blood-type"
                 name="blood_type"
                 onChange={(e: any) =>
                   setMedicalRecordsForm((prevState: any) => {
@@ -302,7 +304,7 @@ const AddMedicalRecord = (props: any) => {
                 }
                 aria-label="Floating label select example"
               >
-                <option>Select blood type</option>
+                <option>Seleccione tipo</option>
                 <option value="o-">O-</option>
                 <option value="o+">O+</option>
                 <option value="a-">A-</option>
@@ -315,9 +317,9 @@ const AddMedicalRecord = (props: any) => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label style={{ fontWeight: "bold" }}>Alergies</Form.Label>
+              <Form.Label style={{ fontWeight: "bold" }}>Alergias</Form.Label>
               <Form.Group>
-                <Form.Label>Type of Alergy</Form.Label>
+                <Form.Label>Tipo de alergia</Form.Label>
                 <Form.Select
                   className="filter-input"
                   name="alergy_type"
@@ -325,42 +327,42 @@ const AddMedicalRecord = (props: any) => {
                   value={medicalRecordInfoAlergies.alergy_type}
                   aria-label="Floating label select example"
                 >
-                  <option>Select type of alergy</option>
-                  <option value="food">Food allergy</option>
-                  <option value="drug">Drug allergy</option>
-                  <option value="atopic-dermatitis">Atopic dermatitis</option>
+                  <option>Select Tipo de alergia</option>
+                  <option value="food">Alergia a la comida</option>
+                  <option value="drug">Alergia a un medicamento</option>
+                  <option value="atopic-dermatitis">Dermatitis atópica</option>
                   <option value="poliposis-nasal">Poliposis nasal</option>
-                  <option value="allergic-rhinitis">Allergic rhinitis</option>
-                  <option value="chronic-urticaria">Chronic urticaria</option>
+                  <option value="allergic-rhinitis">Rinitis alérgica</option>
+                  <option value="chronic-urticaria">Urticaria crónica</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Alergic to</Form.Label>
+                <Form.Label>Alergia a</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-input-add-supply"
                   onChange={onChangeMedRecordFormAlergies}
                   value={medicalRecordInfoAlergies.alergy_to}
                   name="alergy_to"
-                  placeholder="Enter alergic to"
+                  placeholder="Ingrese Alergia a"
                 />
               </Form.Group>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Alergy Detail</Form.Label>
+              <Form.Label>Detalle de alergia</Form.Label>
               <Form.Control
                 as="textarea"
                 onChange={onChangeMedRecordFormAlergies}
                 className="form-input-add-supply"
-                placeholder="Enter a detail of the alergy"
+                placeholder="Ingrese detalle de la alergia"
                 name="alergy_detail"
                 value={medicalRecordInfoAlergies.alergy_detail}
                 style={{ height: "90px" }}
               />
             </Form.Group>
             <div>
-              <span className="added-items-title">Alergies Added</span>{" "}
+              <span className="added-items-title">Alergias agregadas</span>{" "}
               {alergies.length !== 0 && (
                 <>
                   {alergies.map((v: any, i: number) => (
@@ -373,13 +375,13 @@ const AddMedicalRecord = (props: any) => {
                           id="button-tooltip-medical-record"
                         >
                           <div className="popover-tool">
-                            <h5>Alergic Type</h5>
+                            <h5>Tipo de alregia</h5>
                             <span>{v.alergy_type.toUpperCase()} </span>
                             <br />
-                            <h5>Alergic to</h5>
+                            <h5>Alergia a</h5>
                             <span>{v.alergy_to} </span>
                             <br />
-                            <h5>Alergic Detail</h5>
+                            <h5>Detalle de alergia</h5>
                             <span>{v.alergy_detail} </span>
                           </div>
                         </Popover>
@@ -396,14 +398,14 @@ const AddMedicalRecord = (props: any) => {
             </div>
             <br />
             <Button className="add-suply btn" onClick={addAlergies}>
-              Add Alergy
+              Agregar alergia
               <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
             </Button>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label style={{ fontWeight: "bold" }}>Ailment</Form.Label>
+              <Form.Label style={{ fontWeight: "bold" }}>Padecimiento</Form.Label>
               <Form.Group>
-                <Form.Label>Type of Ailment</Form.Label>
+                <Form.Label>Tipo de Padecimiento</Form.Label>
                 <Form.Select
                   className="filter-input"
                   name="ailment_type"
@@ -411,75 +413,77 @@ const AddMedicalRecord = (props: any) => {
                   value={medicalRecordInfoAilment.ailment_type}
                   aria-label="Floating label select example"
                 >
-                  <option>Select type of Ailment</option>
+                  <option>Seleccione Tipo de Padecimiento</option>
                   <option value="oncological-diseases">
-                    Oncological diseases
+                    Enfermedades Oncologicas
                   </option>
                   <option value="infectious-and-parasitic diseases">
-                    Infectious and parasitic diseases
+                    Enfermedades Infecciosas
                   </option>
                   <option value="oncological-diseases">
-                    Oncological diseases
+                    Enfermedades Oncologicas
                   </option>
                   <option value="immune-system-diseases">
-                    Immune system diseases
+                    Enfermedades del sistema inmunológico
                   </option>
                   <option value="endocrine-diseases">Endocrine diseases</option>
                   <option value="mental-behavioral-and-developmental-disorders">
-                    Mental, behavioral and developmental disorders
+                    Trastornos mentales, del comportamiento y del desarrollo.
                   </option>
                   <option value="nervous-system-diseases">
-                    Nervous system diseases
+                    Enfermedades del sistema nervioso{" "}
                   </option>
                   <option value="ophthalmological-and-vision-diseases">
-                    Ophthalmological and vision diseases
+                    Enfermedades oftalmológicas y de la vista{" "}
                   </option>
-                  <option value="auditory-diseases">Auditory diseases</option>
+                  <option value="auditory-diseases">
+                    Enfermedades auditivas
+                  </option>
                   <option value="cardiovascular-diseases">
-                    Cardiovascular diseases
+                    Enfermedades cardiovasculares
                   </option>
                   <option value="respiratory-diseases">
-                    Respiratory diseases
+                    Enfermedades respiratorias{" "}
                   </option>
                   <option value="digestive-system-diseases">
-                    Digestive system diseases
+                    Enfermedades del sistema digestivo{" "}
                   </option>
                   <option value="skin-diseases">Skin diseases</option>
                   <option value="diseases-of-the-genitourinary-system">
-                    Diseases of the genitourinary system
+                    Enfermedades del sistema genitourinario.{" "}
                   </option>
                   <option value="congenital-diseases-and-chromosomal-abnormalities">
-                    Congenital diseases and chromosomal abnormalities
+                    Enfermedades congénitas y anomalías cromosómicas.{" "}
                   </option>
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Ailment of</Form.Label>
+                <Form.Label>Padecimiento a</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-input-add-supply"
                   onChange={onChangeMedRecordFormAilment}
                   value={medicalRecordInfoAilment.ailment_to}
                   name="ailment_to"
-                  placeholder="Enter ailment of"
+                  placeholder="Ingrese padecimiento a"
                 />
               </Form.Group>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Ailment Detail</Form.Label>
+              <Form.Label>Detalle del Padecimiento</Form.Label>
               <Form.Control
                 as="textarea"
                 onChange={onChangeMedRecordFormAilment}
                 className="form-input-add-supply"
-                placeholder="Enter a detail of the ailment"
+                placeholder="Ingrese detalle del padecimiento"
                 name="ailment_detail"
                 value={medicalRecordInfoAilment.ailment_detail}
                 style={{ height: "90px" }}
               />
             </Form.Group>
             <div>
-              <span className="added-items-title">Ailment Added</span>{" "}
+              <span className="added-items-title">Padecimiento agregado</span>{" "}
               {ailments.length !== 0 && (
                 <>
                   {ailments.map((v: any, i: number) => (
@@ -492,13 +496,13 @@ const AddMedicalRecord = (props: any) => {
                           id="button-tooltip-medical-record"
                         >
                           <div className="popover-tool">
-                            <h5>Ailment Type</h5>
+                            <h5>Tipo de Padecimiento</h5>
                             <span>{v.ailment_type.toUpperCase()} </span>
                             <br />
-                            <h5>Ailment of</h5>
+                            <h5>Padecimiento a</h5>
                             <span>{v.ailment_to} </span>
                             <br />
-                            <h5>Ailment Detail</h5>
+                            <h5>Detalle del Padecimiento</h5>
                             <span>{v.ailment_detail} </span>
                           </div>
                         </Popover>
@@ -515,14 +519,14 @@ const AddMedicalRecord = (props: any) => {
             </div>
             <br />
             <Button className="add-suply btn" onClick={addAilments}>
-              Add Ailment
+              Agregar Padecimiento
               <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
             </Button>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label style={{ fontWeight: "bold" }}>Medicines</Form.Label>
+              <Form.Label style={{ fontWeight: "bold" }}>Medicinas</Form.Label>
               <Form.Group>
-                <Form.Label>Type of Medicine</Form.Label>
+                <Form.Label>Tipo de Medicinas</Form.Label>
                 <Form.Select
                   className="filter-input"
                   name="medicine_type"
@@ -530,52 +534,52 @@ const AddMedicalRecord = (props: any) => {
                   value={medicalRecordInfoMedicine.medicine_type}
                   aria-label="Floating label select example"
                 >
-                  <option>Select type of Medicines</option>
-                  <option value="analgesics">Analgesics</option>
+                  <option>Seleccione el tipo de medicamentos</option>
+                  <option value="analgesics">Analgesicos</option>
                   <option value="antacids-and-antiulcers">
-                    Antacids and antiulcers
+                    Antiácidos y antiulcerosos
                   </option>
-                  <option value="anti-allergy">Anti-allergy</option>
+                  <option value="anti-allergy">Anti-allergico</option>
                   <option value="antidiarrheals-and-laxatives">
-                    Antidiarrheals and laxatives
+                    Antidiarreicos y laxantes{" "}
                   </option>
-                  <option value="anti-infectives">Anti-infectives</option>
+                  <option value="anti-infectives">Anti-infeccioso</option>
                   <option value="anti-inflammatories">
-                    Anti-inflammatories
+                    Antiinflamatorios{" "}
                   </option>
-                  <option value="antipyretics">Antipyretics</option>
+                  <option value="antipyretics">Antipireticos</option>
                   <option value="antitussives-and-mucolytics">
-                    Antitussives and mucolytics
+                    Antitusivos y mucolíticos{" "}
                   </option>
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Medicine Name</Form.Label>
+                <Form.Label>Nombre de la medicina</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-input-add-supply"
                   onChange={onChangeMedRecordFormMedicines}
                   value={medicalRecordInfoMedicine.medicine_to}
                   name="medicine_to"
-                  placeholder="Enter medicine name"
+                  placeholder="Ingrese Nombre de la medicina"
                 />
               </Form.Group>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Medicine Detail</Form.Label>
+              <Form.Label>Detalle de la medicina</Form.Label>
               <Form.Control
                 as="textarea"
                 onChange={onChangeMedRecordFormMedicines}
                 className="form-input-add-supply"
-                placeholder="Enter a detail of the medicine"
+                placeholder="Ingrese detalle de la medicina"
                 name="medicine_detail"
                 value={medicalRecordInfoMedicine.medicine_detail}
                 style={{ height: "90px" }}
               />
             </Form.Group>
             <div>
-              <span className="added-items-title">Medicine Added</span>{" "}
+              <span className="added-items-title">Medicinas agregadas</span>{" "}
               {medicines.length !== 0 && (
                 <>
                   {medicines.map((v: any, i: number) => (
@@ -588,13 +592,13 @@ const AddMedicalRecord = (props: any) => {
                           id="button-tooltip-medical-record"
                         >
                           <div className="popover-tool">
-                            <h5>Medicine Type</h5>
+                            <h5>Tipo de medicina</h5>
                             <span>{v.medicine_type.toUpperCase()} </span>
                             <br />
-                            <h5>Medicine Name</h5>
+                            <h5>Nombre de la medicina</h5>
                             <span>{v.medicine_to} </span>
                             <br />
-                            <h5>Medicine Detail</h5>
+                            <h5>Detalle de la medicina</h5>
                             <span>{v.medicine_detail} </span>
                           </div>
                         </Popover>
@@ -611,13 +615,13 @@ const AddMedicalRecord = (props: any) => {
             </div>
             <br />
             <Button className="add-suply btn" onClick={addMedicines}>
-              Add Medicines
+              Agregar Medicinas
               <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
             </Button>
           </Tab>
           <Tab
             eventKey="medical-background-tests"
-            title="Medical History & Tests"
+            title="Historial & Pruebas"
           >
             <Form onSubmit={addDocument}>
               <Form.Group
@@ -636,7 +640,7 @@ const AddMedicalRecord = (props: any) => {
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Type of Document</Form.Label>
+                <Form.Label>Tipo de documento</Form.Label>
                 <Form.Select
                   className="filter-input"
                   name="document_type"
@@ -644,48 +648,48 @@ const AddMedicalRecord = (props: any) => {
                   value={medicalRecordHistoryTest.document_type}
                   aria-label="Floating label select example"
                 >
-                  <option>Select type of document</option>
-                  <option value="history">MEDICAL HISTORY</option>
-                  <option value="test">MEDICAL TESTS</option>
+                  <option>Seleccionar tipo de documento</option>
+                  <option value="history">HISTORIAL MÉDICO</option>
+                  <option value="test">PRUEBAS MEDICAS</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Name of the Document</Form.Label>
+                <Form.Label>Nombre del documento</Form.Label>
                 <Form.Control
                   type="text"
                   className="form-input-add-supply"
                   onChange={onChangeMedRecordFormHistroyTest}
                   value={medicalRecordHistoryTest.document_name}
                   name="document_name"
-                  placeholder={`Enter the name of the document`}
+                  placeholder={`Ingrese nombre del documento`}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Detail of the Document</Form.Label>
+                <Form.Label>Detalle del Documento</Form.Label>
                 <Form.Control
                   as="textarea"
                   onChange={onChangeMedRecordFormHistroyTest}
                   className="form-input-add-supply"
-                  placeholder={`Enter a detail of the document`}
+                  placeholder={`Ingrese Detalle del Documento`}
                   name="document_detail"
                   value={medicalRecordHistoryTest.document_detail}
                   style={{ height: "90px" }}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Date</Form.Label>
+                <Form.Label>Fecha</Form.Label>
                 <DatePicker
                   onChange={onChangeMedRecordFormHistroyTestDate}
                   value={medicalRecordHistoryTest.document_date}
                   className="filter-input patient-form"
-                  placeholderText={`Enter document date`}
+                  placeholderText={`Ingrese Fecha del documento`}
                 />
               </Form.Group>
               <div>
-                <span className="added-items-title">Document Added</span>{" "}
-                {documentPrev.length !== 0 && (
+                <span className="added-items-title">Documentos agregados</span>{" "}
+                {document.length !== 0 && (
                   <>
-                    {documentPrev.map((v: any, i: number) => (
+                    {document.map((v: any, i: number) => (
                       <OverlayTrigger
                         placement="right"
                         delay={{ show: 250, hide: 400 }}
@@ -695,16 +699,16 @@ const AddMedicalRecord = (props: any) => {
                             id="button-tooltip-medical-record"
                           >
                             <div className="popover-tool">
-                              <h5>Document Type</h5>
+                              <h5>Tipo de documento</h5>
                               <span>{v.document_type.toUpperCase()} </span>
                               <br />
-                              <h5>Document Name</h5>
+                              <h5>Nombre del documento</h5>
                               <span>{v.document_name} </span>
                               <br />
-                              <h5>Document Detail</h5>
+                              <h5>Detalle del documento</h5>
                               <span>{v.document_detail} </span>
                               <br />
-                              <h5>Document Date</h5>
+                              <h5>Fecha del documento</h5>
                               <span>{v.document_date} </span>
                             </div>
                           </Popover>
@@ -728,19 +732,19 @@ const AddMedicalRecord = (props: any) => {
               </div>
               <div className="add-medical-container">
                 <Button className="add-suply btn add-medical" type="submit">
-                  Add Document
+                  Agregar Documento
                   <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
                 </Button>
               </div>
             </Form>
           </Tab>
-          <Tab eventKey="confirmation" title="Confirmation">
+          <Tab eventKey="confirmation" title="Confirmacion">
             <span>
-              Check the information of the medical record, before you added.
+              Revise la informacino del historial medico, antes de confirmar
             </span>
             <div className="confirm-btn-container">
               <Button onClick={addMedicalRecord} className="confirm-btn">
-                Add Medical Record{" "}
+                Agregar historial medico{" "}
                 <GrFormAdd style={{ marginLeft: "5px" }} size={30} />
               </Button>
             </div>

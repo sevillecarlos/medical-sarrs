@@ -10,7 +10,8 @@
 .nav-bar {
   background-color: rgba(245, 245, 245, 0.87) !important;
   border-radius: 100px;
-  margin-top: 5px;
+  margin: 10px auto;
+  width: 90% ;
   font-size: 1.2vw;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
   -webkit-box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -27,7 +28,7 @@
 }
 
 .user-dropdown{
-  margin-left: 700px;
+  margin-left: 500px;
 }
 .form-input-add-user{
   border-radius: 20px !important;

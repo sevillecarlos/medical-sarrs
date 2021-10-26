@@ -37,7 +37,7 @@ const Auth = () => {
     <div className="auth">
       <Card className="card-auth">
         <Card.Title style={{ fontSize: "30px", color: "rgb(36, 28, 28)" }}>
-          Sign In
+          Registrarse
         </Card.Title>
         <Card.Img
           style={{ width: "100px", margin: "auto" }}
@@ -58,31 +58,31 @@ const Auth = () => {
               <option value="admin">Administrator</option>
             </Form.Select>
             <Form.Group className="mb-3" controlId="formBasicEmailSignIn">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Usuario</Form.Label>
               <Form.Control
                 name="username"
                 type="text"
                 className="input-auth"
                 required
-                placeholder="Enter username"
+                placeholder="Ingrese Usuario"
                 onChange={changeSignInForm}
               />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPasswordSignIn">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 name="password"
                 className="input-auth"
                 onChange={changeSignInForm}
                 required
                 type="password"
-                placeholder="Enter password"
+                placeholder="Ingrese Contraseña"
               />
             </Form.Group>
             {auth.error !== null && <span>{auth.error}</span>}
             <Button className="auth-btn" type="submit">
-              Login <MdKeyboardArrowRight size={25} />
+              Ingresar <MdKeyboardArrowRight size={25} />
             </Button>
           </Form>
         </Card.Body>

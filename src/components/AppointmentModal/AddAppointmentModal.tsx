@@ -107,12 +107,12 @@ const AddAppointmentModal = (props: AddAppointmentModalI) => {
       backdrop="static"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Add Appointment</Modal.Title>
+        <Modal.Title>Registrar Cita</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={submitAddAppointment} autoComplete="off">
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Patient</Form.Label>
+            <Form.Label>Paciente</Form.Label>
             <DropDownFilter
               items={appointment.patients}
               required
@@ -121,17 +121,17 @@ const AddAppointmentModal = (props: AddAppointmentModalI) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Date</Form.Label>
+            <Form.Label>Fecha</Form.Label>
             <DatePicker
               onChange={handleChangeAppointmentDate}
               value={appointmentForm.date}
               className="date-input patient-form"
               required
-              placeholderText="Enter your appointment date"
+              placeholderText="Ingrese fecha de la cita"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Time</Form.Label>
+            <Form.Label>Tiempo</Form.Label>
             <TimePicker
               disableClock
               required
@@ -147,21 +147,21 @@ const AddAppointmentModal = (props: AddAppointmentModalI) => {
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Reason</Form.Label>
+            <Form.Label>Razon</Form.Label>
             <Form.Control
               as="textarea"
               onChange={changeAppointmentForm}
               value={appointmentForm.reason}
               className="form-input-add-supply"
               required
-              placeholder="Enter a reason of the appointment"
+              placeholder="Ingrese razon de la cita"
               name="reason"
               style={{ height: "100px" }}
             />
           </Form.Group>
           <div className="modal-btn-container">
             <Button type="submit" className="add-appointment-btn">
-              Add Appointment
+              Agregar Cita
               <GrFormAdd />
             </Button>
           </div>

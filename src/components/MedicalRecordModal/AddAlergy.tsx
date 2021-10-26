@@ -13,19 +13,19 @@ const AddAlergy = (props: any) => {
   return (
     <Modal
       show={showAddMedicalRecordAlergy}
-      className="modal-modify-supply"
+      className="modal-modify-medical"
       onHide={() => setShowAddMedicalRecordAlergy(false)}
       backdrop="static"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Add Alergy</Modal.Title>
+        <Modal.Title>Agregar alergia</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label style={{ fontWeight: "bold" }}>Alergies</Form.Label>
+            <Form.Label style={{ fontWeight: "bold" }}>Alergias</Form.Label>
             <Form.Group>
-              <Form.Label>Type of Alergy</Form.Label>
+              <Form.Label>Tipo de alergia</Form.Label>
               <Form.Select
                 className="filter-input"
                 name="alergy_type"
@@ -33,35 +33,35 @@ const AddAlergy = (props: any) => {
                 value={medicalRecordInfoAlergies.alergy_type}
                 aria-label="Floating label select example"
               >
-                <option>Select type of alergy</option>
-                <option value="food">Food allergy</option>
-                <option value="drug">Drug allergy</option>
-                <option value="atopic-dermatitis">Atopic dermatitis</option>
+                <option>Seleccione Tipo de alergia</option>
+                <option value="food">Alergia a la comida</option>
+                <option value="drug">Alergia a un medicamento</option>
+                <option value="atopic-dermatitis">Dermatitis atópica</option>
                 <option value="poliposis-nasal">Poliposis nasal</option>
-                <option value="allergic-rhinitis">Allergic rhinitis</option>
-                <option value="chronic-urticaria">Chronic urticaria</option>
+                <option value="allergic-rhinitis">Rinitis alérgica</option>
+                <option value="chronic-urticaria">Urticaria crónica</option>
               </Form.Select>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Alergic to</Form.Label>
+              <Form.Label>Alergia a</Form.Label>
               <Form.Control
                 type="text"
                 className="form-input-add-supply"
                 onChange={onChangeMedRecordFormAlergies}
                 value={medicalRecordInfoAlergies.alergy_to}
                 name="alergy_to"
-                placeholder="Enter alergic to"
+                placeholder="Ingrese alergia a"
               />
             </Form.Group>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Alergy Detail</Form.Label>
+            <Form.Label>Detalle de alergia</Form.Label>
             <Form.Control
               as="textarea"
               onChange={onChangeMedRecordFormAlergies}
               className="form-input-add-supply"
-              placeholder="Enter a detail of the alergy"
+              placeholder="Ingrese detalle de la alergia"
               name="alergy_detail"
               value={medicalRecordInfoAlergies.alergy_detail}
               style={{ height: "90px" }}
@@ -73,7 +73,7 @@ const AddAlergy = (props: any) => {
               addInfoMedicalRecord(medicalRecordInfoAlergies, "alergies")
             }
           >
-            Add Alergy
+            Agregar alergia
             <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
           </Button>
         </Form>

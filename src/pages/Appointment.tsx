@@ -188,10 +188,10 @@ const Appointment = () => {
   const popoverMapKey = (
     <Popover id="popover-color-map-key">
       <Popover.Body>
-        <p>Appointment Date </p>
-        <span className="appointment-remainder soon">SOON </span>
-        <span className="appointment-remainder today">TODAY </span>
-        <span className="appointment-remainder late">LATE </span>
+        <p>Indicadores de Cita </p>
+        <span className="appointment-remainder soon">PRONT </span>
+        <span className="appointment-remainder today">HOY </span>
+        <span className="appointment-remainder late">TARDE </span>
       </Popover.Body>
     </Popover>
   );
@@ -240,7 +240,7 @@ const Appointment = () => {
               >
                 <Button className="color-key-btn table-btn">
                   {" "}
-                  Color Key <HiOutlineColorSwatch />
+                 Indicadores <HiOutlineColorSwatch />
                 </Button>
               </OverlayTrigger>
             </th>
@@ -250,7 +250,7 @@ const Appointment = () => {
                 className="add-patients table-btn"
                 onClick={() => setShowRegisterPatients(true)}
               >
-                Register Patients
+                Registrar Paciente
                 <AiOutlineUserAdd />
               </Button>
             </th>
@@ -260,7 +260,7 @@ const Appointment = () => {
                 className="add-appointment table-btn"
                 onClick={() => setShowRegisterAppointment(true)}
               >
-                Register Appointments
+                Registrar Cita
                 <GrFormAdd />
               </Button>
             </th>
@@ -269,7 +269,7 @@ const Appointment = () => {
                 selected={filterDate}
                 onChange={handleChangeFilterDate}
                 className="filter-input date-filter"
-                placeholderText="Select date to filter"
+                placeholderText="Seleccion fecha"
               />
             </th>
 
@@ -278,19 +278,19 @@ const Appointment = () => {
                 onChange={statusFilter}
                 className="filter-input status-filter"
               >
-                <option value={1}>Open </option>
-                <option value={0}>Close </option>
+                <option value={1}>Abierto </option>
+                <option value={0}>Cerrado</option>
               </Form.Select>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr className="sub-header-inventory-table">
-            <td>Date</td>
-            <td>Time</td>
-            <td>Patient Name</td>
-            <td>More Info</td>
-            <td>Appointment Status</td>
+            <td>Fecha</td>
+            <td>Tiempo</td>
+            <td>Nombre del paciente</td>
+            <td>Mas informacion</td>
+            <td>Accion </td>
           </tr>
           {appointmentList?.map((v: any) => {
             return (
@@ -317,7 +317,7 @@ const Appointment = () => {
                       className="show-detail-btn table-btn"
                       onClick={() => showDetail(v)}
                     >
-                      Detail <BiCommentDetail />
+                      Detalle <BiCommentDetail />
                     </Button>
                   </div>
                 </td>
@@ -331,12 +331,12 @@ const Appointment = () => {
                   >
                     {v.status ? (
                       <span>
-                        {appointmentIdLoader === v.id ? "Closing..." : "Close"}
+                        {appointmentIdLoader === v.id ? "Cerrando..." : "Cerrar"}
                         <BsFillLockFill />
                       </span>
                     ) : (
                       <span>
-                        {appointmentIdLoader === v.id ? "Openning..." : "Open"}
+                        {appointmentIdLoader === v.id ? "Abriendo..." : "Abrir"}
                         <BsFillUnlockFill />
                       </span>
                     )}{" "}

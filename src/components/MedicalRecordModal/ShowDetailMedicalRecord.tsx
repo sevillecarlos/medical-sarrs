@@ -3,8 +3,10 @@ import { BiArrowBack } from "react-icons/bi";
 import {
   medicalRecordsAction,
   deleteMedicalRecord,
+  deleteDocumentMedicalRecords,
 } from "../../store/slices/medicalRecords";
 import RemoveConfModal from "../../ui/RemoveConfModal";
+
 
 import { getPatients } from "../../store/slices/appointments";
 import {
@@ -86,6 +88,18 @@ const ShowDetailMedicalRecord = (props: any) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
 
+  const [showInfoDocument, setShowInfoDocument] = useState({
+    document_date: "",
+    document_detail: "",
+    document_name: "",
+    document_photo: "",
+    document_type: "",
+  });
+
+  const selectDocument = (info: any) => {
+    setShowInfoDocument({ ...info });
+  };
+
   useEffect(() => {
     setPatientForm({
       patient_id: findPatient(medicalRecordDetail?.patient_id)?.patient_id,
@@ -102,7 +116,7 @@ const ShowDetailMedicalRecord = (props: any) => {
   const removeMedicalRecord = () => {
     dispatch(deleteMedicalRecord(medicalRecordDetail.id));
     setShowRemoveModal(false);
-    setShowMedicalRecordDetail(false)
+    setShowMedicalRecordDetail(false);
   };
 
   useEffect(() => {
@@ -111,6 +125,12 @@ const ShowDetailMedicalRecord = (props: any) => {
       medicalRecordsAction.clearReload();
     }
   }, [appointment.reload, dispatch]);
+
+  const removeDocument = (id: any) => {
+    dispatch(deleteDocumentMedicalRecords(id));
+  };
+
+  console.log(medicalRecord?.medicalRecord?.medical_document)
 
   return (
     <>
@@ -206,10 +226,10 @@ const ShowDetailMedicalRecord = (props: any) => {
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mb-3">
-                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Label>Numero de telefono</Form.Label>
                     <InputGroup className="mb-3 phone-number-input">
                       <FormControl
-                        placeholder="Enter your phone number"
+                        placeholder="Enter your Numero de telefono"
                         className="form-input-add-supply "
                         name="phone_number"
                         onChange={changePatientForm}
@@ -282,7 +302,7 @@ const ShowDetailMedicalRecord = (props: any) => {
                       }{" "}
                     </h5>
                     <br />
-                    <span>Phone Number</span>
+                    <span>Numero de telefono</span>
                     <h5>
                       {
                         findPatient(medicalRecordDetail?.patient_id)
@@ -345,7 +365,7 @@ const ShowDetailMedicalRecord = (props: any) => {
                               <h5>Alergic Type</h5>
                               <span>{v.alergy_type.toUpperCase()} </span>
                               <br />
-                              <h5>Alergic to</h5>
+                              <h5>Alergia a</h5>
                               <span>{v.alergy_to} </span>
                               <br />
                               <h5>Alergic Detail</h5>
@@ -375,7 +395,7 @@ const ShowDetailMedicalRecord = (props: any) => {
                   className="add-medical-record btn"
                   onClick={() => setShowAddMedicalRecordAlergy(true)}
                 >
-                  Add Alergy
+                  Agregar alergia
                   <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
                 </Button>
               </div>
@@ -405,7 +425,7 @@ const ShowDetailMedicalRecord = (props: any) => {
                                 <h5>Ailment of</h5>
                                 <span>{v.ailment_to} </span>
                                 <br />
-                                <h5>Ailment Detail</h5>
+                                <h5>Detalle del Padecimiento</h5>
                                 <span>{v.ailment_detail} </span>
                               </div>
                             </Popover>
@@ -433,7 +453,7 @@ const ShowDetailMedicalRecord = (props: any) => {
                   className="add-medical-record btn"
                   onClick={() => setShowAddMedicalRecordAilment(true)}
                 >
-                  Add Ailment
+                  Agregar Padecimiento
                   <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
                 </Button>
               </div>
@@ -459,13 +479,13 @@ const ShowDetailMedicalRecord = (props: any) => {
                               id="button-tooltip-medical-record"
                             >
                               <div className="popover-tool">
-                                <h5>Medicine Type</h5>
+                                <h5>Tipo de medicina</h5>
                                 <span>{v.medicine_type.toUpperCase()} </span>
                                 <br />
-                                <h5>Medicine Name</h5>
+                                <h5>Nombre de la medicina</h5>
                                 <span>{v.medicine_to} </span>
                                 <br />
-                                <h5>Medicine Detail</h5>
+                                <h5>Detalle de la medicina</h5>
                                 <span>{v.medicine_detail} </span>
                               </div>
                             </Popover>
@@ -509,52 +529,85 @@ const ShowDetailMedicalRecord = (props: any) => {
             </Tab>
             <Tab
               eventKey="medical-background-tests"
-              title="Medical History & Tests"
+              title="HISTORIAL MÉDICO & Tests"
             >
-              <Form>
+              <Form className='document-info'>
                 <Form.Group
                   controlId="formFile"
                   className="tests-photo-container"
                 >
-                  <Image className="test-photo" rounded /> <br />
-                  <Button className="control-tests-photo">
-                    Download Image
+                  <Image
+                    className="test-photo"
+                    rounded
+                    src={showInfoDocument?.document_photo}
+                  />{" "}
+                  <br />
+                  <Button className="download-image-btn">
+                    <a
+                      href={showInfoDocument?.document_photo}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Download Image
+                    </a>
                   </Button>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Type of Document</Form.Label>
                   <p>
                     {" "}
-                    <strong>MEDICAL HISTORY</strong>{" "}
+                    <strong>
+                      {showInfoDocument?.document_type.toUpperCase()}
+                    </strong>{" "}
                   </p>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Name of the Document</Form.Label>
                   <p>
                     {" "}
-                    <strong>Radriography</strong>{" "}
+                    <strong>
+                      {" "}
+                      {showInfoDocument?.document_name.toUpperCase()}
+                    </strong>{" "}
                   </p>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Detail of the Document</Form.Label>
+                  <Form.Label>Detalle del Documento</Form.Label>
                   <p>
                     {" "}
-                    <strong>Radriography of the torax</strong>{" "}
+                    <strong> {showInfoDocument?.document_detail}</strong>{" "}
                   </p>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Date</Form.Label>
                   <p>
                     {" "}
-                    <strong>5/09/2021</strong>{" "}
+                    <strong>{showInfoDocument?.document_date}</strong>{" "}
                   </p>
                 </Form.Group>
                 <div>
                   <span className="added-items-title">Document Added</span>{" "}
-                  <span className="add-container">
-                    <GiCancel className="remove-added-item" />
-                    <Image className="test-photo-added" rounded />{" "}
-                  </span>
+                  {medicalRecord?.medicalRecord?.medical_document.length !==
+                    0 && (
+                    <>
+                      {medicalRecord?.medicalRecord?.medical_document.map(
+                        (v: any, i: number) => (
+                          <span className="add-container">
+                            <GiCancel
+                              className="remove-added-item"
+                              onClick={() => removeDocument(v.id)}
+                            />
+                            <Image
+                              onClick={() => selectDocument(v)}
+                              className="test-photo-added"
+                              src={v.document_photo}
+                              rounded
+                            />{" "}
+                          </span>
+                        )
+                      )}
+                    </>
+                  )}
                 </div>
                 <div className="add-medical-container">
                   <Button

@@ -13,9 +13,23 @@
   margin: auto;
   text-align: center;
 }
+.modal-modify-medical{
+  background-color: rgba(0, 0, 0, 0.411) !important;
+}
+
 .control-patient-photo{
   width: 14% !important;
   margin: auto;
+}
+.download-image-btn{
+  width: 40% !important;
+  font-size: 1vw !important;
+  padding: 5px !important;
+  margin-top: 5px;
+}
+.download-image-btn a{
+  text-decoration: none;
+  color: black;
 }
 .modify-patient-info-btn {
   margin-left: 25% !important;
@@ -34,15 +48,29 @@
   color: grey;
   font-size: 15px;
 }
+.blood-type{
+  width: 27% !important;
+  text-align: center !important;
+}
+.document-info{
+  font-size: 1.1vw !important;
+}
+
+.document-button-add{
+  text-align: center;
+  margin-left: 25% !important;
+  font-size: 1vw !important;
+  width: 50% !important;
+}
 .added-items {
   border-radius: 20px;
   cursor: pointer;
   padding: 10px;
   margin-left: 5px;
-  font-size: 1.2vw;
-  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  font-size: 1vw;
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.377);
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.336);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.281);
 }
 .tooltip-medical-record {
   font-size: 15px !important;
@@ -79,11 +107,17 @@
   text-align: center;
 }
 .test-photo {
-  width: 200px;
+  width: 180px;
+  height: 180px;
+
 }
 .control-tests-photo {
   width: 14% !important;
   margin: auto;
+}
+.control-tests-photo a{
+  text-decoration: none !important;
+  color: rgba(0, 0, 0, 0.75);
 }
 .add-medical-container {
   text-align: center;
@@ -103,9 +137,6 @@
   width: 70px;
   height: 70px;
 
-  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
 }
 .return-btn{
   float: left;
@@ -128,6 +159,7 @@
 
 .add-container {
   position: relative;
+  cursor: pointer;
 }
 .confirm-btn-container {
   text-align: center;

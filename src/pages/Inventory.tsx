@@ -187,7 +187,7 @@ const Inventory = () => {
                 className="add-suply btn-table"
                 onClick={() => setShowModalAdd(true)}
               >
-                Add Supply
+                Agegar Insumo
                 <GrFormAdd style={{ marginLeft: "5px" }} size={20} />
               </Button>
             </th>
@@ -195,7 +195,7 @@ const Inventory = () => {
               <FormControl
                 autoFocus
                 className="filter-input"
-                placeholder="Type to filter the supplies..."
+                placeholder="Escriba para filtar insumos"
                 onChange={typeFilter}
               />
             </th>
@@ -205,7 +205,7 @@ const Inventory = () => {
                 onChange={categoryFilter}
                 placeholder="das"
               >
-                <option>Select category to filter</option>
+                <option>Seleccione categoria</option>
                 {inventory.categories?.map(
                   (v: { id: number; name: string }) => {
                     return (
@@ -217,15 +217,15 @@ const Inventory = () => {
                 )}
               </Form.Select>
             </th>
-            <th>Total Items: {inventoryItems?.length}</th>
+            <th>Total de insumos: {inventoryItems?.length}</th>
           </tr>
         </thead>
         <tbody>
           <tr className="sub-header-inventory-table">
-            <td>Supply Name</td>
-            <td>Category</td>
-            <td>Detail</td>
-            <td>Quantity</td>
+            <td>Nombre del Insumo</td>
+            <td>Categoria</td>
+            <td>Detalle</td>
+            <td>Cantidad</td>
             <td></td>
           </tr>
           {inventoryItems?.map((v: any) => {
@@ -264,7 +264,7 @@ const Inventory = () => {
                       className="modify-btn"
                       onClick={() => modifySupply(v)}
                     >
-                      Modify <AiOutlineEdit />
+                      Modificar <AiOutlineEdit />
                     </Button>
                   </div>
                 </td>

@@ -76,12 +76,12 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
         onClickRemove={removeSupply}
       />
       <Modal.Header closeButton>
-        <Modal.Title>Modify Medical Supply</Modal.Title>
+        <Modal.Title>Modificar Insumo Medico</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={submitModify}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Nombre</Form.Label>
             <Form.Control
               className="form-input-add-supply"
               type="text"
@@ -89,7 +89,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
               required
               onChange={changeModifyForm}
               name="name"
-              placeholder="Enter name of the item"
+              placeholder="Ingrese nombre del insumo"
             />
           </Form.Group>
           <Form.Select
@@ -99,7 +99,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
             value={modifyData.category_id}
             name="category_id"
           >
-            <option>Select Category</option>
+            <option>Seleccione Categoria</option>
 
             {inventory.categories?.map((v: { id: number; name: string }) => {
               return (
@@ -111,7 +111,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
           </Form.Select>
           <br />
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label>Cantidad</Form.Label>
             <Form.Control
               min={1}
               onChange={changeModifyForm}
@@ -120,30 +120,30 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
               required
               value={modifyData.quantity}
               className="form-input-add-supply"
-              placeholder="Enter quantity of the item"
+              placeholder="Ingrese cantidad de insumos"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Details</Form.Label>
+            <Form.Label>Detalle</Form.Label>
             <Form.Control
               as="textarea"
               required
               onChange={changeModifyForm}
               value={modifyData.detail}
               className="form-input-add-supply"
-              placeholder="Enter a detail of the item"
+              placeholder="Ingrese detalle del insumo"
               name="detail"
               style={{ height: "100px" }}
             />
           </Form.Group>
           <p>
-            Created at: {itemsDate.created_at} by {modifyData.user_log_create}
+            Creado el: {itemsDate.created_at} por {modifyData.user_log_create}
           </p>
           <p>
-            Last update: {itemsDate.updated_at} by {modifyData.user_log_update}
+           Ultima modificacion: {itemsDate.updated_at} por {modifyData.user_log_update}
           </p>
           <Button type="submit" className="add-supply-btn">
-            Modify Supply
+            Modificar Insumo
             <AiOutlineEdit style={{ marginLeft: "5px" }} size={20} />
           </Button>
         </Form>
@@ -152,7 +152,7 @@ const ShowMedicalSupply = (props: ShowMedicalSupplyI) => {
           type="button"
           className="remove-supply-btn"
         >
-          Remove Supply
+          Remover Insumo
           <MdDelete style={{ marginLeft: "5px" }} size={20} />
         </Button>
       </Modal.Body>

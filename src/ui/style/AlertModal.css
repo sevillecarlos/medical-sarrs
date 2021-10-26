@@ -15,6 +15,7 @@
 
   .alert-model-content{
       background-color: transparent !important;
+      border-radius: 50px !important;
       border: none !important;
       text-align: center !important;
   }

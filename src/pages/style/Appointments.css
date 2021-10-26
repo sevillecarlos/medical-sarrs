@@ -142,7 +142,6 @@ td {
 .modal-register-patient,
 .modal-add-appointment {
   font-size: 100% !important;
-  font-family: "Raleway", sans-serif;
 }
 
 .form-input-add-supply {
@@ -217,7 +216,6 @@ td {
 #popover-patient-info {
   background-color: rgb(255, 255, 255) !important;
   padding: 0.3%;
-  font-family: "Raleway", sans-serif;
 
   border-radius: 20px;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
@@ -233,7 +231,6 @@ td {
 #popover-color-map-key {
   background-color: rgba(255, 255, 255, 0.938) !important;
   border-radius: 30px;
-  font-family: "Raleway", sans-serif;
 
   font-size: 1vw;
   box-shadow: 1px 0px 14px 0px rgba(0, 0, 0, 0.36);
